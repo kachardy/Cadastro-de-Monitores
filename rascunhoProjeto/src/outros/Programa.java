@@ -85,18 +85,7 @@ public class Programa {
                 	continue;
                 }
                 
-                // Testa o sexo e valida ele
-                System.out.print("Digite o sexo (F/M): ");
-                String entrada = leitor.nextLine().toUpperCase();
-               
-                EnumSexo sexo = Validador.validarSexo(entrada);
-                
-                if (sexo == null) {
-                    System.out.println("Sexo inválido!");
-                    continue;
-                }
-                
-                Aluno novoAluno = new Aluno(nome, sexo, matricula, email, senha);
+                Aluno novoAluno = new Aluno(nome, matricula, email, senha);
 
                 if (central.adicionarAluno(novoAluno)) {
                     // salva a central novamente
