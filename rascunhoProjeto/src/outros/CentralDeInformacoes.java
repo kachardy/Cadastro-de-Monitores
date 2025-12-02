@@ -4,6 +4,9 @@ import pessoas.Coordenador;
 
 import java.util.ArrayList;
 
+import erros.AlunoJaExisteException;
+import erros.EditalJaExisteException;
+
 public class CentralDeInformacoes {
 	private ArrayList<Aluno> todosOsAlunos = new ArrayList<Aluno> ();
 	private ArrayList<EditalDeMonitoria> todosOsEditais = new ArrayList<EditalDeMonitoria> ();
@@ -46,14 +49,12 @@ public class CentralDeInformacoes {
 		return null;
 	}
 	
-	public boolean adicionarAluno(Aluno a) {
+	public boolean adicionarAluno(Aluno a) throws AlunoJaExisteException {
 		for (Aluno aluno: todosOsAlunos) {
 			if (a.getMatricula().equals(aluno.getMatricula())){
-				System.out.println("Aluno já existe, não adicionado.");
-				return false;
+				throw new AlunoJaExisteException();
 			} 
 		}
-		System.out.println("Aluno adicionado com sucesso!");
 		todosOsAlunos.add(a);
 		return true;
 	}
@@ -65,20 +66,19 @@ public class CentralDeInformacoes {
 	}
 	
 	
-	public boolean adicionarEdital(EditalDeMonitoria edital) {
+	public boolean adicionarEdital(EditalDeMonitoria edital) throws EditalJaExisteException {
 		if (todosOsEditais.isEmpty() == true) {
 			System.out.println("Não existe nenhum edital, criando....");
 		} else {
 			for (EditalDeMonitoria e : todosOsEditais) {
 		        if (e.getId() == edital.getId()) {
 		            System.out.println("Edital já existe, não adicionado.");
-		            return false;
+		            throw new EditalJaExisteException();
 		        }
 		    }
 		}
 	    
 	    todosOsEditais.add(edital);
-	    System.out.println("Edital adicionado com sucesso!");
 	    return true;
 	}
 	

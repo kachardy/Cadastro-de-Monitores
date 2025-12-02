@@ -6,7 +6,9 @@ import telas.TelaCadastroAluno;
 import telas.TelaCadastroCoordenador;
 import telas.TelaLogin;
 
-import javax.swing.JOptionPane; 
+import javax.swing.JOptionPane;
+
+import erros.AlunoJaExisteException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -113,12 +115,17 @@ public class Programa {
 			Aluno aluno = new Aluno(nome, matricula, email, senha); 
 			
 			// Salva aluno na Central e no XML
-			central.adicionarAluno(aluno);
-			persistencia.salvarCentral(central, "central.xml"); // Agora funciona pois persistencia foi passada
+			try {
+				central.adicionarAluno(aluno);
+			} catch (AlunoJaExisteException e1) {
+				JOptionPane.showMessageDialog(cadastroAluno, e1.getMessage());
+				return;
+			}
+			persistencia.salvarCentral(central, "central.xml");
 			
 			JOptionPane.showMessageDialog(cadastroAluno, "Aluno cadastrado com sucesso!");
 			cadastroAluno.dispose();
-			fazerLogin(central, persistencia); // Passando persistencia de volta para o login
+			fazerLogin(central, persistencia);
 		});
 		
 		cadastroAluno.adicionarAcaoLinkLogin(new java.awt.event.MouseAdapter() {
