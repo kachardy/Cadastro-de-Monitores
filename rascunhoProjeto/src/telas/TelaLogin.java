@@ -1,10 +1,21 @@
 package telas;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+
 import javax.swing.*; // Importando Swing para usar JTextField e JPasswordField
 
 public class TelaLogin extends JFrame {
+	
+	// Atributos
+	private JTextField tfEmail;
+	private JPasswordField tfSenha;
+	private JButton botaoLogin;
+	private JButton botaoCancelar;
+	private JLabel labelLinkCadastro;
 	
 	public TelaLogin() {
 		
@@ -43,21 +54,31 @@ public class TelaLogin extends JFrame {
 	    
 	    // TextFields 
 	    
-	    JTextField tfEmail = new JTextField();
+	    tfEmail = new JTextField();
 	    tfEmail.setBounds(130, 150, 280, 30);
 	    
-	    JPasswordField tfSenha = new JPasswordField(); 
+	    tfSenha = new JPasswordField(); 
 	    tfSenha.setBounds(130, 200, 280, 30);
 	    tfSenha.setEchoChar('*'); 
 	    
 	    // Botões
 	    
-	    JButton botaoLogin = new JButton("Login");
+	    botaoLogin = new JButton("Login");
 	    botaoLogin.setBounds(110, 330, 110, 35);
 	    botaoLogin.setBackground(new Color(200, 255, 200));
 	    
-	    JButton botaoCancelar = new JButton("Cancelar");
+	    botaoCancelar = new JButton("Cancelar");
 	    botaoCancelar.setBounds(260, 330, 110, 35);
+	    
+	    // Link pra cadastro
+	    labelLinkCadastro = new JLabel("Não tem conta? Faça o cadastro aqui.");
+        labelLinkCadastro.setForeground(new Color(0, 128, 0));
+        
+        labelLinkCadastro.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        labelLinkCadastro.setBounds(0, 420, 500, 30);
+        labelLinkCadastro.setHorizontalAlignment(SwingConstants.CENTER);
+        
 	    
 	    // Adicionando tudo na tela
 	    
@@ -71,9 +92,32 @@ public class TelaLogin extends JFrame {
 	    add(botaoCancelar);
 	    
 	    add(labelTitulo);
+	    add(labelLinkCadastro);
 	    
 	    setVisible(true);
+	    
 	}
+	
+	// Getters
+	public String getEmail() { 
+		return tfEmail.getText(); 
+	}
+	public String getSenha() { 
+		return new String(tfSenha.getPassword()); 
+	}
+	
+	// Ação
+	public void adicionarAcaoSalvar(ActionListener acao) {
+		botaoLogin.addActionListener(acao);
+	}
+	
+	public void adicionarAcaoCancelar(ActionListener acao) {
+		botaoCancelar.addActionListener(acao);
+	}
+	
+	public void adicionarAcaoLinkCadastro(MouseListener acao) {
+        labelLinkCadastro.addMouseListener(acao);
+	 }
 
 	public static void main(String[] args) {
 		new TelaLogin();

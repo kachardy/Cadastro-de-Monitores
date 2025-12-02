@@ -2,10 +2,11 @@ package outros;
 
 import pessoas.Aluno;
 import pessoas.Coordenador;
+import telas.TelaCadastroAluno;
 import telas.TelaCadastroCoordenador;
 import telas.TelaLogin;
 
-import javax.swing.JOptionPane; // Para mensagens de sucesso
+import javax.swing.JOptionPane; 
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,6 +25,11 @@ public class Programa {
 			TelaCadastroCoordenador telaCood = new TelaCadastroCoordenador();
 			
 			// Ouvinte do botão
+			telaCood.adicionarAcaoCancelar(e -> {
+				telaCood.dispose();
+				System.exit(0);
+			}); 
+			
 			telaCood.adicionarAcaoSalvar(e -> {
 				
 				// Pega os dados do coordenador
@@ -33,14 +39,11 @@ public class Programa {
 				String senha = telaCood.getSenha();
 				
 				// Validação dos campos
-				if(nome.isEmpty() || email.isEmpty() || senha.isEmpty()) {
-					JOptionPane.showMessageDialog(telaCood, "Preencha todos os campos!");
+				if (verificaCamposDoCadastro(nome, matricula, email, senha) == false) {
 					return;
 				}
 				
-				
 				Coordenador novoCood = new Coordenador(nome, matricula, email, senha); 
-				
 				
 				// Salva na Central e no XML
 				central.setCoordenador(novoCood);
@@ -48,16 +51,16 @@ public class Programa {
 				
 				JOptionPane.showMessageDialog(telaCood, "Coordenador cadastrado com sucesso!");
 				
-				telaCood.dispose(); 
+				telaCood.dispose();
+				fazerLogin(central, persistencia); 
 				
-				new TelaLogin();
 			
 			});
 			
 		} else {
-			// Abre o login, pois já tem coordenador
 			System.out.println("Coordenador já existe. Abrindo Login...");
-			new TelaLogin();
+			fazerLogin(central, persistencia);
+			
 		}
 	}
 	
@@ -86,4 +89,103 @@ public class Programa {
 		
 		return c;
 	}
+	
+	
+	// Método para cadastrar aluno
+	private static void fazerCadastroAluno(CentralDeInformacoes central, Persistencia persistencia) {
+		TelaCadastroAluno cadastroAluno = new TelaCadastroAluno();
+		
+		cadastroAluno.adicionarAcaoCancelar(e -> {
+			cadastroAluno.dispose();
+		});
+		
+		cadastroAluno.adicionarAcaoSalvar(e -> {
+			String nome = cadastroAluno.getNome();
+			String matricula = cadastroAluno.getMatricula();
+			String email = cadastroAluno.getEmail();
+			String senha = cadastroAluno.getSenha();
+			
+			// Validação dos campos
+			if (verificaCamposDoCadastro(nome, matricula, email, senha) == false) {
+				return;
+			}
+			
+			Aluno aluno = new Aluno(nome, matricula, email, senha); 
+			
+			// Salva aluno na Central e no XML
+			central.adicionarAluno(aluno);
+			persistencia.salvarCentral(central, "central.xml"); // Agora funciona pois persistencia foi passada
+			
+			JOptionPane.showMessageDialog(cadastroAluno, "Aluno cadastrado com sucesso!");
+			cadastroAluno.dispose();
+			fazerLogin(central, persistencia); // Passando persistencia de volta para o login
+		});
+		
+		cadastroAluno.adicionarAcaoLinkLogin(new java.awt.event.MouseAdapter() {
+		    public void mouseClicked(java.awt.event.MouseEvent e) {
+		        System.out.println("Indo para o cadastro...");
+		        cadastroAluno.dispose(); 
+		        fazerLogin(central, persistencia);
+		    }
+		});
+	}
+		
+	
+	// Método para login (Adicionei persistencia no parâmetro para repassar ao cadastro)
+	private static void fazerLogin(CentralDeInformacoes central, Persistencia persistencia) {
+		TelaLogin login = new TelaLogin();
+		
+		login.adicionarAcaoSalvar(e -> {
+			
+			String emailDigitado = login.getEmail();
+			String senhaDigitada = login.getSenha();
+			
+			// Verifica se é o Coordenador
+			Coordenador coord = central.getCoordenador();
+			if (coord != null && coord.getEmail().equals(emailDigitado) && coord.getSenha().equals(senhaDigitada)) {
+				
+				JOptionPane.showMessageDialog(login, "Bem-vindo, Coordenador(a) " + coord.getNome());
+				login.dispose();
+				
+				// new TelaPrincipalCod (Futuramente)
+				return;
+				
+			}
+			
+			// Verifica se é um Aluno
+			for (Aluno a : central.getTodosOsAlunos()) {
+				if (a.getEmail().equals(emailDigitado) && a.getSenha().equals(senhaDigitada)) {
+					JOptionPane.showMessageDialog(login, "Bem-vindo, Aluno " + a.getNome());
+					login.dispose();
+					return;
+					
+				}
+			}
+			
+			
+			// Mensagem se não acha ninguém
+			JOptionPane.showMessageDialog(login, "Email ou senha incorretos!");
+		});
+		
+		login.adicionarAcaoCancelar(e -> {
+			login.dispose();
+		});
+		
+		login.adicionarAcaoLinkCadastro(new java.awt.event.MouseAdapter() {
+		    public void mouseClicked(java.awt.event.MouseEvent e) {
+		        System.out.println("Indo para o cadastro...");
+		        login.dispose(); 
+		        fazerCadastroAluno(central, persistencia);
+		    }
+		});
+	}
+	
+	private static boolean verificaCamposDoCadastro(String nome, String matricula, String senha, String email) {
+		if(nome.isEmpty() || matricula.isEmpty() || email.isEmpty() || senha.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
+			return false;
+		}
+		return true;
+	}
+	
 }
