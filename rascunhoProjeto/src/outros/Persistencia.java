@@ -4,6 +4,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 import pessoas.Aluno;
+import pessoas.Coordenador;
 
 import java.io.FileWriter;
 import java.io.FileReader;
@@ -18,9 +19,9 @@ public class Persistencia {
         // Define os alias para as classes
         xstream.alias("central", CentralDeInformacoes.class);
         xstream.alias("aluno", Aluno.class);
+        xstream.alias("coordenador", Coordenador.class);
         xstream.alias("edital", EditalDeMonitoria.class);
         xstream.allowTypesByWildcard(new String[] { "outros.*", "pessoas.*"});
-        
         xstream.setMode(XStream.NO_REFERENCES);
 
     }

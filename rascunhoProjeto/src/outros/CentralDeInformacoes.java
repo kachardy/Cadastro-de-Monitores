@@ -1,10 +1,13 @@
 package outros;
 import pessoas.Aluno;
+import pessoas.Coordenador;
+
 import java.util.ArrayList;
 
 public class CentralDeInformacoes {
 	private ArrayList<Aluno> todosOsAlunos = new ArrayList<Aluno> ();
 	private ArrayList<EditalDeMonitoria> todosOsEditais = new ArrayList<EditalDeMonitoria> ();
+	private Coordenador coordenador;
 
 	// Getters
 	public ArrayList<Aluno> getTodosOsAlunos() {
@@ -15,6 +18,10 @@ public class CentralDeInformacoes {
 		return todosOsEditais;
 	}
 	
+	public Coordenador getCoordenador() {
+		return coordenador;
+	}
+	
 	// Setters
     public void setTodosOsAlunos(ArrayList<Aluno> todosOsAlunos) {
         this.todosOsAlunos = todosOsAlunos;
@@ -22,6 +29,10 @@ public class CentralDeInformacoes {
     
     public void setTodosOsEditais(ArrayList<EditalDeMonitoria> todosOsEditais) {
 		this.todosOsEditais = todosOsEditais;
+	}
+    
+    public void setCoordenador(Coordenador coordenador) {
+		this.coordenador = coordenador;
 	}
 
 	
@@ -46,6 +57,13 @@ public class CentralDeInformacoes {
 		todosOsAlunos.add(a);
 		return true;
 	}
+	
+	public boolean adicionarCoordenador(Coordenador c) {
+		System.out.println("Coordenador adicionado com sucesso!");
+		setCoordenador(c);
+		return true;
+	}
+	
 	
 	public boolean adicionarEdital(EditalDeMonitoria edital) {
 		if (todosOsEditais.isEmpty() == true) {
