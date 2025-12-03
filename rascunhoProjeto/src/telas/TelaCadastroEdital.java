@@ -2,10 +2,14 @@ package telas;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionListener; 
+import java.awt.event.ActionListener;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
+
+import outros.Disciplina;
+import outros.EditalDeMonitoria;
 
 public class TelaCadastroEdital extends JFrame {
 	
@@ -24,7 +28,7 @@ public class TelaCadastroEdital extends JFrame {
 	private JButton btnSalvar;
 	private JButton btnCancelar;
 	
-	public TelaCadastroEdital() {
+	public TelaCadastroEdital(EditalDeMonitoria editalBase) {
 		
 		// Configurações da Janela
 	    setTitle("Cadastro de Edital");
@@ -68,7 +72,7 @@ public class TelaCadastroEdital extends JFrame {
         
         // Datas
         JLabel labelDataInicio = new JLabel("Início Inscrições:");
-        labelDataInicio.setBounds(30, 120, 120, 30); // Era 70
+        labelDataInicio.setBounds(30, 120, 120, 30); 
         tfDataInicio = new JFormattedTextField(mascaraData);
         tfDataInicio.setBounds(150, 120, 100, 30);
         
@@ -169,13 +173,18 @@ public class TelaCadastroEdital extends JFrame {
 	    add(tfNomeDisc);
 	    add(labelVagasRem); 
 	    add(spinVagasRem);
-	    add(labelVagasVol);
+	    add(labelVagasVol); 
 	    add(spinVagasVol);
 	    add(btnAddDisc); 
 	    add(scrollDisc);
 	    
 	    add(btnSalvar); 
 	    add(btnCancelar);
+	    
+	    // Se o editalBase não for null, preenche os campos automaticamente
+	    if (editalBase != null) {
+	    	preencherDados(editalBase);
+	    }
 	    
 	    setVisible(true);
 	}
@@ -229,6 +238,28 @@ public class TelaCadastroEdital extends JFrame {
 		areaDisciplinas.append(texto + "\n");
 	}
 	
+	public void preencherDados(EditalDeMonitoria edital) {
+		if (edital == null) return;
+		
+		tfNumeroEdital.setText(edital.getNumeroEdital());
+		
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		if (edital.getDataInicio() != null) 
+			tfDataInicio.setText(edital.getDataInicio().format(fmt));
+		
+		if (edital.getDataFim() != null) 
+			tfDataFim.setText(edital.getDataFim().format(fmt));
+		
+		spinnerMaxInsc.setValue(edital.getMaxInscricoesPorAluno());
+		spinnerPesoCRE.setValue(edital.getPesoCRE());
+		spinnerPesoMedia.setValue(edital.getPesoMedia());
+		
+		areaDisciplinas.setText("");
+		for (Disciplina d : edital.getTodasAsDisciplinas()) {
+			adicionarTextoDisciplina(" - " + d.toString());
+		}
+	}
+	
 	// Ações
 	
 	public void adicionarAcaoSalvar(ActionListener acao) {
@@ -244,6 +275,6 @@ public class TelaCadastroEdital extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		new TelaCadastroEdital();
+		new TelaCadastroEdital(null);
 	}
 }

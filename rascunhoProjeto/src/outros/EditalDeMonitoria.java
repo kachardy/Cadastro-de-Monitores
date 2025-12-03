@@ -12,6 +12,7 @@ public class EditalDeMonitoria {
 	private int maxInscricoesPorAluno; 
 	private double pesoCRE;            
 	private double pesoMedia;          
+	private boolean resultadoCalculado = false;
 	
 	private ArrayList<Disciplina> todasAsDisciplinas = new ArrayList<Disciplina>();
 	
@@ -78,9 +79,26 @@ public class EditalDeMonitoria {
 
 		// Inscrição do aluno (se deu tudo certo né)
 		disciplina.adicionarAluno(aluno);
-		Mensageiro.enviarEmail(aluno.getEmail());
+		// Mensageiro.enviarEmail(aluno.getEmail()); // Comentado caso não tenha a classe Mensageiro ainda
 		return true;
 	}
+	
+	// Mantido para suportar o requisito de Clonar Edital
+	public EditalDeMonitoria clonar() {
+        EditalDeMonitoria clone = new EditalDeMonitoria();
+        
+        clone.setDataInicio(this.dataInicio);
+        clone.setDataFim(this.dataFim);
+        clone.setMaxInscricoesPorAluno(this.maxInscricoesPorAluno);
+        clone.setPesoCRE(this.pesoCRE);
+        clone.setPesoMedia(this.pesoMedia);
+        
+        for (Disciplina d : this.todasAsDisciplinas) {
+            Disciplina novaD = new Disciplina(d.getNome(), d.getVagasRemuneradas(), d.getVagasVoluntarias());
+            clone.adicionarDisciplina(novaD);
+        }
+        return clone;
+    }
 	
 	// Getters e Setters
 	
@@ -134,6 +152,14 @@ public class EditalDeMonitoria {
 	public void setPesoMedia(double p) { 
 		this.pesoMedia = p; 
 	}
+	
+	public boolean isResultadoCalculado() {
+        return resultadoCalculado;
+    }
+
+    public void setResultadoCalculado(boolean resultadoCalculado) {
+        this.resultadoCalculado = resultadoCalculado;
+    }
 
 	public ArrayList<Disciplina> getTodasAsDisciplinas() { 
 		return todasAsDisciplinas; 
@@ -168,6 +194,7 @@ public class EditalDeMonitoria {
 		return null;
 	}
 	
+	@Override
 	public String toString() {
 	    String status = jaAcabou() ? "Fechado" : "Aberto";
 	    return "Edital " + numeroEdital + " (" + status + ")" +

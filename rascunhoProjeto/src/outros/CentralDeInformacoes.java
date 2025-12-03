@@ -1,6 +1,7 @@
 package outros;
 import pessoas.Aluno;
 import pessoas.Coordenador;
+import pessoas.Pessoa;
 
 import java.util.ArrayList;
 
@@ -47,6 +48,23 @@ public class CentralDeInformacoes {
 			}	
 		}
 		return null;
+	}
+	
+	public Pessoa recuperarPessoaPorEmail(String email) {
+	    // Verifica se é o Coordenador
+	    if (this.coordenador != null && this.coordenador.getEmail().equals(email)) {
+	        return this.coordenador;
+	    }
+	    
+	    // Verifica na lista de Alunos
+	    for (Aluno a : this.todosOsAlunos) {
+	        if (a.getEmail().equals(email)) {
+	            return a;
+	        }
+	    }
+	    
+	    // Não achou ninguém
+	    return null;
 	}
 	
 	public boolean adicionarAluno(Aluno a) throws AlunoJaExisteException {
