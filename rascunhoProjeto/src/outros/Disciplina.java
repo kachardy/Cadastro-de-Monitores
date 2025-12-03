@@ -5,37 +5,53 @@ import pessoas.Aluno;
 
 public class Disciplina {
     private String nome;
-    private int qtdVagas;
+    private int vagasRemuneradas;
+    private int vagasVoluntarias;
+    
     private ArrayList<Aluno> alunosInscritos = new ArrayList<>();
 
-    public Disciplina(String nome, int qtdVagas) {
+    public Disciplina(String nome, int vagasRemuneradas, int vagasVoluntarias) {
         this.nome = nome;
-        this.qtdVagas = qtdVagas;
+        this.vagasRemuneradas = vagasRemuneradas;
+        this.vagasVoluntarias = vagasVoluntarias;
     }
     
-    public String getNome() {
-        return nome;
+    // Pega o total das vagas
+    public int getTotalVagas() {
+        return vagasRemuneradas + vagasVoluntarias;
     }
     
-    public void setNome(String nome) {
-        this.nome = nome;;
+    // Getters e Setters
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+    
+    public int getVagasRemuneradas() { 
+    	return vagasRemuneradas; 
     }
     
-    public int getQtdVagas() {
-    	return qtdVagas;
-    }
-    
-    public void setQtdVagas(int qtdVagas) {
-        this.qtdVagas = qtdVagas;
+    public void setVagasRemuneradas(int vagasRemuneradas) { 
+    	this.vagasRemuneradas = vagasRemuneradas; 
     }
 
-    public ArrayList<Aluno> getAlunosInscritos() {
-        return alunosInscritos;
+    public int getVagasVoluntarias() { 
+    	return vagasVoluntarias; 
+    }
+    
+    public void setVagasVoluntarias(int vagasVoluntarias) { 
+    	this.vagasVoluntarias = vagasVoluntarias; 
+    }
+
+    public ArrayList<Aluno> getAlunosInscritos() { 
+    	return alunosInscritos; 
     }
 
     public void adicionarAluno(Aluno aluno) {
         if (!alunosInscritos.contains(aluno)) {
             alunosInscritos.add(aluno);
         }
+    }
+    
+    public String toString() {
+    	return nome + " (Rem: " + vagasRemuneradas + ", Vol: " + vagasVoluntarias + ")";
     }
 }
