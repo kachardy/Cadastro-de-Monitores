@@ -3,6 +3,7 @@ package telas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -118,13 +119,25 @@ public class TelaDetalheEditalCoordenador extends JFrame {
 
     private void preencherTabela(EditalDeMonitoria edital) {
         for (Disciplina d : edital.getTodasAsDisciplinas()) {
-            for (Aluno a : d.getAlunosInscritos()) {
+            
+            // Pega as listas protegidas (agora não vai dar erro se tiver null)
+            ArrayList<Aluno> listaAlunos = d.getAlunosInscritos();
+            ArrayList<Double> listaCres = d.getListaCREs();
+            ArrayList<Double> listaMedias = d.getListaMedias();
+            
+            for (int i = 0; i < listaAlunos.size(); i++) {
+                Aluno a = listaAlunos.get(i);
+                
+                // Verifica se tem nota salva para esse índice (segurança extra)
+                Double cre = (i < listaCres.size()) ? listaCres.get(i) : 0.0;
+                Double media = (i < listaMedias.size()) ? listaMedias.get(i) : 0.0;
+                
                 Object[] linha = {
                     d.getNome(),
                     a.getNome(),
                     a.getMatricula(),
-                    "N/A", 
-                    "N/A"
+                    cre, 
+                    media  
                 };
                 modeloTabela.addRow(linha);
             }

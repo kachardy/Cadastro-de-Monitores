@@ -19,67 +19,61 @@ public class TelaListagem extends JFrame {
 	private JButton botaoVoltar;
 	
 	public TelaListagem() {
-		
+		// Configurações da Janela
 		setTitle("Lista de Editais");
-	    setSize(600, 500); 
+	    setSize(700, 500); 
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setResizable(false);
 	    setLocationRelativeTo(null);
 	    setLayout(null);
 	    
-	    // Ícone da Janela
 	    try {
 	        ImageIcon imagemIcone = new ImageIcon("ifpblogo.png");
 	        setIconImage(imagemIcone.getImage()); 
 	    } catch (Exception e) {}
 	    
+	    // Cabeçalho
 	    JLabel labelTitulo = new JLabel("Editais Publicados");
 	    labelTitulo.setFont(new Font("Arial", Font.BOLD, 26));
 	    labelTitulo.setOpaque(true);
 	    labelTitulo.setBackground(new Color(0, 128, 0));
 	    labelTitulo.setForeground(Color.WHITE);
 	    labelTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-	    labelTitulo.setBounds(0, 0, 600, 50);
+	    labelTitulo.setBounds(0, 0, 700, 50);
 	    add(labelTitulo);
 	    
-	    // Tabela
-	    // Definição das Colunas
-	    String[] colunas = {"Número", "Início", "Fim", "Status"};
+	    String[] colunas = {"ID", "Início", "Fim", "Status"};
 	    
-	    // Criação do Modelo (Bloqueando edição de celulas)
 	    modeloTabela = new DefaultTableModel(colunas, 0) {
+	    	@Override
 	    	public boolean isCellEditable(int row, int column) {
-	    		return false; // Impede que o usuário edite a tabela manualmente
+	    		return false; 
 	    	}
 	    };
 	    
-	    // Criação da Tabela visual
 	    tabelaEditais = new JTable(modeloTabela);
-	    tabelaEditais.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Só pode selecionar 1 por vez
+	    tabelaEditais.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	    
-	    // ScrollPane 
+	    tabelaEditais.getColumnModel().getColumn(0).setPreferredWidth(50); 
+	    
 	    JScrollPane scroll = new JScrollPane(tabelaEditais);
-	    scroll.setBounds(30, 80, 520, 300); 
+	    scroll.setBounds(30, 80, 620, 300); 
 	    add(scroll);
 	    
 	    // Botões
-	    
 	    botaoDetalhar = new JButton("Ver Detalhes");
 	    botaoDetalhar.setBounds(30, 400, 150, 40);
 	    botaoDetalhar.setBackground(new Color(200, 255, 200));
 	    add(botaoDetalhar);
 	    
 	    botaoVoltar = new JButton("Voltar");
-	    botaoVoltar.setBounds(400, 400, 150, 40);
+	    botaoVoltar.setBounds(500, 400, 150, 40);
 	    add(botaoVoltar);
 	    
 	    setVisible(true);
 	}
 	
-	
-	// Recebe a lista de editais da Central e preenche a tabela.
 	public void preencherTabela(List<EditalDeMonitoria> listaEditais) {
-		// Limpa a tabela antes de adicionar (para não duplicar)
 		modeloTabela.setRowCount(0);
 		
 		if (listaEditais == null || listaEditais.isEmpty()) {
@@ -90,41 +84,34 @@ public class TelaListagem extends JFrame {
 		
 		for (EditalDeMonitoria edital : listaEditais) {
 			
-			// Define o status
 			String status = "Aberto";
 			if (edital.jaAcabou()) {
 				status = "Encerrado";
 			}
 			
-			// Cria a linha
 			Object[] linha = {
-				edital.getNumeroEdital(),
+				edital.getId(), 
 				edital.getDataInicio().format(formatador),
 				edital.getDataFim().format(formatador),
 				status
 			};
 			
-			// Adiciona no modelo
 			modeloTabela.addRow(linha);
 		}
 	}
 	
-	
-	 //Retorna o número do edital que o usuário selecionou na tabela.
-	 
-	public String getNumeroEditalSelecionado() {
+	// Retorna o ID (long) da linha selecionada (Coluna 0)
+	public Long getIdEditalSelecionado() {
 		int linhaSelecionada = tabelaEditais.getSelectedRow();
 		
 		if (linhaSelecionada == -1) {
-			return null; // Nenhuma linha selecionada
+			return null; 
 		}
 		
-		// Pega o valor da coluna 0 (Número) da linha selecionada
-		return (String) modeloTabela.getValueAt(linhaSelecionada, 0);
+		return (Long) modeloTabela.getValueAt(linhaSelecionada, 0);
 	}
 	
-	// Métodos de ação
-	
+	// Ações
 	public void adicionarAcaoDetalhar(ActionListener acao) {
 		botaoDetalhar.addActionListener(acao);
 	}
@@ -132,9 +119,4 @@ public class TelaListagem extends JFrame {
 	public void adicionarAcaoVoltar(ActionListener acao) {
 		botaoVoltar.addActionListener(acao);
 	}
-	
-	public static void main(String[] args) {
-		new TelaListagem();
-	}
-	
 }

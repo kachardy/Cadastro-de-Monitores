@@ -32,7 +32,7 @@ public class TelaPrincipalCoordenador extends TelaPrincipalPadrao {
         botaoCadastrarEdital.setBackground(new Color(220, 255, 220));
         
         // Listar Editais
-        botaoListarEditais = new JButton("Listar Editais Abertos");
+        botaoListarEditais = new JButton("Listar Editais");
         botaoListarEditais.setBounds(100, 200, 300, 50);
         botaoListarEditais.setFont(new Font("Arial", Font.BOLD, 14));
         

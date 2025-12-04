@@ -5,6 +5,7 @@ import pessoas.Coordenador;
 import telas.TelaCadastroAluno;
 import telas.TelaCadastroCoordenador;
 import telas.TelaCadastroEdital;
+import telas.TelaDetalheEditalAluno;
 import telas.TelaDetalheEditalCoordenador;
 import telas.TelaListagem;
 import telas.TelaListagemAluno;
@@ -193,13 +194,14 @@ public class Programa {
 	}
 	
 	
+	// Área do aluno
 	private static void chamarTelaAluno(Aluno a, CentralDeInformacoes central, Persistencia persistencia) {
 		TelaPrincipalAluno telaAluno = new TelaPrincipalAluno(a);
 		
 		telaAluno.adicionarAcaoListarEditais(e -> {
 			telaAluno.dispose();
-			// Chamada temporária
-			new TelaListagemAluno();
+			chamarTelaListagemAluno(a, central, persistencia);
+			
 		});
 		
 		telaAluno.adicionarAcaoSair(e -> {
@@ -208,6 +210,106 @@ public class Programa {
 		});
 	}
 
+	private static void chamarTelaListagemAluno(Aluno a, CentralDeInformacoes central, Persistencia persistencia) {
+		TelaListagemAluno telaListagemAluno = new TelaListagemAluno();
+		
+		telaListagemAluno.preencherTabela(central.getTodosOsEditais());
+		
+		telaListagemAluno.adicionarAcaoDetalhar(e -> {
+			Long idSelecionado = telaListagemAluno.getIdEditalSelecionado(); // Pega o ID (Long)
+			
+			if (idSelecionado != null) {
+				EditalDeMonitoria edital = null;
+				// Busca por ID
+				for(EditalDeMonitoria ed : central.getTodosOsEditais()) {
+					if(ed.getId() == idSelecionado) {
+						edital = ed; break;
+					}
+				}
+				
+				if(edital != null) {
+					JOptionPane.showMessageDialog(telaListagemAluno, edital.toString(), "Detalhes do Edital", JOptionPane.INFORMATION_MESSAGE);
+				}
+			} else {
+				JOptionPane.showMessageDialog(telaListagemAluno, "Selecione um edital na tabela.");
+			}
+		});
+		
+	
+		telaListagemAluno.adicionarAcaoInscrever(e -> {
+			Long idSelecionado = telaListagemAluno.getIdEditalSelecionado(); // Pega o ID (Long)
+			
+			if (idSelecionado != null) {
+				EditalDeMonitoria edital = null;
+				for(EditalDeMonitoria ed : central.getTodosOsEditais()) {
+					if(ed.getId() == idSelecionado) {
+						edital = ed; break;
+					}
+				}
+				
+				if (edital != null) {
+					if (edital.jaAcabou()) {
+						JOptionPane.showMessageDialog(telaListagemAluno, "Este edital já está encerrado!");
+						return;
+					}
+					telaListagemAluno.dispose();
+					chamarTelaDetalheEditalAluno(edital, a, central, persistencia);
+				}
+			} else {
+				JOptionPane.showMessageDialog(telaListagemAluno, "Selecione um edital para se inscrever.");
+			}
+		});
+		
+		telaListagemAluno.adicionarAcaoVoltar(e -> {
+			telaListagemAluno.dispose();
+			chamarTelaAluno(a, central, persistencia);
+		});
+		
+	}
+	
+	private static void chamarTelaDetalheEditalAluno(EditalDeMonitoria edital, Aluno aluno, CentralDeInformacoes central, Persistencia persistencia) {
+		TelaDetalheEditalAluno telaInscricao = new TelaDetalheEditalAluno(edital);
+		
+		telaInscricao.adicionarAcaoInscrever(e -> {
+			Disciplina disciplina = telaInscricao.getDisciplinaSelecionada();
+			String creStr = telaInscricao.getCRE();
+			String mediaStr = telaInscricao.getMedia();
+			
+			if (disciplina == null) {
+				JOptionPane.showMessageDialog(telaInscricao, "Selecione uma disciplina na tabela.");
+				return;
+			}
+			
+			if (creStr.isEmpty() || mediaStr.isEmpty()) {
+				JOptionPane.showMessageDialog(telaInscricao, "Informe seu CRE e Média.");
+				return;
+			}
+			
+			try {
+				Double.parseDouble(creStr);
+				Double.parseDouble(mediaStr);
+				
+				boolean sucesso = edital.inscrever(aluno, disciplina, Double.parseDouble(creStr) , Double.parseDouble(mediaStr));
+				
+				if (sucesso) {
+					persistencia.salvarCentral(central, "central.xml");
+					JOptionPane.showMessageDialog(telaInscricao, "Inscrição realizada com sucesso na disciplina: " + disciplina.getNome());
+					telaInscricao.dispose();
+					chamarTelaListagemAluno(aluno, central, persistencia);
+				} else {
+					JOptionPane.showMessageDialog(telaInscricao, "Não foi possível realizar a inscrição.\nVerifique: Datas, Vagas ou Limite de Inscrições.");
+				}
+				
+			} catch (NumberFormatException ex) {
+				JOptionPane.showMessageDialog(telaInscricao, "CRE e Média devem ser números (ex: 8.5).");
+			}
+		});
+		
+		telaInscricao.adicionarAcaoVoltar(e -> {
+			telaInscricao.dispose();
+			chamarTelaListagemAluno(aluno, central, persistencia);
+		});
+	}
 	
 	private static void chamarTelaCoordenador(Coordenador coordenador, CentralDeInformacoes central, Persistencia persistencia ) {
 		TelaPrincipalCoordenador telaCoord = new TelaPrincipalCoordenador(coordenador);
@@ -234,11 +336,13 @@ public class Programa {
 		telaLista.preencherTabela(central.getTodosOsEditais());
 		
 		telaLista.adicionarAcaoDetalhar(e -> {
-			String numeroSelecionado = telaLista.getNumeroEditalSelecionado();
-			if (numeroSelecionado != null) {
+			Long idSelecionado = telaLista.getIdEditalSelecionado(); // Pega o ID (Long)
+			
+			if (idSelecionado != null) {
 				EditalDeMonitoria edital = null;
+				// Busca por ID
 				for (EditalDeMonitoria ed : central.getTodosOsEditais()) {
-					if (ed.getNumeroEdital().equals(numeroSelecionado)) {
+					if (ed.getId() == idSelecionado) {
 						edital = ed;
 						break;
 					}
@@ -268,7 +372,6 @@ public class Programa {
 			EditalDeMonitoria clone = edital.clonar();
 			clone.setNumeroEdital(edital.getNumeroEdital());
 			
-			JOptionPane.showMessageDialog(null, "Modo Clonagem: Preencha os dados baseados no anterior.");
 			// Abre a tela de cadastro com o clone
 			chamarTelaCadastroEdital(coordenador, central, persistencia, clone); 
 		});
