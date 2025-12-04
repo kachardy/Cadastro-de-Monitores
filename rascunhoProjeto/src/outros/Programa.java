@@ -7,6 +7,7 @@ import telas.TelaCadastroCoordenador;
 import telas.TelaCadastroEdital;
 import telas.TelaDetalheEditalAluno;
 import telas.TelaDetalheEditalCoordenador;
+import telas.TelaListaAlunos;
 import telas.TelaListagem;
 import telas.TelaListagemAluno;
 import telas.TelaLogin;
@@ -14,6 +15,8 @@ import telas.TelaPrincipalAluno;
 import telas.TelaPrincipalCoordenador;
 
 import javax.swing.JOptionPane;
+
+import java.util.List;
 
 import erros.AlunoJaExisteException;
 
@@ -325,9 +328,43 @@ public class Programa {
 			chamarTelaListagemEditais(coordenador, central, persistencia);
 		});
 		
+		telaCoord.adicionarAcaoListarAlunos(e -> {
+			telaCoord.dispose();
+			chamarTelaQueListaAlunos(coordenador, central, persistencia);
+		});
+		
 		telaCoord.adicionarAcaoSair(e -> {
 			telaCoord.dispose();
 			fazerLogin(central, persistencia);
+		});
+	}
+	
+	private static void chamarTelaQueListaAlunos(Coordenador coordenador, CentralDeInformacoes central, Persistencia persistencia) {
+		TelaListaAlunos tela = new TelaListaAlunos();
+		
+		// Carrega todos inicialmente
+		tela.preencherTabela(central.getTodosOsAlunos());
+		
+		tela.adicionarAcaoBuscar(e -> {
+			String filtro = tela.getTextoFiltro().toLowerCase();
+			
+			if (filtro.isEmpty()) {
+				tela.preencherTabela(central.getTodosOsAlunos());
+			} else {
+				// Filtra a lista
+				List<Aluno> filtrados = new ArrayList<>();
+				for (Aluno a : central.getTodosOsAlunos()) {
+					if (a.getNome().toLowerCase().startsWith(filtro)) {
+						filtrados.add(a);
+					}
+				}
+				tela.preencherTabela(filtrados);
+			}
+		});
+		
+		tela.adicionarAcaoVoltar(e -> {
+			tela.dispose();
+			chamarTelaCoordenador(coordenador, central, persistencia);
 		});
 	}
 	

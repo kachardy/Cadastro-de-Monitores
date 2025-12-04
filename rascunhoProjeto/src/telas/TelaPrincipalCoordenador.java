@@ -10,12 +10,14 @@ public class TelaPrincipalCoordenador extends TelaPrincipalPadrao {
     
     private JButton botaoCadastrarEdital;
     private JButton botaoListarEditais;
+    private JButton botaoListarAlunos;
     private JButton botaoSair;
     
     // Construtor recebe o objeto Coordenador Logado
     public TelaPrincipalCoordenador(Coordenador coordenador) {
         super();
         adicionarCabecalho("Área do Coordenador");
+        setSize(500, 500);
         
         // Mensagem de bem-vindo
         JLabel labelBemVindo = new JLabel("Bem-vindo(a), " + coordenador.getNome());
@@ -27,23 +29,29 @@ public class TelaPrincipalCoordenador extends TelaPrincipalPadrao {
         
         // Cadastrar Edital
         botaoCadastrarEdital = new JButton("Cadastrar Edital");
-        botaoCadastrarEdital.setBounds(100, 130, 300, 50);
+        botaoCadastrarEdital.setBounds(100, 120, 300, 50);
         botaoCadastrarEdital.setFont(new Font("Arial", Font.BOLD, 14));
         botaoCadastrarEdital.setBackground(new Color(220, 255, 220));
         
         // Listar Editais
         botaoListarEditais = new JButton("Listar Editais");
-        botaoListarEditais.setBounds(100, 200, 300, 50);
+        botaoListarEditais.setBounds(100, 190, 300, 50);
         botaoListarEditais.setFont(new Font("Arial", Font.BOLD, 14));
         
-        // Sair / Logout
+        // Listar Alunos
+        botaoListarAlunos = new JButton("Ver Alunos Cadastrados");
+        botaoListarAlunos.setBounds(100, 260, 300, 50);
+        botaoListarAlunos.setFont(new Font("Arial", Font.BOLD, 14));
+        
+        // Sair 
         botaoSair = new JButton("Sair");
-        botaoSair.setBounds(180, 290, 140, 35);
+        botaoSair.setBounds(180, 350, 140, 35);
         botaoSair.setBackground(new Color(255, 200, 200));
         
         // Adicionando tudo
         add(botaoCadastrarEdital);
         add(botaoListarEditais);
+        add(botaoListarAlunos);
         add(botaoSair);
         
         repaint();
@@ -59,6 +67,10 @@ public class TelaPrincipalCoordenador extends TelaPrincipalPadrao {
     
     public void adicionarAcaoListarEditais(ActionListener acao) {
         botaoListarEditais.addActionListener(acao);
+    }
+    
+    public void adicionarAcaoListarAlunos(ActionListener acao) {
+        botaoListarAlunos.addActionListener(acao);
     }
     
     public void adicionarAcaoSair(ActionListener acao) {
