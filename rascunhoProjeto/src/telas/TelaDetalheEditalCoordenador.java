@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import outros.Disciplina;
@@ -13,11 +12,14 @@ import pessoas.Aluno;
 
 public class TelaDetalheEditalCoordenador extends JFrame {
 
+    // Botões de Ação do Edital
     private JButton btnEditar;
     private JButton btnEncerrar;
     private JButton btnClonar;
     private JButton btnCalcularResultado;
     private JButton btnVoltar;
+    private JButton btnVerPerfil;
+    private JButton btnEnviarEmail;
     
     private JTable tabelaInscritos;
     private DefaultTableModel modeloTabela;
@@ -32,9 +34,9 @@ public class TelaDetalheEditalCoordenador extends JFrame {
         setLayout(null);
 
         try { 
-        	setIconImage(new ImageIcon("ifpblogo.png").getImage()); 
+            setIconImage(new ImageIcon("ifpblogo.png").getImage()); 
         } catch (Exception e) {
-        	// Ignora erro de ícone
+            // Ignora erro de ícone
         }
 
         // Cabeçalho
@@ -56,7 +58,7 @@ public class TelaDetalheEditalCoordenador extends JFrame {
         labelStatus = new JLabel("Status: " + textoStatus);
         labelStatus.setBounds(30, 85, 200, 20);
         if (edital.jaAcabou()) {
-        	labelStatus.setForeground(Color.RED);
+            labelStatus.setForeground(Color.RED);
         }
         add(labelStatus);
 
@@ -68,35 +70,42 @@ public class TelaDetalheEditalCoordenador extends JFrame {
         String[] colunas = {"Disciplina", "Aluno", "Matrícula", "CRE", "Média Disc."};
         modeloTabela = new DefaultTableModel(colunas, 0) {
             public boolean isCellEditable(int row, int col) { 
-            	return false; 
+                return false; 
             }
         };
         
         tabelaInscritos = new JTable(modeloTabela);
+        tabelaInscritos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Só seleciona um
         JScrollPane scroll = new JScrollPane(tabelaInscritos);
         scroll.setBounds(30, 150, 630, 250);
         add(scroll);
         
         preencherTabela(edital);
-
-        // Botões de Ação
+        
+        btnVerPerfil = new JButton("Ver Perfil do Aluno");
+        btnVerPerfil.setBounds(30, 410, 160, 30);
+        btnVerPerfil.setFont(new Font("Arial", Font.PLAIN, 12));
+        
+        btnEnviarEmail = new JButton("Enviar Email");
+        btnEnviarEmail.setBounds(200, 410, 140, 30);
+        btnEnviarEmail.setFont(new Font("Arial", Font.PLAIN, 12));
         
         btnEditar = new JButton("Editar");
-        btnEditar.setBounds(30, 430, 100, 35);
+        btnEditar.setBounds(30, 460, 100, 35);
         
         btnEncerrar = new JButton("Encerrar");
-        btnEncerrar.setBounds(140, 430, 100, 35);
+        btnEncerrar.setBounds(140, 460, 100, 35);
         btnEncerrar.setBackground(new Color(255, 200, 200));
         
         btnClonar = new JButton("Clonar");
-        btnClonar.setBounds(250, 430, 100, 35);
+        btnClonar.setBounds(250, 460, 100, 35);
         
         btnCalcularResultado = new JButton("Calcular Resultado");
-        btnCalcularResultado.setBounds(360, 430, 160, 35);
+        btnCalcularResultado.setBounds(360, 460, 160, 35);
         btnCalcularResultado.setBackground(new Color(200, 255, 200));
         
         btnVoltar = new JButton("Voltar");
-        btnVoltar.setBounds(540, 430, 120, 35);
+        btnVoltar.setBounds(540, 460, 120, 35);
 
         // Regra de Visualização
         if (edital.isResultadoCalculado()) {
@@ -113,6 +122,8 @@ public class TelaDetalheEditalCoordenador extends JFrame {
         add(btnClonar);
         add(btnCalcularResultado);
         add(btnVoltar);
+        add(btnVerPerfil);
+        add(btnEnviarEmail);
 
         setVisible(true);
     }
@@ -120,7 +131,7 @@ public class TelaDetalheEditalCoordenador extends JFrame {
     private void preencherTabela(EditalDeMonitoria edital) {
         for (Disciplina d : edital.getTodasAsDisciplinas()) {
             
-            // Pega as listas protegidas (agora não vai dar erro se tiver null)
+            // Pega as listas paralelas 
             ArrayList<Aluno> listaAlunos = d.getAlunosInscritos();
             ArrayList<Double> listaCres = d.getListaCREs();
             ArrayList<Double> listaMedias = d.getListaMedias();
@@ -128,7 +139,7 @@ public class TelaDetalheEditalCoordenador extends JFrame {
             for (int i = 0; i < listaAlunos.size(); i++) {
                 Aluno a = listaAlunos.get(i);
                 
-                // Verifica se tem nota salva para esse índice (segurança extra)
+                // Proteção básica caso as listas não estejam sincronizadas
                 Double cre = (i < listaCres.size()) ? listaCres.get(i) : 0.0;
                 Double media = (i < listaMedias.size()) ? listaMedias.get(i) : 0.0;
                 
@@ -137,31 +148,47 @@ public class TelaDetalheEditalCoordenador extends JFrame {
                     a.getNome(),
                     a.getMatricula(),
                     cre, 
-                    media  
+                    media
                 };
                 modeloTabela.addRow(linha);
             }
         }
     }
     
-    // Listeners Expandidos
+    // Método auxiliar para saber qual aluno foi selecionado na tabela
+    public String getMatriculaAlunoSelecionado() {
+        int linha = tabelaInscritos.getSelectedRow();
+        if (linha == -1) return null;
+        // A matrícula está na coluna 2 (índice 2)
+        return (String) modeloTabela.getValueAt(linha, 2);
+    }
+    
     public void adicionarAcaoEditar(ActionListener acao) { 
-    	btnEditar.addActionListener(acao); 
+        btnEditar.addActionListener(acao); 
     }
     
     public void adicionarAcaoEncerrar(ActionListener acao) { 
-    	btnEncerrar.addActionListener(acao); 
+        btnEncerrar.addActionListener(acao); 
     }
     
     public void adicionarAcaoClonar(ActionListener acao) { 
-    	btnClonar.addActionListener(acao); 
+        btnClonar.addActionListener(acao); 
     }
     
     public void adicionarAcaoCalcular(ActionListener acao) { 
-    	btnCalcularResultado.addActionListener(acao); 
+        btnCalcularResultado.addActionListener(acao); 
     }
     
     public void adicionarAcaoVoltar(ActionListener acao) { 
-    	btnVoltar.addActionListener(acao); 
+        btnVoltar.addActionListener(acao); 
+    }
+    
+    // Novos Listeners
+    public void adicionarAcaoVerPerfil(ActionListener acao) {
+        btnVerPerfil.addActionListener(acao);
+    }
+    
+    public void adicionarAcaoEnviarEmail(ActionListener acao) {
+        btnEnviarEmail.addActionListener(acao);
     }
 }

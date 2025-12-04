@@ -1,18 +1,6 @@
 package outros;
 
-import pessoas.EnumSexo;
-
 public class Validador {
-	
-	public static EnumSexo validarSexo(String string) {
-		if (string.equalsIgnoreCase("M") || string.equalsIgnoreCase("Masculino")){
-			return EnumSexo.MASCULINO;
-		} else if (string.equalsIgnoreCase("F") || string.equalsIgnoreCase("Feminino")){
-			return EnumSexo.FEMININO;
-		} else {
-			return null;
-		}
-	}
 	
 	public static String validarNome(String nome) {
 	    if (nome == null || nome.isBlank()) {

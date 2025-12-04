@@ -6,7 +6,7 @@ import javax.mail.internet.*;
 
 public class Mensageiro {
 
-    public static void enviarEmail(String destinatario) {
+    public static boolean enviarEmail(String destinatario) {
         String remetente = "kauesegundario2@gmail.com";
         String senha = "hgluzlsflircleiq";
 
@@ -31,10 +31,12 @@ public class Mensageiro {
             msg.setText("Olá, sua inscrição no edital foi bem-sucedida!");
 
             Transport.send(msg);
-            System.out.println("E-mail enviado com sucesso!");
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
+        
     }
 
 }

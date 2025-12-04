@@ -11,6 +11,7 @@ import telas.TelaListaAlunos;
 import telas.TelaListagem;
 import telas.TelaListagemAluno;
 import telas.TelaLogin;
+import telas.TelaPerfilAluno;
 import telas.TelaPrincipalAluno;
 import telas.TelaPrincipalCoordenador;
 
@@ -207,10 +208,32 @@ public class Programa {
 			
 		});
 		
+		telaAluno.adicionarAcaoVerPerfil(e -> {
+		    telaAluno.dispose();
+		    abrirPerfilComoAluno(a, central, persistencia);
+		});
+		
 		telaAluno.adicionarAcaoSair(e -> {
 			telaAluno.dispose();
 			fazerLogin(central, persistencia);
 		});
+	}
+	
+	private static void abrirPerfilComoAluno(Aluno aluno, CentralDeInformacoes central, Persistencia persistencia) {
+	    TelaPerfilAluno telaPerfil = new TelaPerfilAluno(aluno);
+	    
+	    telaPerfil.adicionarAcaoSalvar(e -> {
+	        boolean sucesso = salvarAlteracoesDoAluno(telaPerfil, aluno, central, persistencia);
+	        if (sucesso) {
+	            telaPerfil.dispose();
+	            chamarTelaAluno(aluno, central, persistencia); // Volta para Menu do Aluno
+	        }
+	    });
+	    
+	    telaPerfil.adicionarAcaoVoltar(e -> {
+	        telaPerfil.dispose();
+	        chamarTelaAluno(aluno, central, persistencia); // Volta para Menu do Aluno
+	    });
 	}
 
 	private static void chamarTelaListagemAluno(Aluno a, CentralDeInformacoes central, Persistencia persistencia) {
@@ -344,7 +367,6 @@ public class Programa {
 		
 		// Carrega todos inicialmente
 		tela.preencherTabela(central.getTodosOsAlunos());
-		
 		tela.adicionarAcaoBuscar(e -> {
 			String filtro = tela.getTextoFiltro().toLowerCase();
 			
@@ -399,13 +421,30 @@ public class Programa {
 		});
 	}
 	
+	private static void chamarTelaPerfilAluno(Aluno aluno, EditalDeMonitoria editalAnterior, Coordenador coord, CentralDeInformacoes central, Persistencia persistencia) {
+        TelaPerfilAluno telaPerfil = new TelaPerfilAluno(aluno);
+        
+        telaPerfil.adicionarAcaoSalvar(e -> {
+            boolean sucesso = salvarAlteracoesDoAluno(telaPerfil, aluno, central, persistencia);
+            if (sucesso) {
+                telaPerfil.dispose();
+                chamarTelaDetalheEdital(editalAnterior, coord, central, persistencia); // Volta pro edital
+            }
+        });
+        
+        telaPerfil.adicionarAcaoVoltar(e -> {
+            telaPerfil.dispose();
+            chamarTelaDetalheEdital(editalAnterior, coord, central, persistencia); // Volta pro edital
+        });
+	}
+	
 	private static void chamarTelaDetalheEdital(EditalDeMonitoria edital, Coordenador coordenador, CentralDeInformacoes central, Persistencia persistencia) {
 		TelaDetalheEditalCoordenador telaDetalhe = new TelaDetalheEditalCoordenador(edital);
 		
 		telaDetalhe.adicionarAcaoClonar(e -> {
 			telaDetalhe.dispose();
 			
-			// Clona o objeto usando o método que criamos na classe Edital
+			// Clona o objeto
 			EditalDeMonitoria clone = edital.clonar();
 			clone.setNumeroEdital(edital.getNumeroEdital());
 			
@@ -439,6 +478,45 @@ public class Programa {
 			telaDetalhe.dispose();
 			// Passa o edital original para edição
 			chamarTelaCadastroEdital(coordenador, central, persistencia, edital);
+		});
+		
+		telaDetalhe.adicionarAcaoVerPerfil(e -> {
+            String matriculaSelecionada = telaDetalhe.getMatriculaAlunoSelecionado();
+            
+            if (matriculaSelecionada != null) {
+                // Busca o aluno na central pela matrícula
+                Aluno alunoEncontrado = null;
+                for (Aluno a : central.getTodosOsAlunos()) {
+                    if (a.getMatricula().equals(matriculaSelecionada)) {
+                        alunoEncontrado = a;
+                        break;
+                    }
+                }
+                
+                if (alunoEncontrado != null) {
+                    telaDetalhe.dispose();
+                    // Chama a tela de perfil passando o aluno encontrado
+                    chamarTelaPerfilAluno(alunoEncontrado, edital, coordenador, central, persistencia);
+                }
+            } else {
+                JOptionPane.showMessageDialog(telaDetalhe, "Selecione um aluno na tabela primeiro.");
+            }
+        });
+		
+		telaDetalhe.adicionarAcaoEnviarEmail(e -> {
+			Aluno alunoSelecionado = central.recuperarAlunoPorMatricula(telaDetalhe.getMatriculaAlunoSelecionado());
+			
+			if (telaDetalhe.getMatriculaAlunoSelecionado() == null) {
+				JOptionPane.showMessageDialog(telaDetalhe, "Selecione um aluno antes de enviar um email!");
+				return;
+			}
+			boolean sucesso = Mensageiro.enviarEmail(alunoSelecionado.getEmail());
+			
+			if(sucesso) {
+				JOptionPane.showMessageDialog(telaDetalhe, "Email enviado com sucesso!");
+			} else {
+				JOptionPane.showMessageDialog(telaDetalhe, "Erro ao enviar email :(");
+			}
 		});
 
 		telaDetalhe.adicionarAcaoVoltar(e -> {
@@ -549,7 +627,6 @@ public class Programa {
 				 chamarTelaCoordenador(coordenador, central, persistencia); // Volta pro menu
 				 
 			 } catch (Exception ex) {
-				 ex.printStackTrace(); // Bom pra debug
 				 JOptionPane.showMessageDialog(telaEdital, "Data inválida! Use o formato dd/mm/aaaa");
 			 }
 		});
@@ -559,5 +636,40 @@ public class Programa {
 			telaEdital.dispose();
 			chamarTelaCoordenador(coordenador, central, persistencia);
 		});
+	}
+	
+	private static boolean salvarAlteracoesDoAluno(TelaPerfilAluno tela, Aluno aluno, CentralDeInformacoes central, Persistencia persistencia) {
+	    String novoNome = tela.getNome();
+        String novoEmail = tela.getEmail();
+        String novaSenha = tela.getSenha();
+        
+        if (novoNome.isEmpty() || novoEmail.isEmpty() || novaSenha.isEmpty()) {
+            JOptionPane.showMessageDialog(tela, "Preencha todos os campos!");
+            return false;
+        }
+        
+        // Atualiza original
+        aluno.setNome(novoNome);
+        aluno.setEmail(novoEmail);
+        aluno.setSenha(novaSenha);
+        
+        // Atualiza no edital
+        for (EditalDeMonitoria ed : central.getTodosOsEditais()) {
+            for (Disciplina d : ed.getTodasAsDisciplinas()) {
+                ArrayList<Aluno> inscritos = d.getAlunosInscritos();
+                for (int i = 0; i < inscritos.size(); i++) {
+                    Aluno aInscrito = inscritos.get(i);
+                    if (aInscrito.getMatricula().equals(aluno.getMatricula())) {
+                        aInscrito.setNome(novoNome);
+                        aInscrito.setEmail(novoEmail);
+                        aInscrito.setSenha(novaSenha);
+                    }
+                }
+            }
+        }
+        
+        persistencia.salvarCentral(central, "central.xml");
+        JOptionPane.showMessageDialog(tela, "Perfil atualizado com sucesso!");
+        return true;
 	}
 }
