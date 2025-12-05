@@ -16,6 +16,7 @@ public class EditalDeMonitoria {
     private double pesoMedia;          
     
     private boolean resultadoCalculado = false;
+    private boolean resultadoFinal = false;
     
     private ArrayList<Disciplina> todasAsDisciplinas = new ArrayList<Disciplina>();
     
@@ -38,6 +39,26 @@ public class EditalDeMonitoria {
 
     public void adicionarDisciplina(Disciplina d) {		
         this.todasAsDisciplinas.add(d);
+    }
+    
+    public void calcularRanking() {
+        // Ordena todas as disciplinas baseadas nos pesos deste edital
+        for (Disciplina d : todasAsDisciplinas) {
+            d.ordenarRanking(pesoCRE, pesoMedia);
+        }
+        this.resultadoCalculado = true;
+    }
+    
+    public boolean desistir(Aluno aluno, Disciplina disciplina) {
+        if (!resultadoCalculado) return false; // Só pode desistir após resultado sair
+        if (resultadoFinal) return false;      // Não pode desistir se já fechou o edital
+        
+        if (todasAsDisciplinas.contains(disciplina)) {
+            disciplina.removerAluno(aluno);
+            // O aluno sai e outros sobe
+            return true;
+        }
+        return false;
     }
     
     public boolean validarPesos() {
@@ -154,6 +175,14 @@ public class EditalDeMonitoria {
     public void setResultadoCalculado(boolean resultadoCalculado) {
         this.resultadoCalculado = resultadoCalculado;
     }
+    
+    public boolean isResultadoFinal() { 
+    	return resultadoFinal; 
+    }
+    
+    public void setResultadoFinal(boolean resultadoFinal) { 
+    	this.resultadoFinal = resultadoFinal; 
+    }
 
     public ArrayList<Disciplina> getTodasAsDisciplinas() {
         return todasAsDisciplinas;
@@ -162,6 +191,8 @@ public class EditalDeMonitoria {
     public void setTodasAsDisciplinas(ArrayList<Disciplina> todasAsDisciplinas) {
         this.todasAsDisciplinas = todasAsDisciplinas;
     }
+    
+
     
     // Métodos ùteis
 

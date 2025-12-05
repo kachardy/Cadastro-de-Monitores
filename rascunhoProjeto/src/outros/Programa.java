@@ -236,61 +236,84 @@ public class Programa {
 	    });
 	}
 
-	private static void chamarTelaListagemAluno(Aluno a, CentralDeInformacoes central, Persistencia persistencia) {
-		TelaListagemAluno telaListagemAluno = new TelaListagemAluno();
+	private static void chamarTelaListagemAluno(Aluno aluno, CentralDeInformacoes central, Persistencia persistencia) {
+		TelaListagemAluno telaLista = new TelaListagemAluno(); 
 		
-		telaListagemAluno.preencherTabela(central.getTodosOsEditais());
+		telaLista.preencherTabela(central.getTodosOsEditais());
 		
-		telaListagemAluno.adicionarAcaoDetalhar(e -> {
-			Long idSelecionado = telaListagemAluno.getIdEditalSelecionado(); // Pega o ID (Long)
-			
+		// Detalha
+		telaLista.adicionarAcaoDetalhar(e -> {
+			Long idSelecionado = telaLista.getIdEditalSelecionado(); 
 			if (idSelecionado != null) {
 				EditalDeMonitoria edital = null;
-				// Busca por ID
 				for(EditalDeMonitoria ed : central.getTodosOsEditais()) {
-					if(ed.getId() == idSelecionado) {
-						edital = ed; break;
-					}
+					if(ed.getId() == idSelecionado) { edital = ed; break; }
 				}
-				
 				if(edital != null) {
-					JOptionPane.showMessageDialog(telaListagemAluno, edital.toString(), "Detalhes do Edital", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(telaLista, edital.toString(), "Detalhes", JOptionPane.INFORMATION_MESSAGE);
 				}
 			} else {
-				JOptionPane.showMessageDialog(telaListagemAluno, "Selecione um edital na tabela.");
+				JOptionPane.showMessageDialog(telaLista, "Selecione um edital.");
 			}
 		});
 		
-	
-		telaListagemAluno.adicionarAcaoInscrever(e -> {
-			Long idSelecionado = telaListagemAluno.getIdEditalSelecionado(); // Pega o ID (Long)
-			
+		// Se inscreve se não tiver fechado
+		// Consertar
+		telaLista.adicionarAcaoInscrever(e -> {
+			Long idSelecionado = telaLista.getIdEditalSelecionado(); 
 			if (idSelecionado != null) {
 				EditalDeMonitoria edital = null;
 				for(EditalDeMonitoria ed : central.getTodosOsEditais()) {
-					if(ed.getId() == idSelecionado) {
-						edital = ed; break;
+					if(ed.getId() == idSelecionado) { edital = ed; break; }
+				}
+				
+				if (edital != null) {
+					// Só inscreve se estiver aberto
+					if (edital.jaAcabou()) {
+						JOptionPane.showMessageDialog(telaLista, "As inscrições já encerraram!");
+						return;
+					}
+					
+					telaLista.dispose();
+					chamarTelaDetalheEditalAluno(edital, aluno, central, persistencia);
+				}
+			} else {
+				JOptionPane.showMessageDialog(telaLista, "Selecione um edital.");
+			}
+		});
+		
+		// Desistir
+		telaLista.adicionarAcaoDesistir(e -> {
+			Long idSelecionado = telaLista.getIdEditalSelecionado(); 
+			if (idSelecionado != null) {
+				EditalDeMonitoria edital = null;
+				for(EditalDeMonitoria ed : central.getTodosOsEditais()) {
+					if(ed.getId() == idSelecionado) { 
+						edital = ed; 
+						break; 
 					}
 				}
 				
 				if (edital != null) {
-					if (edital.jaAcabou()) {
-						JOptionPane.showMessageDialog(telaListagemAluno, "Este edital já está encerrado!");
+					// Só entra aqui se já tiver resultado calculado
+					if (!edital.isResultadoCalculado()) {
+						JOptionPane.showMessageDialog(telaLista, "O resultado ainda não foi divulgado.");
 						return;
 					}
-					telaListagemAluno.dispose();
-					chamarTelaDetalheEditalAluno(edital, a, central, persistencia);
+					
+					// Se tem resultado, LIBERA A ENTRADA mesmo com data vencida
+					telaLista.dispose();
+					chamarTelaDetalheEditalAluno(edital, aluno, central, persistencia);
 				}
 			} else {
-				JOptionPane.showMessageDialog(telaListagemAluno, "Selecione um edital para se inscrever.");
+				JOptionPane.showMessageDialog(telaLista, "Selecione um edital.");
 			}
 		});
 		
-		telaListagemAluno.adicionarAcaoVoltar(e -> {
-			telaListagemAluno.dispose();
-			chamarTelaAluno(a, central, persistencia);
+		telaLista.adicionarAcaoVoltar(e -> {
+			telaLista.dispose();
+			chamarTelaAluno(aluno, central, persistencia);
 		});
-		
 	}
 	
 	private static void chamarTelaDetalheEditalAluno(EditalDeMonitoria edital, Aluno aluno, CentralDeInformacoes central, Persistencia persistencia) {
@@ -464,15 +487,34 @@ public class Programa {
 		});
 		
 		telaDetalhe.adicionarAcaoCalcular(e -> {
-			int op = JOptionPane.showConfirmDialog(telaDetalhe, "Confirmar cálculo e gerar ranking?");
-			if (op == JOptionPane.YES_OPTION) {
-				edital.setResultadoCalculado(true);
-				persistencia.salvarCentral(central, "central.xml");
-				JOptionPane.showMessageDialog(telaDetalhe, "Resultado gerado!");
-				telaDetalhe.dispose();
-				chamarTelaListagemEditais(coordenador, central, persistencia);
-			}
-		});
+            if (edital.isResultadoCalculado()) {
+                // Se já calculou, o botão vira "Fechar Edital"
+                if (edital.isResultadoFinal()) {
+                    JOptionPane.showMessageDialog(telaDetalhe, "Este edital já está finalizado.");
+                } else {
+                    int op = JOptionPane.showConfirmDialog(telaDetalhe, "Deseja encerrar desistências e gerar Resultado Final?");
+                    if (op == JOptionPane.YES_OPTION) {
+                        edital.setResultadoFinal(true); // Trava desistências
+                        persistencia.salvarCentral(central, "central.xml");
+                        JOptionPane.showMessageDialog(telaDetalhe, "Resultado Finalizado!");
+                        telaDetalhe.dispose();
+                        chamarTelaListagemEditais(coordenador, central, persistencia);
+                    }
+                }
+            } else {
+                // Calcula pela primeira vez
+                int op = JOptionPane.showConfirmDialog(telaDetalhe, "Calcular ranking preliminar?");
+                if (op == JOptionPane.YES_OPTION) {
+                    edital.calcularRanking(); // Ordena as listas
+                    persistencia.salvarCentral(central, "central.xml");
+                    
+                    JOptionPane.showMessageDialog(telaDetalhe, "Ranking gerado! Alunos podem ver.");
+                    telaDetalhe.dispose();
+                    // Recarrega a tela para mostrar a tabela já ordenada
+                    chamarTelaDetalheEdital(edital, coordenador, central, persistencia);
+                }
+            }
+        });
 		
 		telaDetalhe.adicionarAcaoEditar(e -> {
 			telaDetalhe.dispose();
@@ -504,12 +546,13 @@ public class Programa {
         });
 		
 		telaDetalhe.adicionarAcaoEnviarEmail(e -> {
-			Aluno alunoSelecionado = central.recuperarAlunoPorMatricula(telaDetalhe.getMatriculaAlunoSelecionado());
 			
 			if (telaDetalhe.getMatriculaAlunoSelecionado() == null) {
 				JOptionPane.showMessageDialog(telaDetalhe, "Selecione um aluno antes de enviar um email!");
 				return;
 			}
+			
+			Aluno alunoSelecionado = central.recuperarAlunoPorMatricula(telaDetalhe.getMatriculaAlunoSelecionado());
 			boolean sucesso = Mensageiro.enviarEmail(alunoSelecionado.getEmail());
 			
 			if(sucesso) {

@@ -28,8 +28,50 @@ public class Disciplina {
         }
     }
     
+    public void removerAluno(Aluno aluno) {
+        int index = alunosInscritos.indexOf(aluno);
+        if (index != -1) {
+            alunosInscritos.remove(index);
+            listaCREs.remove(index);
+            listaMedias.remove(index);
+        }
+    }
+    
     public int getTotalVagas() {
         return vagasRemuneradas + vagasVoluntarias;
+    }
+    
+    
+    public void ordenarRanking(double pesoCRE, double pesoMedia) {
+        // Algoritmo Bubble Sort
+        // Ordena as 3 listas simultaneamente baseada na Nota Final
+        for (int i = 0; i < alunosInscritos.size(); i++) {
+            for (int j = 0; j < alunosInscritos.size() - 1; j++) {
+                
+                double notaAtual = (listaCREs.get(j) * pesoCRE) + (listaMedias.get(j) * pesoMedia);
+                double notaProxima = (listaCREs.get(j+1) * pesoCRE) + (listaMedias.get(j+1) * pesoMedia);
+                
+                // Se a nota atual for MENOR que a próxima, troca (Decrescente)
+                if (notaAtual < notaProxima) {
+                    trocar(j, j+1);
+                }
+            }
+        }
+    }
+    
+    // Trocar posição do aluno
+    private void trocar(int i, int j) {
+        Aluno tempA = alunosInscritos.get(i);
+        alunosInscritos.set(i, alunosInscritos.get(j));
+        alunosInscritos.set(j, tempA);
+        
+        Double tempC = listaCREs.get(i);
+        listaCREs.set(i, listaCREs.get(j));
+        listaCREs.set(j, tempC);
+        
+        Double tempM = listaMedias.get(i);
+        listaMedias.set(i, listaMedias.get(j));
+        listaMedias.set(j, tempM);
     }
 
     // Getters e Setters

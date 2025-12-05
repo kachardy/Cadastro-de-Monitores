@@ -67,7 +67,7 @@ public class TelaListagem extends JFrame {
 	    add(botaoDetalhar);
 	    
 	    botaoVoltar = new JButton("Voltar");
-	    botaoVoltar.setBounds(500, 400, 150, 40);
+	    botaoVoltar.setBounds(525, 400, 150, 40);
 	    add(botaoVoltar);
 	    
 	    setVisible(true);

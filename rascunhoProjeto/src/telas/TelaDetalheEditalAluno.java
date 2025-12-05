@@ -39,8 +39,8 @@ public class TelaDetalheEditalAluno extends JFrame {
             setIconImage(new ImageIcon("ifpblogo.png").getImage()); 
         } catch (Exception e) {}
 
-        // Cabeçalho (Azul para diferenciar do Coordenador que é Verde)
-        JLabel labelTitulo = new JLabel("Realizar Inscrição");
+        // Cabeçalho 
+        JLabel labelTitulo = new JLabel("Inscrição / Resultados");
         labelTitulo.setFont(new Font("Arial", Font.BOLD, 24));
         labelTitulo.setOpaque(true);
         labelTitulo.setBackground(new Color(0, 100, 200)); 
@@ -48,14 +48,17 @@ public class TelaDetalheEditalAluno extends JFrame {
         labelTitulo.setHorizontalAlignment(SwingConstants.CENTER);
         labelTitulo.setBounds(0, 0, 600, 50);
         add(labelTitulo);
+        
+        
 
         // Informações do Edital
-        JLabel labelInfo = new JLabel("Edital: " + edital.getNumeroEdital() + " | Encerra em: " + edital.getDataFim());
+        String status = edital.isResultadoCalculado() ? "RESULTADO DISPONÍVEL" : "Inscrições Abertas";
+        JLabel labelInfo = new JLabel(status + " | Encerra em: " + edital.getDataFim());
         labelInfo.setBounds(30, 60, 500, 20);
         labelInfo.setFont(new Font("Arial", Font.BOLD, 14));
         add(labelInfo);
 
-        // --- TABELA DE DISCIPLINAS ---
+        // Tebelinha
         JLabel labelTab = new JLabel("Selecione uma Disciplina:");
         labelTab.setBounds(30, 90, 200, 20);
         add(labelTab);
@@ -107,19 +110,24 @@ public class TelaDetalheEditalAluno extends JFrame {
         add(labelCRE); add(tfCRE);
         add(labelMedia); add(tfMedia);
 
-        // --- BOTÕES ---
-        btnInscrever = new JButton("Confirmar Inscrição");
-        btnInscrever.setBounds(150, 430, 280, 40);
-        btnInscrever.setBackground(new Color(200, 255, 200)); // Verde claro
-        btnInscrever.setFont(new Font("Arial", Font.BOLD, 14));
+        // Botões
+        btnInscrever = new JButton("Inscrever-se");
+        btnInscrever.setBounds(30, 430, 150, 40);
+        btnInscrever.setBackground(new Color(200, 255, 200)); // Verdin
         
         btnVoltar = new JButton("Voltar");
         btnVoltar.setBounds(220, 490, 140, 30);
 
         add(btnInscrever);
         add(btnVoltar);
-
-        setVisible(true);
+        
+        // Bloqueia inscrição se o edital já fechou ou já calculou resultado
+        if (edital.jaAcabou() || edital.isResultadoCalculado()) {
+            btnInscrever.setEnabled(false);
+            tfCRE.setEditable(false);
+            tfMedia.setEditable(false);
+        }
+        
     }
     
     
