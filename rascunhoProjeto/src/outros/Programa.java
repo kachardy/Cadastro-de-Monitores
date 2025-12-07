@@ -14,6 +14,7 @@ import telas.TelaLogin;
 import telas.TelaPerfilAluno;
 import telas.TelaPrincipalAluno;
 import telas.TelaPrincipalCoordenador;
+import telas.TelaResultadoEdital;
 
 import javax.swing.JOptionPane;
 
@@ -504,14 +505,15 @@ public class Programa {
             if (edital.isResultadoCalculado()) {
                 // Se já calculou, o botão vira "Fechar Edital"
                 if (edital.isResultadoFinal()) {
-                	// Fazer função do resultado 
                     JOptionPane.showMessageDialog(telaDetalhe, "Este edital já está finalizado.");
+                    new TelaResultadoEdital(edital);
                 } else {
                     int op = JOptionPane.showConfirmDialog(telaDetalhe, "Deseja encerrar desistências e gerar Resultado Final?");
                     if (op == JOptionPane.YES_OPTION) {
                         edital.setResultadoFinal(true); // Trava desistências
                         persistencia.salvarCentral(central, "central.xml");
                         JOptionPane.showMessageDialog(telaDetalhe, "Resultado Finalizado!");
+                        new TelaResultadoEdital(edital);
                         telaDetalhe.dispose();
                         chamarTelaListagemEditais(coordenador, central, persistencia);
                     }

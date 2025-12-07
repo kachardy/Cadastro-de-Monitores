@@ -9,7 +9,7 @@ public class Disciplina {
     private int vagasRemuneradas;
     private int vagasVoluntarias;
     
-    // Mantemos os dados sincronizados pelo índice (posição na lista)
+    // Dados sincronizados pelo índice
     private ArrayList<Aluno> alunosInscritos = new ArrayList<>();
     private ArrayList<Double> listaCREs = new ArrayList<>();
     private ArrayList<Double> listaMedias = new ArrayList<>();
