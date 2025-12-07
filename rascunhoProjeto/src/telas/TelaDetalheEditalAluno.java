@@ -40,7 +40,7 @@ public class TelaDetalheEditalAluno extends JFrame {
         } catch (Exception e) {}
 
         // Cabeçalho 
-        JLabel labelTitulo = new JLabel("Inscrição / Resultados");
+        JLabel labelTitulo = new JLabel("Inscrição");
         labelTitulo.setFont(new Font("Arial", Font.BOLD, 24));
         labelTitulo.setOpaque(true);
         labelTitulo.setBackground(new Color(0, 100, 200)); 
@@ -120,6 +120,8 @@ public class TelaDetalheEditalAluno extends JFrame {
 
         add(btnInscrever);
         add(btnVoltar);
+        
+        setVisible(true);
         
         // Bloqueia inscrição se o edital já fechou ou já calculou resultado
         if (edital.jaAcabou() || edital.isResultadoCalculado()) {

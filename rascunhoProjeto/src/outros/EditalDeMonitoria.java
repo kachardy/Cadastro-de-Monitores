@@ -82,8 +82,10 @@ public class EditalDeMonitoria {
         // Verifica Limite de Inscrições do Aluno neste Edital
         int cont = 0;
         for (Disciplina d : todasAsDisciplinas) {
-            if (d.getAlunosInscritos().contains(aluno)) {
-                cont++;
+            for (Aluno aInscrito : d.getAlunosInscritos()) {
+                if (aInscrito.getMatricula().equals(aluno.getMatricula())) {
+                    cont++;
+                }
             }
         }
         
@@ -91,7 +93,7 @@ public class EditalDeMonitoria {
             return false;
         }
 
-        // Realiza a Inscrição nas Listas Paralelas
+        // Realiza a Inscrição
         disciplina.adicionarAluno(aluno, cre, media);
         
         return true;

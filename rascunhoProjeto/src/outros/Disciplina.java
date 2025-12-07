@@ -20,27 +20,40 @@ public class Disciplina {
         this.vagasVoluntarias = vagasVoluntarias;
     }
     
+    // Garante que as listas não sejam nulas
+    
+    private void validarListas() {
+        if (alunosInscritos == null) alunosInscritos = new ArrayList<>();
+        if (listaCREs == null) listaCREs = new ArrayList<>();
+        if (listaMedias == null) listaMedias = new ArrayList<>();
+    }
+    
     public void adicionarAluno(Aluno aluno, double cre, double media) {
-        if (!alunosInscritos.contains(aluno)) {
-            alunosInscritos.add(aluno);
-            listaCREs.add(cre);
-            listaMedias.add(media);
+    	validarListas();
+        
+        // Valida a matrícula
+        for(Aluno a : alunosInscritos) {
+            if(a.getMatricula().equals(aluno.getMatricula())) {
+                return; // Já está inscrito, não faz nada
+            }
         }
+        
+        alunosInscritos.add(aluno);
+        listaCREs.add(cre);
+        listaMedias.add(media);
     }
     
     public void removerAluno(Aluno aluno) {
-        int index = alunosInscritos.indexOf(aluno);
-        if (index != -1) {
-            alunosInscritos.remove(index);
-            listaCREs.remove(index);
-            listaMedias.remove(index);
+        validarListas();
+        for (int i = 0; i < alunosInscritos.size(); i++) {
+            if (alunosInscritos.get(i).getMatricula().equals(aluno.getMatricula())) {
+                alunosInscritos.remove(i);
+                listaCREs.remove(i);
+                listaMedias.remove(i);
+                return;
+            }
         }
     }
-    
-    public int getTotalVagas() {
-        return vagasRemuneradas + vagasVoluntarias;
-    }
-    
     
     public void ordenarRanking(double pesoCRE, double pesoMedia) {
         // Algoritmo Bubble Sort
@@ -51,7 +64,7 @@ public class Disciplina {
                 double notaAtual = (listaCREs.get(j) * pesoCRE) + (listaMedias.get(j) * pesoMedia);
                 double notaProxima = (listaCREs.get(j+1) * pesoCRE) + (listaMedias.get(j+1) * pesoMedia);
                 
-                // Se a nota atual for MENOR que a próxima, troca (Decrescente)
+                // Se a nota atual for menor que a outra, troca rapaz
                 if (notaAtual < notaProxima) {
                     trocar(j, j+1);
                 }
@@ -100,16 +113,24 @@ public class Disciplina {
         this.vagasVoluntarias = vagasVoluntarias;
     }
     
+    public int getTotalVagas() {
+        return vagasRemuneradas + vagasVoluntarias;
+    }
+    
+    
     public ArrayList<Aluno> getAlunosInscritos() {
+    	validarListas();
         return alunosInscritos;
     }
     
     public ArrayList<Double> getListaCREs() {
-        return listaCREs;
+    	validarListas();
+    	return listaCREs;
     }
     
     public ArrayList<Double> getListaMedias() {
-        return listaMedias;
+    	validarListas();
+    	return listaMedias;
     }
     
     public String toString() {

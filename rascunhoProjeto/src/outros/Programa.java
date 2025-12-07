@@ -264,7 +264,10 @@ public class Programa {
 			if (idSelecionado != null) {
 				EditalDeMonitoria edital = null;
 				for(EditalDeMonitoria ed : central.getTodosOsEditais()) {
-					if(ed.getId() == idSelecionado) { edital = ed; break; }
+					if(ed.getId() == idSelecionado) { 
+						edital = ed; 
+						break; 
+					}
 				}
 				
 				if (edital != null) {
@@ -276,9 +279,9 @@ public class Programa {
 					
 					telaLista.dispose();
 					chamarTelaDetalheEditalAluno(edital, aluno, central, persistencia);
+				} else {
+					JOptionPane.showMessageDialog(telaLista, "Selecione um edital.");
 				}
-			} else {
-				JOptionPane.showMessageDialog(telaLista, "Selecione um edital.");
 			}
 		});
 		
@@ -301,7 +304,7 @@ public class Programa {
 						return;
 					}
 					
-					// Se tem resultado, LIBERA A ENTRADA mesmo com data vencida
+					// Se tem resultado, entra
 					telaLista.dispose();
 					chamarTelaDetalheEditalAluno(edital, aluno, central, persistencia);
 				}
