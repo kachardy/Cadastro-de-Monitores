@@ -47,6 +47,7 @@ public class EditalDeMonitoria {
             d.ordenarRanking(pesoCRE, pesoMedia);
         }
         this.resultadoCalculado = true;
+        atribuirMonitorias();
     }
     
     // Recalcula o ranking mas não fecha o edital
@@ -82,6 +83,26 @@ public class EditalDeMonitoria {
     
     public boolean validarPesos() {
         return Math.abs((pesoCRE + pesoMedia) - 1.0) < 0.001;
+    }
+    
+    public void atribuirMonitorias() {
+        for (Disciplina d : this.getTodasAsDisciplinas()) {
+            int vagas = d.getTotalVagas();
+            ArrayList<Aluno> inscritos = d.getAlunosInscritos();
+
+            for (int i = 0; i < vagas; i++) {
+                if (i >= inscritos.size()) {
+                    break;
+                }
+
+                Aluno selecionado = inscritos.get(i);
+
+                String descricao = "Selecionado como monitor na disciplina "
+                        + d.getNome() + " (Edital " + this.getId() + ")";
+
+                selecionado.adicionarMonitoria(descricao);
+            }
+        }
     }
 
     // Incrição do querido aluno
@@ -212,10 +233,6 @@ public class EditalDeMonitoria {
     public void setTodasAsDisciplinas(ArrayList<Disciplina> todasAsDisciplinas) {
         this.todasAsDisciplinas = todasAsDisciplinas;
     }
-    
-
-    
-    // Métodos ùteis
 
     public boolean jaAcabou() {
         return LocalDate.now().isAfter(dataFim);

@@ -13,6 +13,7 @@ import telas.TelaListagem;
 import telas.TelaListagemAluno;
 import telas.TelaLogin;
 import telas.TelaPerfilAluno;
+import telas.TelaPerfilAlunoSecundaria;
 import telas.TelaPrincipalAluno;
 import telas.TelaPrincipalCoordenador;
 import telas.TelaResultadoEdital;
@@ -222,7 +223,7 @@ public class Programa {
 	}
 	
 	private static void abrirPerfilComoAluno(Aluno aluno, CentralDeInformacoes central, Persistencia persistencia) {
-	    TelaPerfilAluno telaPerfil = new TelaPerfilAluno(aluno);
+	    TelaPerfilAluno telaPerfil = new TelaPerfilAluno(aluno,false);
 	    
 	    telaPerfil.adicionarAcaoSalvar(e -> {
 	        boolean sucesso = salvarAlteracoesDoAluno(telaPerfil, aluno, central, persistencia);
@@ -426,10 +427,52 @@ public class Programa {
 			}
 		});
 		
+		tela.adicionarAcaoPerfil(e -> {
+			String matriculaSelecionada = tela.getMatriculaAlunoSelecionado();
+			
+            
+            if (matriculaSelecionada != null) {
+                // Busca o aluno na central pela matrícula
+                Aluno alunoEncontrado = null;
+                for (Aluno a : central.getTodosOsAlunos()) {
+                    if (a.getMatricula().equals(matriculaSelecionada)) {
+                        alunoEncontrado = a;
+                        break;
+                    }
+                }
+                
+                if (alunoEncontrado != null) {
+                    tela.dispose();
+                    chamarTelaPerfilAlunoSecundario(alunoEncontrado, central, persistencia, coordenador);
+                }
+                
+            } else {
+                JOptionPane.showMessageDialog(tela, "Selecione um aluno na tabela primeiro.");
+            }
+		});
+		
 		tela.adicionarAcaoVoltar(e -> {
 			tela.dispose();
 			chamarTelaCoordenador(coordenador, central, persistencia);
 		});
+	}
+	
+	private static void chamarTelaPerfilAlunoSecundario(Aluno aluno, CentralDeInformacoes central, Persistencia persistencia, Coordenador coordenador) {
+		TelaPerfilAlunoSecundaria tela = new TelaPerfilAlunoSecundaria(aluno, true);
+		
+		tela.adicionarAcaoSalvar(e -> {
+			boolean sucesso = salvarAlteracoesDoAluno(tela, aluno, central, persistencia);
+            if (sucesso) {
+                tela.dispose();
+                chamarTelaQueListaAlunos(coordenador, central, persistencia);
+            }
+		});
+		
+		tela.adicionarAcaoVoltar(e -> {
+			tela.dispose();
+			chamarTelaQueListaAlunos(coordenador, central, persistencia);
+		});
+		
 	}
 	
 	private static void chamarTelaListagemEditais(Coordenador coordenador, CentralDeInformacoes central, Persistencia persistencia) {
@@ -464,7 +507,7 @@ public class Programa {
 	}
 	
 	private static void chamarTelaPerfilAluno(Aluno aluno, EditalDeMonitoria editalAnterior, Coordenador coord, CentralDeInformacoes central, Persistencia persistencia) {
-        TelaPerfilAluno telaPerfil = new TelaPerfilAluno(aluno);
+        TelaPerfilAluno telaPerfil = new TelaPerfilAluno(aluno,true);
         
         telaPerfil.adicionarAcaoSalvar(e -> {
             boolean sucesso = salvarAlteracoesDoAluno(telaPerfil, aluno, central, persistencia);

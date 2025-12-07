@@ -14,6 +14,7 @@ public class TelaListaAlunos extends JFrame {
     private DefaultTableModel modeloTabela;
     private JTextField tfFiltroNome;
     private JButton btnBuscar;
+    private JButton btnPerfil;
     private JButton btnVoltar;
     
     public TelaListaAlunos() {
@@ -70,6 +71,12 @@ public class TelaListaAlunos extends JFrame {
         scroll.setBounds(30, 120, 620, 280);
         add(scroll);
         
+        
+        // Botão perfil
+        btnPerfil = new JButton("Visualizar perfil");
+        btnPerfil.setBounds(30,410,150,40);
+        add(btnPerfil);
+        
         // Botão Voltar
         btnVoltar = new JButton("Voltar");
         btnVoltar.setBounds(500, 410, 150, 40);
@@ -100,10 +107,22 @@ public class TelaListaAlunos extends JFrame {
         return tfFiltroNome.getText();
     }
     
+    public String getMatriculaAlunoSelecionado() {
+        int linha = tabelaAlunos.getSelectedRow();
+        if (linha == -1) return null;
+        // A matrícula está na coluna 1 (índice 1)
+        return (String) modeloTabela.getValueAt(linha, 1);
+    }
+    
     // Ações
     public void adicionarAcaoBuscar(ActionListener acao) {
         btnBuscar.addActionListener(acao);
     }
+    
+    public void adicionarAcaoPerfil(ActionListener acao) {
+        btnPerfil.addActionListener(acao);
+    }
+    
     
     public void adicionarAcaoVoltar(ActionListener acao) {
         btnVoltar.addActionListener(acao);

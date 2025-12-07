@@ -3,7 +3,9 @@ package telas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
-import javax.swing.*; 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 import pessoas.Aluno;
 
 public class TelaPerfilAluno extends JFrame {
@@ -17,7 +19,7 @@ public class TelaPerfilAluno extends JFrame {
 	private JButton botaoSalvar;
 	private JButton botaoVoltar;
 	
-	public TelaPerfilAluno(Aluno aluno) {
+	public TelaPerfilAluno(Aluno aluno, boolean coordenadorLogado) {
 		
 		// Configurações da Janela
 		setTitle("Perfil do Aluno");
@@ -97,6 +99,32 @@ public class TelaPerfilAluno extends JFrame {
         
         add(botaoSalvar);
         add(botaoVoltar);
+        
+        if (coordenadorLogado) {
+
+            JLabel labelHist = new JLabel("Histórico de Monitorias:");
+            labelHist.setBounds(50, 330, 300, 30);
+            labelHist.setFont(new Font("Arial", Font.BOLD, 14));
+            add(labelHist);
+
+            DefaultTableModel modelo = new DefaultTableModel(new Object[]{"Monitorias"}, 0);
+            JTable tabela = new JTable(modelo);
+
+            for (String h : aluno.getHistoricoMonitorias()) {
+                modelo.addRow(new Object[]{h});
+            }
+
+            JScrollPane scroll = new JScrollPane(tabela);
+            scroll.setBounds(50, 370, 380, 120);
+            add(scroll);
+
+            // Bota pra baixo os botão
+            botaoSalvar.setBounds(100, 510, 150, 40);
+            botaoVoltar.setBounds(270, 510, 130, 40);
+
+            setSize(500, 620);
+        }
+
         
         setVisible(true);
 	}
