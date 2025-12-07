@@ -49,17 +49,36 @@ public class EditalDeMonitoria {
         this.resultadoCalculado = true;
     }
     
-    public boolean desistir(Aluno aluno, Disciplina disciplina) {
-        if (!resultadoCalculado) return false; // Só pode desistir após resultado sair
-        if (resultadoFinal) return false;      // Não pode desistir se já fechou o edital
-        
-        if (todasAsDisciplinas.contains(disciplina)) {
-            disciplina.removerAluno(aluno);
-            // O aluno sai e outros sobe
-            return true;
+    // Recalcula o ranking mas não fecha o edital
+    private void recalcularRankingSemFechar() {
+        for (Disciplina d : todasAsDisciplinas) {
+            d.ordenarRanking(pesoCRE, pesoMedia);
         }
-        return false;
     }
+
+    public boolean desistirDoEdital(Aluno aluno) {
+        if (resultadoFinal) return false; // Não pode desistir se o edital já fechou resultado final
+
+        boolean estavaInscrito = false;
+
+        for (Disciplina d : todasAsDisciplinas) {
+            ArrayList<Aluno> alunos = d.getAlunosInscritos();
+            for (Aluno a : alunos) {
+                if (a.getMatricula().equals(aluno.getMatricula())) {
+                    d.removerAluno(aluno);
+                    estavaInscrito = true;
+                    break;
+                }
+            }
+        }
+
+        if (estavaInscrito) {
+           recalcularRankingSemFechar();
+        }
+
+        return estavaInscrito;
+    }
+
     
     public boolean validarPesos() {
         return Math.abs((pesoCRE + pesoMedia) - 1.0) < 0.001;

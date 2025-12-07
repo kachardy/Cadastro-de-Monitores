@@ -258,7 +258,6 @@ public class Programa {
 		});
 		
 		// Se inscreve se não tiver fechado
-		// Consertar
 		telaLista.adicionarAcaoInscrever(e -> {
 			Long idSelecionado = telaLista.getIdEditalSelecionado(); 
 			if (idSelecionado != null) {
@@ -288,7 +287,7 @@ public class Programa {
 		// Desistir
 		telaLista.adicionarAcaoDesistir(e -> {
 			Long idSelecionado = telaLista.getIdEditalSelecionado(); 
-			if (idSelecionado != null) {
+			if (idSelecionado != -1) {
 				EditalDeMonitoria edital = null;
 				for(EditalDeMonitoria ed : central.getTodosOsEditais()) {
 					if(ed.getId() == idSelecionado) { 
@@ -299,18 +298,30 @@ public class Programa {
 				
 				if (edital != null) {
 					// Só entra aqui se já tiver resultado calculado
-					if (!edital.isResultadoCalculado()) {
-						JOptionPane.showMessageDialog(telaLista, "O resultado ainda não foi divulgado.");
+					if (edital.isResultadoFinal()) {
+						JOptionPane.showMessageDialog(telaLista, "O resultado final já foi divulgado\nImpossível desistir.");
 						return;
+					} else {
+						boolean ok = edital.desistirDoEdital(aluno);
+						persistencia.salvarCentral(central, "central.xml");
+						if (!ok) {
+						    JOptionPane.showMessageDialog(telaLista, "Você não está inscrito em nenhuma disciplina deste edital.");
+						    return;
+						}
+
+						JOptionPane.showMessageDialog(telaLista, "Desistência realizada com sucesso!");
 					}
-					
 					// Se tem resultado, entra
 					telaLista.dispose();
-					chamarTelaDetalheEditalAluno(edital, aluno, central, persistencia);
+					chamarTelaListagemAluno(aluno, central, persistencia);
 				}
 			} else {
 				JOptionPane.showMessageDialog(telaLista, "Selecione um edital.");
 			}
+		});
+		
+		telaLista.adicionarAcaoResultado(e -> {
+			
 		});
 		
 		telaLista.adicionarAcaoVoltar(e -> {
@@ -493,6 +504,7 @@ public class Programa {
             if (edital.isResultadoCalculado()) {
                 // Se já calculou, o botão vira "Fechar Edital"
                 if (edital.isResultadoFinal()) {
+                	// Fazer função do resultado 
                     JOptionPane.showMessageDialog(telaDetalhe, "Este edital já está finalizado.");
                 } else {
                     int op = JOptionPane.showConfirmDialog(telaDetalhe, "Deseja encerrar desistências e gerar Resultado Final?");
