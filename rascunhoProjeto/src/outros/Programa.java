@@ -238,98 +238,101 @@ public class Programa {
 	}
 
 	private static void chamarTelaListagemAluno(Aluno aluno, CentralDeInformacoes central, Persistencia persistencia) {
-		TelaListagemAluno telaLista = new TelaListagemAluno(); 
-		
-		telaLista.preencherTabela(central.getTodosOsEditais());
-		
-		// Detalha
-		telaLista.adicionarAcaoDetalhar(e -> {
-			Long idSelecionado = telaLista.getIdEditalSelecionado(); 
-			if (idSelecionado != null) {
-				EditalDeMonitoria edital = null;
-				for(EditalDeMonitoria ed : central.getTodosOsEditais()) {
-					if(ed.getId() == idSelecionado) { edital = ed; break; }
-				}
-				if(edital != null) {
-					JOptionPane.showMessageDialog(telaLista, edital.toString(), "Detalhes", JOptionPane.INFORMATION_MESSAGE);
-				}
-			} else {
-				JOptionPane.showMessageDialog(telaLista, "Selecione um edital.");
-			}
-		});
-		
-		// Se inscreve se não tiver fechado
-		telaLista.adicionarAcaoInscrever(e -> {
-			Long idSelecionado = telaLista.getIdEditalSelecionado(); 
-			if (idSelecionado != null) {
-				EditalDeMonitoria edital = null;
-				for(EditalDeMonitoria ed : central.getTodosOsEditais()) {
-					if(ed.getId() == idSelecionado) { 
-						edital = ed; 
-						break; 
-					}
-				}
-				
-				if (edital != null) {
-					// Só inscreve se estiver aberto
-					if (edital.jaAcabou()) {
-						JOptionPane.showMessageDialog(telaLista, "As inscrições já encerraram!");
-						return;
-					}
-					
-					telaLista.dispose();
-					chamarTelaDetalheEditalAluno(edital, aluno, central, persistencia);
-				} else {
-					JOptionPane.showMessageDialog(telaLista, "Selecione um edital.");
-				}
-			}
-		});
-		
-		// Desistir
-		telaLista.adicionarAcaoDesistir(e -> {
-			Long idSelecionado = telaLista.getIdEditalSelecionado(); 
-			if (idSelecionado != -1) {
-				EditalDeMonitoria edital = null;
-				for(EditalDeMonitoria ed : central.getTodosOsEditais()) {
-					if(ed.getId() == idSelecionado) { 
-						edital = ed; 
-						break; 
-					}
-				}
-				
-				if (edital != null) {
-					// Só entra aqui se já tiver resultado calculado
-					if (edital.isResultadoFinal()) {
-						JOptionPane.showMessageDialog(telaLista, "O resultado final já foi divulgado\nImpossível desistir.");
-						return;
-					} else {
-						boolean ok = edital.desistirDoEdital(aluno);
-						persistencia.salvarCentral(central, "central.xml");
-						if (!ok) {
-						    JOptionPane.showMessageDialog(telaLista, "Você não está inscrito em nenhuma disciplina deste edital.");
-						    return;
-						}
+	    TelaListagemAluno telaLista = new TelaListagemAluno(); 
+	    
+	    telaLista.preencherTabela(central.getTodosOsEditais());
+	    
+	    // Detalha
+	    telaLista.adicionarAcaoDetalhar(e -> {
+	    	EditalDeMonitoria edital = buscarEditalSelecionado(telaLista, central);
+	        if (edital == null) {
+	            JOptionPane.showMessageDialog(telaLista, "Selecione um edital.");
+	            return;
+	        }
+	        JOptionPane.showMessageDialog(telaLista, edital.toString(), "Detalhes", JOptionPane.INFORMATION_MESSAGE);
+	    });
 
-						JOptionPane.showMessageDialog(telaLista, "Desistência realizada com sucesso!");
-					}
-					// Se tem resultado, entra
-					telaLista.dispose();
-					chamarTelaListagemAluno(aluno, central, persistencia);
-				}
-			} else {
-				JOptionPane.showMessageDialog(telaLista, "Selecione um edital.");
-			}
-		});
-		
-		telaLista.adicionarAcaoResultado(e -> {
-			
-		});
-		
-		telaLista.adicionarAcaoVoltar(e -> {
-			telaLista.dispose();
-			chamarTelaAluno(aluno, central, persistencia);
-		});
+	    // Se inscreve se não tiver fechado
+	    telaLista.adicionarAcaoInscrever(e -> {
+	    	EditalDeMonitoria edital = buscarEditalSelecionado(telaLista, central);
+	        if (edital == null) {
+	            JOptionPane.showMessageDialog(telaLista, "Selecione um edital.");
+	            return;
+	        }
+
+	        if (edital.jaAcabou()) {
+	            JOptionPane.showMessageDialog(telaLista, "As inscrições já encerraram!");
+	            return;
+	        }
+
+	        telaLista.dispose();
+	        chamarTelaDetalheEditalAluno(edital, aluno, central, persistencia);
+	    });
+
+	    // Desistir
+	    telaLista.adicionarAcaoDesistir(e -> {
+	    	EditalDeMonitoria edital = buscarEditalSelecionado(telaLista, central);
+	        if (edital == null) {
+	            JOptionPane.showMessageDialog(telaLista, "Selecione um edital.");
+	            return;
+	        }
+
+	        if (edital.isResultadoFinal()) {
+	            JOptionPane.showMessageDialog(telaLista, "O resultado final já foi divulgado\nImpossível desistir.");
+	            return;
+	        }
+
+	        boolean ok = edital.desistirDoEdital(aluno);
+	        persistencia.salvarCentral(central, "central.xml");
+
+	        if (!ok) {
+	            JOptionPane.showMessageDialog(telaLista, "Você não está inscrito em nenhuma disciplina deste edital.");
+	            return;
+	        }
+
+	        JOptionPane.showMessageDialog(telaLista, "Desistência realizada com sucesso!");
+	        telaLista.dispose();
+	        chamarTelaListagemAluno(aluno, central, persistencia);
+	    });
+
+	    telaLista.adicionarAcaoResultado(e -> {
+	    	EditalDeMonitoria edital = buscarEditalSelecionado(telaLista, central);
+	        if (edital == null) {
+	            JOptionPane.showMessageDialog(telaLista, "Selecione um edital");
+	            return;
+	        }
+
+	        if (!edital.jaAcabou() && !edital.isResultadoCalculado() && !edital.isResultadoFinal()) {
+	            JOptionPane.showMessageDialog(telaLista, "Edital sem resultado disponível");
+	            return;
+	        }
+
+	        chamarTelaResultadoFinal(edital);
+	    });
+
+	    telaLista.adicionarAcaoVoltar(e -> {
+	        telaLista.dispose();
+	        chamarTelaAluno(aluno, central, persistencia);
+	    });
 	}
+	
+	private static EditalDeMonitoria buscarEditalSelecionado(TelaListagemAluno telaLista, CentralDeInformacoes central) {
+	    Long id = telaLista.getIdEditalSelecionado();
+
+	    if (id == null) {
+	        return null;
+	    }
+
+	    for (EditalDeMonitoria ed : central.getTodosOsEditais()) {
+	        if (ed.getId() == id) {
+	            return ed;
+	        }
+	    }
+
+	    return null;
+	}
+
+
 	
 	private static void chamarTelaDetalheEditalAluno(EditalDeMonitoria edital, Aluno aluno, CentralDeInformacoes central, Persistencia persistencia) {
 		TelaDetalheEditalAluno telaInscricao = new TelaDetalheEditalAluno(edital);
@@ -506,16 +509,14 @@ public class Programa {
                 // Se já calculou, o botão vira "Fechar Edital"
                 if (edital.isResultadoFinal()) {
                     JOptionPane.showMessageDialog(telaDetalhe, "Este edital já está finalizado.");
-                    new TelaResultadoEdital(edital);
+                    chamarTelaResultadoFinal(edital);
                 } else {
                     int op = JOptionPane.showConfirmDialog(telaDetalhe, "Deseja encerrar desistências e gerar Resultado Final?");
                     if (op == JOptionPane.YES_OPTION) {
                         edital.setResultadoFinal(true); // Trava desistências
                         persistencia.salvarCentral(central, "central.xml");
                         JOptionPane.showMessageDialog(telaDetalhe, "Resultado Finalizado!");
-                        new TelaResultadoEdital(edital);
-                        telaDetalhe.dispose();
-                        chamarTelaListagemEditais(coordenador, central, persistencia);
+                        chamarTelaResultadoFinal(edital);
                     }
                 }
             } else {
@@ -586,6 +587,15 @@ public class Programa {
 	}
 	
 	
+	private static void chamarTelaResultadoFinal(EditalDeMonitoria edital) {
+		TelaResultadoEdital telaResultadoFinal = new TelaResultadoEdital(edital);
+		
+		telaResultadoFinal.adicionarAcaoFechar(e -> {
+			telaResultadoFinal.dispose();
+		});
+		
+	}
+
 	private static void chamarTelaCadastroEdital(Coordenador coordenador, CentralDeInformacoes central, Persistencia persistencia, EditalDeMonitoria editalBase) {
 		TelaCadastroEdital telaEdital = new TelaCadastroEdital(editalBase);
 		

@@ -47,6 +47,6 @@ public class TelaListagemAluno extends TelaListagem {
 	}
 	
 	public void adicionarAcaoResultado(ActionListener acao) {
-		botaoDesistir.addActionListener(acao);
+		botaoResultado.addActionListener(acao);
 	}
 }
