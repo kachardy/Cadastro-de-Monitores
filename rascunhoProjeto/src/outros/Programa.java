@@ -2,6 +2,7 @@ package outros;
 
 import pessoas.Aluno;
 import pessoas.Coordenador;
+import pessoas.Pessoa;
 import telas.TelaCadastroAluno;
 import telas.TelaCadastroCoordenador;
 import telas.TelaCadastroEdital;
@@ -307,7 +308,7 @@ public class Programa {
 	            return;
 	        }
 
-	        chamarTelaResultadoFinal(edital);
+	        chamarTelaResultadoFinal(aluno,edital);
 	    });
 
 	    telaLista.adicionarAcaoVoltar(e -> {
@@ -509,14 +510,14 @@ public class Programa {
                 // Se já calculou, o botão vira "Fechar Edital"
                 if (edital.isResultadoFinal()) {
                     JOptionPane.showMessageDialog(telaDetalhe, "Este edital já está finalizado.");
-                    chamarTelaResultadoFinal(edital);
+                    chamarTelaResultadoFinal(coordenador, edital);
                 } else {
                     int op = JOptionPane.showConfirmDialog(telaDetalhe, "Deseja encerrar desistências e gerar Resultado Final?");
                     if (op == JOptionPane.YES_OPTION) {
                         edital.setResultadoFinal(true); // Trava desistências
                         persistencia.salvarCentral(central, "central.xml");
                         JOptionPane.showMessageDialog(telaDetalhe, "Resultado Finalizado!");
-                        chamarTelaResultadoFinal(edital);
+                        chamarTelaResultadoFinal(coordenador,edital);
                     }
                 }
             } else {
@@ -587,14 +588,25 @@ public class Programa {
 	}
 	
 	
-	private static void chamarTelaResultadoFinal(EditalDeMonitoria edital) {
-		TelaResultadoEdital telaResultadoFinal = new TelaResultadoEdital(edital);
-		
-		telaResultadoFinal.adicionarAcaoFechar(e -> {
-			telaResultadoFinal.dispose();
-		});
-		
+	private static void chamarTelaResultadoFinal(Pessoa p, EditalDeMonitoria edital) {
+	    TelaResultadoEdital telaResultadoFinal = new TelaResultadoEdital(edital);
+
+	    // Só o bigboss gera o pdf
+	    if (!(p instanceof Coordenador)) {
+	        telaResultadoFinal.desabilitarGerarPdf();
+	    }
+
+	    // Botão fechar
+	    telaResultadoFinal.adicionarAcaoFechar(e -> {
+	        telaResultadoFinal.dispose();
+	    });
+
+	    // Botão gerar PDF
+	    telaResultadoFinal.adicionarAcaoGerarPdf(e -> {
+	        GeradorDeRelatorio.gerarPdfResultado(edital);
+	    });
 	}
+
 
 	private static void chamarTelaCadastroEdital(Coordenador coordenador, CentralDeInformacoes central, Persistencia persistencia, EditalDeMonitoria editalBase) {
 		TelaCadastroEdital telaEdital = new TelaCadastroEdital(editalBase);

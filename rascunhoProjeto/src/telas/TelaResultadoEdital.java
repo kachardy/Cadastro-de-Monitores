@@ -68,7 +68,8 @@ public class TelaResultadoEdital extends JFrame {
 
         btnFechar = new JButton("Fechar");
         btnFechar.setBounds(360, 510, 120, 35);
-      
+        
+        add(btnGerarPdf);
         add(btnFechar);
 
         setVisible(true);
@@ -107,6 +108,15 @@ public class TelaResultadoEdital extends JFrame {
             }
         }
     }
+    
+    public void desabilitarGerarPdf() {
+        btnGerarPdf.setEnabled(false);
+        btnGerarPdf.setVisible(false); // puft sumiu
+
+        // Move mais pro centrin pra ficar bonito
+        btnFechar.setBounds(230, 510, 150, 35); 
+    }
+
     
     public void adicionarAcaoGerarPdf(ActionListener acao) {
 		btnGerarPdf.addActionListener(acao);
