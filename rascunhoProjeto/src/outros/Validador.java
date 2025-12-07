@@ -2,24 +2,24 @@ package outros;
 
 public class Validador {
 	
-	public static String validarNome(String nome) {
+	public static boolean validarNome(String nome) {
 	    if (nome == null || nome.isBlank()) {
-	        return null;
+	        return false;
 	    }
 
 	    nome = nome.trim();
 
 	    // Verifica se contém apenas letras e espaços
 	    if (!nome.matches("[A-Za-zÀ-ú ]+")) {
-	        return null;
+	        return false;
 	    }
 
-	    return nome;
+	    return true;
 	}
 	
-	public static String validarEmail(String email) {
+	public static boolean validarEmail(String email) {
 	    if (email == null || email.isBlank()) {
-	        return null;
+	        return false;
 	    }
 	    
 	    email = email.trim();
@@ -27,48 +27,48 @@ public class Validador {
 	    String padraoEmail = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
 
 	    if (email.matches(padraoEmail)) {
-	        return email.trim();
+	        return true;
 	    } else {
-	        return null;
+	        return false;
 	    }
 	}
 	
-	public static String validarMatricula(String matricula) {
+	public static boolean validarMatricula(String matricula) {
 	    if (matricula == null || matricula.isBlank()) {
-	        return null;
+	        return false;
 	    }
 
 	    matricula = matricula.trim();
 
 	    // Verifica se contém apenas números utilizando regex
 	    if (!matricula.matches("\\d+")) {
-	        return null;
+	        return false;
 	    }
 
-	    return matricula;
+	    return true;
 	}
 
 	
-	public static String validarSenha(String senha) {
+	public static boolean validarSenha(String senha) {
 		if(senha.length() >= 6) {
-			return senha;
+			return true;
 		}
-		return null;
+		return false;
 	}
 	
-	public static String validarNumeroEdital(String matricula) {
+	public static boolean validarNumeroEdital(String matricula) {
 	    if (matricula == null || matricula.isBlank()) {
-	        return null;
+	        return false;
 	    }
 
 	    matricula = matricula.trim();
 
 	    // Verifica se contém apenas números utilizando regex
 	    if (!matricula.matches("\\d+")) {
-	        return null;
+	        return false;
 	    }
 
-	    return matricula;
+	    return true;
 	}
 
 }

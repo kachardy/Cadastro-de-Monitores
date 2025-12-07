@@ -29,7 +29,7 @@ public class Persistencia {
     public void salvarCentral(CentralDeInformacoes central, String nomeArquivo) {
         try (FileWriter escritor = new FileWriter(nomeArquivo)) {
             xstream.toXML(central, escritor);
-            System.out.println("Arquivo salvo com sucesso!");
+            //System.out.println("Arquivo salvo com sucesso!");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -38,10 +38,10 @@ public class Persistencia {
     public CentralDeInformacoes recuperarCentral(String nomeArquivo) {
         try (FileReader leitor = new FileReader(nomeArquivo)) {
             CentralDeInformacoes central = (CentralDeInformacoes) xstream.fromXML(leitor);
-            System.out.println("Central carregada com sucesso!");
+            //System.out.println("Central carregada com sucesso!");
             return central;
         } catch (FileNotFoundException e) {
-            System.out.println("Arquivo não encontrado. Criando nova central...");
+            //System.out.println("Arquivo não encontrado. Criando nova central...");
             return new CentralDeInformacoes(); // se o arquivo não existe
         } catch (Exception e) {
             e.printStackTrace();

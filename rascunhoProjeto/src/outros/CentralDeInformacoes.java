@@ -43,7 +43,7 @@ public class CentralDeInformacoes {
 	public Aluno recuperarAlunoPorMatricula(String numMat) {
 		for (Aluno aluno: todosOsAlunos) {
 			if (numMat.equals(aluno.getMatricula())){
-				System.out.println("Aluno encontrado!");
+				//System.out.println("Aluno encontrado!");
 				return aluno;
 			}	
 		}
@@ -78,7 +78,7 @@ public class CentralDeInformacoes {
 	}
 	
 	public boolean adicionarCoordenador(Coordenador c) {
-		System.out.println("Coordenador adicionado com sucesso!");
+		//System.out.println("Coordenador adicionado com sucesso!");
 		setCoordenador(c);
 		return true;
 	}
@@ -86,11 +86,11 @@ public class CentralDeInformacoes {
 	
 	public boolean adicionarEdital(EditalDeMonitoria edital) throws EditalJaExisteException {
 		if (todosOsEditais.isEmpty() == true) {
-			System.out.println("Não existe nenhum edital, criando....");
+			//System.out.println("Não existe nenhum edital, criando....");
 		} else {
 			for (EditalDeMonitoria e : todosOsEditais) {
 		        if (e.getId() == edital.getId()) {
-		            System.out.println("Edital já existe, não adicionado.");
+		            //System.out.println("Edital já existe, não adicionado.");
 		            throw new EditalJaExisteException();
 		        }
 		    }
@@ -115,12 +115,12 @@ public class CentralDeInformacoes {
 	
 	public EditalDeMonitoria recuperarEditalPeloId(long id) {
 		if (todosOsEditais.isEmpty() == true) {
-			System.out.println("Erro! Não existe nenhum edital!");
+			//System.out.println("Erro! Não existe nenhum edital!");
 			return null;
 		} else {
 			for (EditalDeMonitoria e: todosOsEditais) {
 				if (e.getId() == id){
-					System.out.println("Edital encontrado!");
+					//System.out.println("Edital encontrado!");
 					return e;
 				}	
 			}

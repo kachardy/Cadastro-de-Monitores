@@ -38,8 +38,6 @@ public class Programa {
 
 		// Coordenador
 		if (central.getCoordenador() == null) {
-			
-			System.out.println("Nenhum coordenador encontrado. Abrindo tela de cadastro...");
 			TelaCadastroCoordenador telaCood = new TelaCadastroCoordenador();
 			
 			// Ouvinte do botão
@@ -57,7 +55,10 @@ public class Programa {
 				String senha = telaCood.getSenha();
 				
 				// Validação dos campos
-				if (!verificaCamposDoCadastro(nome, matricula, email, senha)) return;
+				if (!verificaCamposDoCadastro(nome, matricula, email, senha)) {
+					JOptionPane.showMessageDialog(telaCood, "Os campos estão inválidos");
+					return;
+				}
 				
 				Coordenador novoCood = new Coordenador(nome, matricula, email, senha); 
 				
@@ -72,7 +73,6 @@ public class Programa {
 			});
 			
 		} else {
-			System.out.println("Coordenador já existe. Abrindo Login...");
 			fazerLogin(central, persistencia);
 		}
 	}
@@ -86,10 +86,9 @@ public class Programa {
 			try {
 				c = p.recuperarCentral("central.xml");
 			} catch (Exception e) {
-				System.out.println("Erro ao ler central.xml (Corrompido). Criando nova base.");
 			}
 		} else {
-			System.out.println("Arquivo central.xml não existe ou está vazio. Criando nova base...");
+			//System.out.println("Arquivo central.xml não existe ou está vazio. Criando nova base...");
 		}
 		
 		if (c == null) {
@@ -106,6 +105,10 @@ public class Programa {
 	private static boolean verificaCamposDoCadastro(String nome, String matricula, String senha, String email) {
 		if(nome.isEmpty() || matricula.isEmpty() || email.isEmpty() || senha.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
+			return false;
+		}
+		
+		if(!Validador.validarMatricula(matricula) || !Validador.validarNome(nome) || !Validador.validarMatricula(matricula) || !Validador.validarSenha(senha)) {
 			return false;
 		}
 		return true;
@@ -127,7 +130,10 @@ public class Programa {
 			String senha = cadastroAluno.getSenha();
 			
 			// Validação dos campos
-			if (!verificaCamposDoCadastro(nome, matricula, email, senha)) return;
+			if (!verificaCamposDoCadastro(nome, matricula, email, senha)) {
+				JOptionPane.showMessageDialog(cadastroAluno, "Os campos estão inválidos");
+				return;
+			}
 			
 			Aluno aluno = new Aluno(nome, matricula, email, senha); 
 			
@@ -147,7 +153,6 @@ public class Programa {
 		
 		cadastroAluno.adicionarAcaoLinkLogin(new java.awt.event.MouseAdapter() {
 		    public void mouseClicked(java.awt.event.MouseEvent e) {
-		        System.out.println("Voltando para o login...");
 		        cadastroAluno.dispose(); 
 		        fazerLogin(central, persistencia);
 		    }
@@ -193,7 +198,6 @@ public class Programa {
 		
 		login.adicionarAcaoLinkCadastro(new java.awt.event.MouseAdapter() {
 		    public void mouseClicked(java.awt.event.MouseEvent e) {
-		        System.out.println("Indo para o cadastro...");
 		        login.dispose(); 
 		        fazerCadastroAluno(central, persistencia);
 		    }
