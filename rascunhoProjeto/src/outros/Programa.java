@@ -23,7 +23,7 @@ import javax.swing.JOptionPane;
 import java.util.List;
 
 import erros.AlunoJaExisteException;
-import erros.EmailJaExisteException;
+import erros.UsuarioJaExisteException;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -144,7 +144,7 @@ public class Programa {
 			} catch (AlunoJaExisteException e1) {
 				JOptionPane.showMessageDialog(cadastroAluno, e1.getMessage());
 				return;
-			} catch (EmailJaExisteException e2) {
+			} catch (UsuarioJaExisteException e2) {
 				JOptionPane.showMessageDialog(cadastroAluno, e2.getMessage());
 				return;
 			}
