@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import erros.AlunoJaExisteException;
 import erros.EditalJaExisteException;
+import erros.EmailJaExisteException;
 
 public class CentralDeInformacoes {
 	private ArrayList<Aluno> todosOsAlunos = new ArrayList<Aluno> ();
@@ -67,11 +68,13 @@ public class CentralDeInformacoes {
 	    return null;
 	}
 	
-	public boolean adicionarAluno(Aluno a) throws AlunoJaExisteException {
+	public boolean adicionarAluno(Aluno a) throws AlunoJaExisteException, EmailJaExisteException {
 		for (Aluno aluno: todosOsAlunos) {
-			if (a.getMatricula().equals(aluno.getMatricula())){
+			if (a.getMatricula().equals(aluno.getMatricula()) || (a.getEmail().equals(aluno.getEmail()))){
 				throw new AlunoJaExisteException();
-			} 
+			}else if ( a.getEmail().equals(this.coordenador.getEmail())) {
+				throw new EmailJaExisteException();
+			}
 		}
 		todosOsAlunos.add(a);
 		return true;

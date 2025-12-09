@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
 import java.util.List;
 
 import erros.AlunoJaExisteException;
+import erros.EmailJaExisteException;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -142,6 +143,9 @@ public class Programa {
 				central.adicionarAluno(aluno);
 			} catch (AlunoJaExisteException e1) {
 				JOptionPane.showMessageDialog(cadastroAluno, e1.getMessage());
+				return;
+			} catch (EmailJaExisteException e2) {
+				JOptionPane.showMessageDialog(cadastroAluno, e2.getMessage());
 				return;
 			}
 			persistencia.salvarCentral(central, "central.xml");
