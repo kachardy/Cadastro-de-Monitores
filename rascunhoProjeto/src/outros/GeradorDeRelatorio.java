@@ -53,7 +53,7 @@ public class GeradorDeRelatorio {
             }
 
             doc.close();
-            System.out.println("PDF gerado: " + arquivo);
+            //System.out.println("PDF gerado: " + arquivo);
 
         } catch (Exception e) {
             e.printStackTrace();
