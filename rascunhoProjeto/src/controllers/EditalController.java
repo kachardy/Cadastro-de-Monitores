@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import models.*;
+import utils.GeradorDeRelatorio;
 import utils.Mensageiro;
 import views.*;
 
@@ -44,20 +45,6 @@ public class EditalController {
     public void exibirDetalhes(EditalDeMonitoria edital) {
         TelaDetalheEditalCoordenador tela = new TelaDetalheEditalCoordenador(edital);
 
-        tela.adicionarAcaoCalcular(e -> {
-            if (!edital.isResultadoCalculado()) {
-                edital.calcularRanking();
-                persistencia.salvarCentral(central, "central.xml");
-                JOptionPane.showMessageDialog(tela, "Ranking Preliminar Gerado!");
-            } else if (!edital.isResultadoFinal()) {
-                edital.setResultadoFinal(true);
-                persistencia.salvarCentral(central, "central.xml");
-                JOptionPane.showMessageDialog(tela, "Resultado Finalizado!");
-            }
-            tela.dispose();
-            exibirDetalhes(edital); // Refresh
-        });
-
         tela.adicionarAcaoClonar(e -> {
             EditalDeMonitoria clone = edital.clonar();
             tela.dispose();
@@ -90,8 +77,58 @@ public class EditalController {
         		return;
         	} else {
         		Mensageiro.enviarEmail(aluno.getEmail());
-        		tela.dispose();
         	}
+        });
+        
+        tela.adicionarAcaoEncerrar(e -> {
+            int op = JOptionPane.showConfirmDialog(tela, "Deseja encerrar as inscrições deste edital?");
+            if (op == JOptionPane.YES_OPTION) {
+                // Define a data de fim para ontem
+                edital.setDataFim(LocalDate.now().minusDays(1)); 
+                
+                persistencia.salvarCentral(central, "central.xml");
+                JOptionPane.showMessageDialog(tela, "Inscrições encerradas com sucesso!");
+                
+                tela.dispose();
+                exibirDetalhes(edital); // Recarrega a tela para atualizar o status visual
+            }
+        });
+        
+        tela.adicionarAcaoCalcular(e -> {
+        	
+        	if (edital.isResultadoFinal()) {
+                // Chamando tela de resultado
+                exibirResultadoFinal(edital);
+                return;
+            }
+        	
+            // Se o ranking ainda não foi gerado
+            if (!edital.isResultadoCalculado()) {
+                int op = JOptionPane.showConfirmDialog(tela, "Deseja gerar o ranking preliminar?");
+                if (op == JOptionPane.YES_OPTION) {
+                    edital.calcularRanking(); // Chama a lógica do edital
+                    edital.setResultadoCalculado(true);
+                    
+                    persistencia.salvarCentral(central, "central.xml");
+                    JOptionPane.showMessageDialog(tela, "Ranking calculado com sucesso!");
+                    
+                    tela.dispose();
+                    exibirDetalhes(edital); // Atualiza a tela para mostrar a tabela ordenada
+                }
+            } 
+            // Se já foi calculado, mas ainda não é o final
+            else if (!edital.isResultadoFinal()) {
+                int op = JOptionPane.showConfirmDialog(tela, "Deseja homologar o resultado final? Isso impedirá novas desistências.");
+                if (op == JOptionPane.YES_OPTION) {
+                    edital.setResultadoFinal(true);
+                    
+                    persistencia.salvarCentral(central, "central.xml");
+                    JOptionPane.showMessageDialog(tela, "Edital finalizado com sucesso!");
+                    
+                    tela.dispose();
+                    exibirDetalhes(edital);
+                }
+            }
         });
         
         tela.adicionarAcaoVoltar(e -> {
@@ -101,7 +138,6 @@ public class EditalController {
         tela.setVisible(true);
     }
 
-    
     public void exibirCadastro(EditalDeMonitoria editalBase) {
         TelaCadastroEdital telaEdital = new TelaCadastroEdital(editalBase);
         
@@ -207,6 +243,30 @@ public class EditalController {
         });
 
         telaEdital.setVisible(true);
+    }
+    
+    public void exibirResultadoFinal(EditalDeMonitoria edital) {
+        try {
+            TelaResultadoEdital telaResultado = new TelaResultadoEdital(edital);
+
+            // Configura o botão de fechar
+            telaResultado.adicionarAcaoFechar(e -> {
+                telaResultado.dispose();
+                exibirDetalhes(edital); 
+            });
+
+            // Configura a geração de PDF
+            telaResultado.adicionarAcaoGerarPdf(e -> {
+                GeradorDeRelatorio.gerarPdfResultado(edital);
+                JOptionPane.showMessageDialog(telaResultado, "PDF gerado com sucesso!");
+            });
+
+            telaResultado.setVisible(true);
+            telaResultado.setLocationRelativeTo(null); // Centraliza a tela
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erro ao abrir tela de resultado: " + ex.getMessage());
+        }
     }
     
 }
