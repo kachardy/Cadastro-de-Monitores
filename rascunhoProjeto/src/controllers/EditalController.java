@@ -74,7 +74,7 @@ public class EditalController {
     public void exibirCadastro(EditalDeMonitoria editalBase) {
         TelaCadastroEdital telaEdital = new TelaCadastroEdital(editalBase);
         
-        // Lista temporária para guardar as disciplinas antes de salvar (igual ao seu main)
+        // Lista temporária para guardar as disciplinas antes de salvar
         ArrayList<Disciplina> disciplinasTemporarias = new ArrayList<>();
         
         // Se estiver editando ou clonando, popula a lista temporária com as disciplinas existentes
@@ -142,7 +142,7 @@ public class EditalController {
                     return;
                 }
                 
-                // Decisão: Editar ou Criar Novo?
+                // Decisão: Editar ou Criar Novo
                 if (editalBase != null && central.getTodosOsEditais().contains(editalBase)) {
                     // Modo Edição
                     editalBase.setNumeroEdital(numeroEdital);

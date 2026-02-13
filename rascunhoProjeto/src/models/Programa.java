@@ -35,7 +35,7 @@ public class Programa {
 			c = new CentralDeInformacoes();
 		}
 		
-		// Garante que as listas não sejam nulas (Segurança extra)
+		// Garante que as listas não sejam nulas
 		if (c.getTodosOsEditais() == null) c.setTodosOsEditais(new ArrayList<EditalDeMonitoria>());
 		if (c.getTodosOsAlunos() == null) c.setTodosOsAlunos(new ArrayList<Aluno>());
 		

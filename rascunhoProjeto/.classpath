@@ -8,8 +8,8 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry excluding="src/" kind="src" path=""/>
 	<classpathentry kind="lib" path="src/lib/xstream-1.4.21.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Romulo Bandeira/Downloads/itextpdf-5.5.9 (1).jar"/>
-	<classpathentry kind="lib" path="C:/Users/Romulo Bandeira/Downloads/activation.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Romulo Bandeira/Downloads/mail.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kauer/OneDrive/Área de Trabalho/Projeto Final - POO 2025.2/Dependências do Projeto/activation.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kauer/OneDrive/Área de Trabalho/Projeto Final - POO 2025.2/Dependências do Projeto/itextpdf-5.5.9.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kauer/OneDrive/Área de Trabalho/Projeto Final - POO 2025.2/Dependências do Projeto/mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
