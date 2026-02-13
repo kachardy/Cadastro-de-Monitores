@@ -17,7 +17,7 @@ public class Programa {
         auth.iniciar();
     }
 
-    // Mantenha apenas o método de recuperar/criar XML que você já tem:
+    // Método para criar ou recuperar a central
     private static CentralDeInformacoes recuperarOuCriarCentral(Persistencia p) {
     	CentralDeInformacoes c = null;
 		File arquivo = new File("central.xml");

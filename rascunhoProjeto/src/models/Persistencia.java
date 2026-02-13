@@ -18,7 +18,7 @@ public class Persistencia {
         xstream.alias("aluno", Aluno.class);
         xstream.alias("coordenador", Coordenador.class);
         xstream.alias("edital", EditalDeMonitoria.class);
-        xstream.allowTypesByWildcard(new String[] { "outros.*", "pessoas.*"});
+        xstream.allowTypesByWildcard(new String[] { "models.*"});
         xstream.setMode(XStream.NO_REFERENCES);
 
     }
