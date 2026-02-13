@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import models.*;
+import utils.Mensageiro;
 import views.*;
 
 public class EditalController {
@@ -62,7 +63,37 @@ public class EditalController {
             tela.dispose();
             exibirCadastro(clone);
         });
-
+        
+        tela.adicionarAcaoEditar(e -> {
+        	tela.dispose();
+        	exibirCadastro(edital);
+        });
+        
+        tela.adicionarAcaoVerPerfil(e -> {
+        	String matricula = tela.getMatriculaAlunoSelecionado();
+        	Aluno aluno = central.recuperarAlunoPorMatricula(matricula);
+        	if (aluno == null) {
+        		JOptionPane.showMessageDialog(tela, "Selecione um aluno!");
+        		return;
+        	} else {
+        		AlunoController alunoController = new AlunoController(aluno, central, persistencia);
+        		alunoController.exibirPerfil(false, new CoordenadorController(coord, central, persistencia));
+        		tela.dispose();
+        	}
+        });
+        
+        tela.adicionarAcaoEnviarEmail(e -> {
+        	String matricula = tela.getMatriculaAlunoSelecionado();
+        	Aluno aluno = central.recuperarAlunoPorMatricula(matricula);
+        	if (aluno == null) {
+        		JOptionPane.showMessageDialog(tela, "Selecione um aluno!");
+        		return;
+        	} else {
+        		Mensageiro.enviarEmail(aluno.getEmail());
+        		tela.dispose();
+        	}
+        });
+        
         tela.adicionarAcaoVoltar(e -> {
             tela.dispose();
             exibirListagem();
@@ -142,7 +173,7 @@ public class EditalController {
                     return;
                 }
                 
-                // Decisão: Editar ou Criar Novo
+                // Editar
                 if (editalBase != null && central.getTodosOsEditais().contains(editalBase)) {
                     // Modo Edição
                     editalBase.setNumeroEdital(numeroEdital);
@@ -158,7 +189,7 @@ public class EditalController {
                     EditalDeMonitoria novoEdital = new EditalDeMonitoria(numeroEdital, inicio, fim, maxInsc, pesoCRE, pesoMedia);
                     novoEdital.setTodasAsDisciplinas(disciplinasTemporarias);
                     central.getTodosOsEditais().add(novoEdital);
-                    JOptionPane.showMessageDialog(telaEdital, "Edital criado/clonado com sucesso!");
+                    JOptionPane.showMessageDialog(telaEdital, "Edital criado com sucesso!");
                 }
                 
                 persistencia.salvarCentral(central, "central.xml");

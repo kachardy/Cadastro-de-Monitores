@@ -132,8 +132,6 @@ public class AlunoController {
     public void exibirPerfil(boolean modoLeitura, CoordenadorController voltaPara) {
         TelaPerfilAluno tela = new TelaPerfilAluno(aluno, modoLeitura);
         
-        // Se for apenas leitura (coordenador vendo), podemos desabilitar o botão salvar na tela
-        // ou apenas tratar aqui no controller
         tela.adicionarAcaoSalvar(e -> {
             String novoNome = tela.getNome();
             String novoEmail = tela.getEmail();
