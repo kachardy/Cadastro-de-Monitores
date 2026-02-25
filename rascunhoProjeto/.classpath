@@ -6,10 +6,19 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+<<<<<<< HEAD
 	<classpathentry excluding="src/" kind="src" path=""/>
 	<classpathentry kind="lib" path="src/lib/activation.jar"/>
 	<classpathentry kind="lib" path="src/lib/itextpdf-5.5.9.jar"/>
 	<classpathentry kind="lib" path="src/lib/mail.jar"/>
+=======
+>>>>>>> branch 'master' of https://github.com/kachardy/Cadastro-de-Monitores
 	<classpathentry kind="lib" path="src/lib/xstream-1.4.21.jar"/>
+<<<<<<< HEAD
+=======
+	<classpathentry kind="lib" path="src/lib/activation.jar"/>
+	<classpathentry kind="lib" path="src/lib/itextpdf-5.5.9.jar"/>
+	<classpathentry kind="lib" path="src/lib/mail.jar"/>
+>>>>>>> branch 'master' of https://github.com/kachardy/Cadastro-de-Monitores
 	<classpathentry kind="output" path="bin"/>
 </classpath>
