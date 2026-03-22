@@ -1,7 +1,6 @@
 package controllers;
 
 import javax.swing.JOptionPane;
-
 import models.*;
 import views.*;
 
@@ -15,6 +14,7 @@ public class AlunoController {
         this.central = central;
         this.persistencia = persistencia;
     }
+
     public void exibirMenu() {
         TelaPrincipalAluno tela = new TelaPrincipalAluno(aluno);
 
@@ -40,7 +40,6 @@ public class AlunoController {
         TelaListagemAluno telaLista = new TelaListagemAluno();
         telaLista.preencherTabela(central.getTodosOsEditais());
 
-        // Ação de Inscrever
         telaLista.adicionarAcaoInscrever(e -> {
             Long id = telaLista.getIdEditalSelecionado();
             EditalDeMonitoria edital = central.recuperarEditalPeloId(id);
@@ -58,7 +57,6 @@ public class AlunoController {
             exibirInscricaoEdital(edital);
         });
 
-        // Ação de Desistir
         telaLista.adicionarAcaoDesistir(e -> {
             Long id = telaLista.getIdEditalSelecionado();
             EditalDeMonitoria edital = central.recuperarEditalPeloId(id);
@@ -76,7 +74,7 @@ public class AlunoController {
             if (ok) {
                 persistencia.salvarCentral(central, "central.xml");
                 JOptionPane.showMessageDialog(telaLista, "Desistência realizada!");
-                telaLista.preencherTabela(central.getTodosOsEditais()); // Atualiza a tabela
+                telaLista.preencherTabela(central.getTodosOsEditais());
             } else {
                 JOptionPane.showMessageDialog(telaLista, "Você não está inscrito neste edital.");
             }
@@ -131,43 +129,41 @@ public class AlunoController {
 
     public void exibirPerfil(boolean modoLeitura, CoordenadorController voltaPara) {
         TelaPerfilAluno tela = new TelaPerfilAluno(aluno, modoLeitura);
-        
+
         tela.adicionarAcaoSalvar(e -> {
             String novoNome = tela.getNome();
             String novoEmail = tela.getEmail();
             String novaSenha = tela.getSenha();
-            
+
             if (novoNome.isEmpty() || novoEmail.isEmpty() || novaSenha.isEmpty()) {
                 JOptionPane.showMessageDialog(tela, "Preencha todos os campos!");
                 return;
             }
-            
-            // Atualiza os dados do objeto Aluno
+
             aluno.setNome(novoNome);
             aluno.setEmail(novoEmail);
             aluno.setSenha(novaSenha);
-            
-            // Sincroniza com os editais
+
+            // NOVA ALTERAÇÃO: Sincronização com os editais através da classe Inscricao
             for (EditalDeMonitoria ed : central.getTodosOsEditais()) {
                 for (Disciplina d : ed.getTodasAsDisciplinas()) {
-                    for (Aluno aInscrito : d.getAlunosInscritos()) {
-                        if (aInscrito.getMatricula().equals(aluno.getMatricula())) {
-                            aInscrito.setNome(novoNome);
-                            aInscrito.setEmail(novoEmail);
-                            aInscrito.setSenha(novaSenha);
+                    // Percorre a lista única de inscrições para encontrar e atualizar o aluno
+                    for (Inscricao insc : d.getInscricoes()) {
+                        if (insc.getCandidato().getMatricula().equals(aluno.getMatricula())) {
+                            insc.getCandidato().setNome(novoNome);
+                            insc.getCandidato().setEmail(novoEmail);
+                            insc.getCandidato().setSenha(novaSenha);
                         }
                     }
                 }
             }
-            
-            // Persistência
+
             persistencia.salvarCentral(central, "central.xml");
             JOptionPane.showMessageDialog(tela, "Perfil atualizado com sucesso!");
-            
-            // Inteligência de Navegação
+
             tela.dispose();
             if (voltaPara != null) {
-                voltaPara.exibirMenuPrincipal(); 
+                voltaPara.exibirMenuPrincipal();
             } else {
                 exibirMenu();
             }

@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="activation">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/rascunhoProjeto/src/lib/activation.jar!/" />
+      <root url="jar://$PROJECT_DIR$/rascunhoProjeto/src/lib/itextpdf-5.5.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/rascunhoProjeto/src/lib/mail.jar!/" />
+      <root url="jar://$PROJECT_DIR$/rascunhoProjeto/src/lib/xstream-1.4.21.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -10,6 +10,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import models.Aluno;
 import models.Disciplina;
 import models.EditalDeMonitoria;
+import models.Inscricao; // NOVA ALTERAÇÃO: Importação para suportar o novo modelo
 
 public class GeradorDeRelatorio {
 
@@ -35,26 +36,29 @@ public class GeradorDeRelatorio {
                 doc.add(new Paragraph("Disciplina: " + d.getNome()));
                 doc.add(new Paragraph("-----------------------------"));
 
-                ArrayList<Aluno> alunos = d.getAlunosInscritos();
-                ArrayList<Double> cres = d.getListaCREs();
-                ArrayList<Double> medias = d.getListaMedias();
+                // NOVA ALTERAÇÃO: Fim das listas paralelas (alunos, cres, medias)
+                // Agora percorremos a lista única de inscrições da disciplina
+                ArrayList<Inscricao> inscricoes = d.getInscricoes();
 
-                for (int i = 0; i < alunos.size(); i++) {
+                for (int i = 0; i < inscricoes.size(); i++) {
+                    // Recupera o objeto unificado
+                    Inscricao insc = inscricoes.get(i);
 
-                    double cre = (i < cres.size()) ? cres.get(i) : 0;
-                    double media = (i < medias.size()) ? medias.get(i) : 0;
+                    // NOVA ALTERAÇÃO: Cálculo da pontuação extraído diretamente do objeto Inscricao
+                    double cre = insc.getCre();
+                    double media = insc.getMedia();
 
                     double pont = (cre * pesoCRE) + (media * pesoMedia);
                     String pontStr = String.format("%.2f", pont);
 
-                    doc.add(new Paragraph((i + 1) + "º  - " + alunos.get(i).getNome() + "   | Pontuação: " + pontStr));
+                    // Acessa o nome do candidato através da associação na Inscrição
+                    doc.add(new Paragraph((i + 1) + "º  - " + insc.getCandidato().getNome() + "   | Pontuação: " + pontStr));
                 }
 
-                doc.add(new Paragraph(" ")); // Espacin entre as disciplinas hahay
+                doc.add(new Paragraph(" ")); // Espaçamento entre as disciplinas
             }
 
             doc.close();
-            //System.out.println("PDF gerado: " + arquivo);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,129 +1,109 @@
 package views;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import models.Aluno;
 import models.Disciplina;
 import models.EditalDeMonitoria;
-
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import models.Inscricao; // NOVA ALTERAÇÃO: Importação necessária para a nova estrutura de dados
 
 public class TelaResultadoEdital extends JFrame {
 
-    private JTable tabela;
-    private DefaultTableModel modelo;
     private JButton btnGerarPdf;
     private JButton btnFechar;
+    private JTable tabelaResultado;
+    private DefaultTableModel modeloTabela;
 
     public TelaResultadoEdital(EditalDeMonitoria edital) {
-
-        setTitle("Resultado do Edital " + edital.getId());
-        setSize(700, 600);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+        setTitle("Resultado Final - Edital " + edital.getNumeroEdital());
+        setSize(750, 550);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
         setLayout(null);
-        
-        // Ícone da Janela
-        try {
-            ImageIcon imagemIcone = new ImageIcon("ifpblogo.png");
-            setIconImage(imagemIcone.getImage()); 
-        } catch (Exception e) {}
 
-        JLabel labelTitulo = new JLabel("Ranking das Disciplinas");
-        labelTitulo.setFont(new Font("Arial", Font.BOLD, 24));
+        // Cabeçalho
+        JLabel labelTitulo = new JLabel("Resultado Final de Monitoria");
+        labelTitulo.setFont(new Font("Arial", Font.BOLD, 22));
         labelTitulo.setOpaque(true);
-        labelTitulo.setBackground(new Color(0, 128, 0)); // Verde
+        labelTitulo.setBackground(new Color(70, 130, 180));
         labelTitulo.setForeground(Color.WHITE);
         labelTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-        labelTitulo.setBounds(0, 0, 700, 50);
+        labelTitulo.setBounds(0, 0, 750, 50);
         add(labelTitulo);
- 
-        JLabel labelSubtitulo = new JLabel("Edital: " + edital.getNumeroEdital() + " (Classificação Final)");
-        labelSubtitulo.setFont(new Font("Arial", Font.BOLD, 14));
-        labelSubtitulo.setBounds(30, 60, 400, 20);
-        add(labelSubtitulo);
 
-        // Tabela
-        String[] colunas = {"Disciplina", "Posição", "Aluno", "Pontuação"};
-        modelo = new DefaultTableModel(colunas, 0) {
-            @Override
-            public boolean isCellEditable(int r, int c) { return false; }
+        JLabel labelEdital = new JLabel("Edital: " + edital.getNumeroEdital());
+        labelEdital.setFont(new Font("Arial", Font.ITALIC, 14));
+        labelEdital.setBounds(30, 60, 300, 20);
+        add(labelEdital);
+
+        // Tabela de Resultados
+        String[] colunas = {"Disciplina", "Aluno", "Matrícula", "Nota Final", "Status"};
+        modeloTabela = new DefaultTableModel(colunas, 0) {
+            public boolean isCellEditable(int row, int col) { return false; }
         };
 
-        tabela = new JTable(modelo);
-        tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
-        JScrollPane scroll = new JScrollPane(tabela);
-        scroll.setBounds(30, 90, 620, 400); // Ajustei margens
+        tabelaResultado = new JTable(modeloTabela);
+        JScrollPane scroll = new JScrollPane(tabelaResultado);
+        scroll.setBounds(30, 100, 680, 300);
         add(scroll);
 
-        // Preenche os dados
+        // Preenchimento da tabela com a lógica de Inscrição
         preencherTabela(edital);
-        
-        btnGerarPdf = new JButton("Gerar PDF");
-        btnGerarPdf.setBounds(220, 510, 120, 35);
+
+        // Botões
+        btnGerarPdf = new JButton("Gerar Relatório PDF");
+        btnGerarPdf.setBounds(30, 430, 180, 40);
+        btnGerarPdf.setBackground(new Color(200, 230, 200));
 
         btnFechar = new JButton("Fechar");
-        btnFechar.setBounds(360, 510, 120, 35);
-        
+        btnFechar.setBounds(590, 430, 120, 40);
+
         add(btnGerarPdf);
         add(btnFechar);
-
-        setVisible(true);
     }
 
     private void preencherTabela(EditalDeMonitoria edital) {
-    	double pesoCRE = edital.getPesoCRE();
-        double pesoMedia = edital.getPesoMedia();
-
-        // Percorre todas as disciplinas do edital
         for (Disciplina d : edital.getTodasAsDisciplinas()) {
-            
-            // Pega as listas paralelas
-            ArrayList<Aluno> alunos = d.getAlunosInscritos();
-            ArrayList<Double> cres = d.getListaCREs();
-            ArrayList<Double> medias = d.getListaMedias();
-            
-            // Percorre os alunos daquela disciplina
-            for (int i = 0; i < alunos.size(); i++) {
 
-                // Proteção contra índice fora
-                double cre = (i < cres.size()) ? cres.get(i) : 0.0;
-                double media = (i < medias.size()) ? medias.get(i) : 0.0;
-                
-                double pontuacao = (cre * pesoCRE) + (media * pesoMedia);
-                
-                // Formata pontuação para 2 casas decimais
-                String pontuacaoStr = String.format("%.2f", pontuacao);
+            // NOVA ALTERAÇÃO: Acesso à lista única de inscrições (Fim das listas paralelas)
+            ArrayList<Inscricao> inscricoes = d.getInscricoes();
 
-                modelo.addRow(new Object[]{
+            for (int i = 0; i < inscricoes.size(); i++) {
+                Inscricao insc = inscricoes.get(i);
+                Aluno a = insc.getCandidato();
+
+                // NOVA ALTERAÇÃO: Cálculo da nota final centralizado nos dados da Inscrição
+                double notaFinal = (insc.getCre() * edital.getPesoCRE()) + (insc.getMedia() * edital.getPesoMedia());
+
+                // Lógica de Status baseada na posição do ranking (já ordenado pelo Controller)
+                String status = "Classificado";
+                if (i >= d.getTotalVagas()) {
+                    status = "Lista de Espera";
+                }
+
+                Object[] linha = {
                         d.getNome(),
-                        (i + 1) + "º",
-                        alunos.get(i).getNome(),
-                        pontuacaoStr
-                });
+                        a.getNome(),
+                        a.getMatricula(),
+                        String.format("%.2f", notaFinal),
+                        status
+                };
+                modeloTabela.addRow(linha);
             }
         }
     }
-    
-    public void desabilitarGerarPdf() {
-        btnGerarPdf.setEnabled(false);
-        btnGerarPdf.setVisible(false); // puft sumiu
 
-        // Move mais pro centrin pra ficar bonito
-        btnFechar.setBounds(230, 510, 150, 35); 
+    public void adicionarAcaoGerarPdf(ActionListener acao) {
+        btnGerarPdf.addActionListener(acao);
     }
 
-    
-    public void adicionarAcaoGerarPdf(ActionListener acao) {
-		btnGerarPdf.addActionListener(acao);
-	}
-    
     public void adicionarAcaoFechar(ActionListener acao) {
-		btnFechar.addActionListener(acao);
-	}
+        btnFechar.addActionListener(acao);
+    }
 }
