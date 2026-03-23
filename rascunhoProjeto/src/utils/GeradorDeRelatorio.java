@@ -38,7 +38,7 @@ public class GeradorDeRelatorio {
 
                 // NOVA ALTERAÇÃO: Fim das listas paralelas (alunos, cres, medias)
                 // Agora percorremos a lista única de inscrições da disciplina
-                ArrayList<Inscricao> inscricoes = d.getInscricoes();
+                ArrayList<Inscricao> inscricoes = edital.getGerenciador().getTodasAsInscricoes();
 
                 for (int i = 0; i < inscricoes.size(); i++) {
                     // Recupera o objeto unificado

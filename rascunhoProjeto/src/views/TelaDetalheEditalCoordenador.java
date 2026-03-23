@@ -134,18 +134,16 @@ public class TelaDetalheEditalCoordenador extends JFrame {
     }
 
     private void preencherTabela(EditalDeMonitoria edital) {
+        // Limpa a tabela para evitar duplicatas
+        modeloTabela.setRowCount(0);
+
         for (Disciplina d : edital.getTodasAsDisciplinas()) {
+            ArrayList<Inscricao> inscricoes = edital.getGerenciador().getInscricoesPorDisciplina(d);
 
-            // NOVA ALTERAÇÃO: Busca apenas a lista única de inscrições da disciplina
-            ArrayList<Inscricao> inscricoes = d.getInscricoes();
-
-            // NOVA ALTERAÇÃO: Itera diretamente sobre os objetos Inscricao
             for (Inscricao inscricao : inscricoes) {
-                // Extrai o aluno de dentro da inscrição
                 Aluno a = inscricao.getCandidato();
 
-                // NOVA ALTERAÇÃO: Monta a linha da tabela extraindo os dados do objeto unificado
-                // Eliminada a necessidade de proteção contra falha de sincronia (índices fora de alcance)
+                // A montagem da linha continua elegante e segura
                 Object[] linha = {
                         d.getNome(),
                         a.getNome(),

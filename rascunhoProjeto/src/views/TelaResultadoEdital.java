@@ -69,19 +69,20 @@ public class TelaResultadoEdital extends JFrame {
     }
 
     private void preencherTabela(EditalDeMonitoria edital) {
+        // Limpando a tabela para evitar duplicatas
+        modeloTabela.setRowCount(0);
+
         for (Disciplina d : edital.getTodasAsDisciplinas()) {
 
-            // NOVA ALTERAÇÃO: Acesso à lista única de inscrições (Fim das listas paralelas)
-            ArrayList<Inscricao> inscricoes = d.getInscricoes();
+            ArrayList<Inscricao> inscricoes = edital.getGerenciador().getInscricoesPorDisciplina(d);
 
             for (int i = 0; i < inscricoes.size(); i++) {
                 Inscricao insc = inscricoes.get(i);
                 Aluno a = insc.getCandidato();
 
-                // NOVA ALTERAÇÃO: Cálculo da nota final centralizado nos dados da Inscrição
+                // Cálculo da nota final
                 double notaFinal = (insc.getCre() * edital.getPesoCRE()) + (insc.getMedia() * edital.getPesoMedia());
 
-                // Lógica de Status baseada na posição do ranking (já ordenado pelo Controller)
                 String status = "Classificado";
                 if (i >= d.getTotalVagas()) {
                     status = "Lista de Espera";

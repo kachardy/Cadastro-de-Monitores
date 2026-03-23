@@ -110,7 +110,7 @@ public class CentralDeInformacoes {
 		return null;
 	}
 
-	// NOVA ALTERAÇÃO: Refatoração do método para lidar com a nova classe Inscricao
+    // Retorna as incrições de um aluno no edital
 	public ArrayList<Disciplina> recuperarInscricoesDeUmAlunoEmUmEdital(String matriculaAluno, long idEdital) {
 		Aluno alunoEncontrado = recuperarAlunoPorMatricula(matriculaAluno);
 		EditalDeMonitoria editalEncontrado = recuperarEditalPeloId(idEdital);
@@ -119,19 +119,6 @@ public class CentralDeInformacoes {
 			return null;
 		}
 
-		ArrayList<Disciplina> inscricoesDoAluno = new ArrayList<>();
-
-		// NOVA ALTERAÇÃO: Navega pelas disciplinas e verifica a lista única de inscrições
-		for (Disciplina d : editalEncontrado.getTodasAsDisciplinas()) {
-			for (Inscricao insc : d.getInscricoes()) {
-				// Verifica se o candidato da inscrição é o aluno procurado
-				if (insc.getCandidato().getMatricula().equals(matriculaAluno)) {
-					inscricoesDoAluno.add(d);
-					break; // Já achou o aluno nesta disciplina, pula para a próxima
-				}
-			}
-		}
-
-		return inscricoesDoAluno;
+        return editalEncontrado.getGerenciador().getDisciplinasPorAluno(matriculaAluno);
 	}
 }

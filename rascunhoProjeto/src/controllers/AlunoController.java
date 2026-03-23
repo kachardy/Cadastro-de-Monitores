@@ -148,7 +148,7 @@ public class AlunoController {
             for (EditalDeMonitoria ed : central.getTodosOsEditais()) {
                 for (Disciplina d : ed.getTodasAsDisciplinas()) {
                     // Percorre a lista única de inscrições para encontrar e atualizar o aluno
-                    for (Inscricao insc : d.getInscricoes()) {
+                    for (Inscricao insc : ed.getGerenciador().getTodasAsInscricoes()) {
                         if (insc.getCandidato().getMatricula().equals(aluno.getMatricula())) {
                             insc.getCandidato().setNome(novoNome);
                             insc.getCandidato().setEmail(novoEmail);

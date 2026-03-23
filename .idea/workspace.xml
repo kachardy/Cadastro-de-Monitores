@@ -4,7 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="Refactor: Implementação de Classe Associativa Inscricao e Padrão Strategy para Ordenação" />
+    <list default="true" id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="Refactor: Implementação de Classe Associativa Inscricao e Padrão Strategy para Ordenação">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central.xml" beforeDir="false" afterPath="$PROJECT_DIR$/central.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/controllers/AlunoController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/controllers/AlunoController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/CentralDeInformacoes.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/CentralDeInformacoes.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/Disciplina.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/Disciplina.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/EditalDeMonitoria.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/EditalDeMonitoria.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/Programa.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/utils/GeradorDeRelatorio.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/utils/GeradorDeRelatorio.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaDetalheEditalAluno$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaDetalheEditalAluno$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaDetalheEditalAluno.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaDetalheEditalAluno.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaDetalheEditalCoordenador.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaDetalheEditalCoordenador.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaResultadoEdital.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaResultadoEdital.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/Programa.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/Programa.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/AlunoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/AlunoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/CentralDeInformacoes.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/CentralDeInformacoes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/Disciplina.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/Disciplina.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/EditalDeMonitoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/EditalDeMonitoria.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/GerenciadorDeInscricoes.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/GerenciadorDeInscricoes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/utils/GeradorDeRelatorio.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/utils/GeradorDeRelatorio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaDetalheEditalAluno.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaDetalheEditalAluno.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaDetalheEditalCoordenador.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaDetalheEditalCoordenador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaResultadoEdital.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaResultadoEdital.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,18 +43,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "romuloluan"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;romuloluan&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/kachardy/Cadastro-de-Monitores.git",
-    "accountId": "a1f2976f-2f4d-469d-910d-eb8393906f58"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/kachardy/Cadastro-de-Monitores.git&quot;,
+    &quot;accountId&quot;: &quot;a1f2976f-2f4d-469d-910d-eb8393906f58&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
