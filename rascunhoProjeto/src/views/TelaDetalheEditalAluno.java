@@ -3,7 +3,7 @@ package views;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
-import java.time.format.DateTimeFormatter; // NOVA ALTERAÇÃO: Para formatar a data
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -20,6 +20,12 @@ public class TelaDetalheEditalAluno extends JFrame {
     private JButton btnInscrever;
     private JButton btnVoltar;
 
+
+    // MUDANÇA: Agora são atributos da classe para serem acessados pelo método configurarModoConsulta
+    private JLabel labelDados;
+    private JLabel labelCRE;
+    private JLabel labelMedia;
+
     private List<Disciplina> listaDisciplinas;
 
     public TelaDetalheEditalAluno(EditalDeMonitoria edital) {
@@ -29,10 +35,6 @@ public class TelaDetalheEditalAluno extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         setLayout(null);
-
-        try {
-            setIconImage(new ImageIcon("ifpblogo.png").getImage());
-        } catch (Exception e) {}
 
         // Cabeçalho
         JLabel labelTitulo = new JLabel("Inscrição de Monitoria");
@@ -44,20 +46,16 @@ public class TelaDetalheEditalAluno extends JFrame {
         labelTitulo.setBounds(0, 0, 600, 50);
         add(labelTitulo);
 
-        // Status e Data (Ajustado para LocalDate)
-        String status = edital.isResultadoCalculado() ? "RESULTADO DISPONÍVEL" : "Inscrições Abertas";
-
-        // NOVA ALTERAÇÃO: Formatação amigável para a data (dd/MM/yyyy)
+        // Status e Data
         DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String dataFormatada = edital.getDataFim().format(df);
-
-        JLabel labelInfo = new JLabel(status + " | Encerra em: " + dataFormatada);
+        JLabel labelInfo = new JLabel("Inscrições encerram em: " + dataFormatada);
         labelInfo.setBounds(30, 60, 500, 20);
         labelInfo.setFont(new Font("Arial", Font.BOLD, 14));
         add(labelInfo);
 
-        // Tabela de Catálogo (Disciplinas do Edital)
-        JLabel labelTab = new JLabel("Selecione a Disciplina Desejada:");
+        // Tabela
+        JLabel labelTab = new JLabel("Disciplinas Ofertadas:");
         labelTab.setBounds(30, 90, 300, 20);
         add(labelTab);
 
@@ -68,33 +66,30 @@ public class TelaDetalheEditalAluno extends JFrame {
         };
 
         tabelaDisciplinas = new JTable(modeloTabela);
-        tabelaDisciplinas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scroll = new JScrollPane(tabelaDisciplinas);
         scroll.setBounds(30, 120, 520, 200);
         add(scroll);
 
-        // PREENCHIMENTO: Continua usando o Edital, pois ele é o dono do Catálogo
         this.listaDisciplinas = edital.getTodasAsDisciplinas();
         if (listaDisciplinas != null) {
             for (Disciplina d : listaDisciplinas) {
-                // Note que aqui não acessamos inscrições, apenas dados da Disciplina (DTO)
                 Object[] linha = {d.getNome(), d.getVagasRemuneradas(), d.getVagasVoluntarias()};
                 modeloTabela.addRow(linha);
             }
         }
 
-        // Campos de Entrada
-        JLabel labelDados = new JLabel("Dados para Candidatura:");
+        // --- INICIALIZAÇÃO DOS ATRIBUTOS DE DADOS ---
+        labelDados = new JLabel("Dados para Candidatura:");
         labelDados.setFont(new Font("Arial", Font.BOLD, 14));
         labelDados.setBounds(30, 340, 200, 20);
         add(labelDados);
 
-        JLabel labelCRE = new JLabel("Seu CRE:");
+        labelCRE = new JLabel("Seu CRE:");
         labelCRE.setBounds(30, 370, 80, 30);
         tfCRE = new JTextField();
         tfCRE.setBounds(110, 370, 80, 30);
 
-        JLabel labelMedia = new JLabel("Média na Disciplina:");
+        labelMedia = new JLabel("Média na Disciplina:");
         labelMedia.setBounds(210, 370, 130, 30);
         tfMedia = new JTextField();
         tfMedia.setBounds(340, 370, 80, 30);
@@ -102,31 +97,39 @@ public class TelaDetalheEditalAluno extends JFrame {
         add(labelCRE); add(tfCRE);
         add(labelMedia); add(tfMedia);
 
-        // Botões de Ação
         btnInscrever = new JButton("Confirmar Inscrição");
         btnInscrever.setBounds(30, 430, 180, 40);
         btnInscrever.setBackground(new Color(200, 255, 200));
 
-        btnVoltar = new JButton("Cancelar / Voltar");
+        btnVoltar = new JButton("Voltar");
         btnVoltar.setBounds(410, 430, 140, 40);
 
         add(btnInscrever);
         add(btnVoltar);
-
-        // Bloqueio de segurança
-        if (edital.jaAcabou() || edital.isResultadoCalculado()) {
-            btnInscrever.setEnabled(false);
-            tfCRE.setEditable(false);
-            tfMedia.setEditable(false);
-            btnInscrever.setText("Prazo Encerrado");
-        }
     }
 
-    // Getters para o Controller
+    // MÉTODO DE CONFIGURAÇÃO DINÂMICA
+    public void configurarModoConsulta() {
+        // Esconde os componentes de entrada
+        btnInscrever.setVisible(false);
+        tfCRE.setVisible(false);
+        tfMedia.setVisible(false);
+        labelCRE.setVisible(false);
+        labelMedia.setVisible(false);
+
+        // Altera o título da seção para algo mais informativo
+        labelDados.setText("Consulte as vagas disponíveis acima.");
+        labelDados.setBounds(30, 340, 400, 20);
+
+        // Ajusta o botão voltar para o centro, já que o outro sumiu
+        btnVoltar.setBounds(230, 430, 140, 40);
+
+        setTitle("Detalhes do Edital");
+    }
+
     public Disciplina getDisciplinaSelecionada() {
         int linha = tabelaDisciplinas.getSelectedRow();
-        if (linha == -1) return null;
-        return listaDisciplinas.get(linha);
+        return (linha == -1) ? null : listaDisciplinas.get(linha);
     }
 
     public String getCRE() { return tfCRE.getText(); }

@@ -1,6 +1,7 @@
 package controllers;
 
 import javax.swing.JOptionPane;
+
 import models.*;
 import views.*;
 
@@ -42,12 +43,14 @@ public class AlunoController {
 
         telaLista.adicionarAcaoInscrever(e -> {
             Long id = telaLista.getIdEditalSelecionado();
-            EditalDeMonitoria edital = central.recuperarEditalPeloId(id);
 
-            if (edital == null) {
+            if (id == null) {
                 JOptionPane.showMessageDialog(telaLista, "Selecione um edital.");
                 return;
             }
+
+            EditalDeMonitoria edital = central.recuperarEditalPeloId(id);
+
             if (edital.jaAcabou()) {
                 JOptionPane.showMessageDialog(telaLista, "As inscrições já encerraram!");
                 return;
@@ -59,12 +62,14 @@ public class AlunoController {
 
         telaLista.adicionarAcaoDesistir(e -> {
             Long id = telaLista.getIdEditalSelecionado();
-            EditalDeMonitoria edital = central.recuperarEditalPeloId(id);
 
-            if (edital == null) {
+            if (id == null) {
                 JOptionPane.showMessageDialog(telaLista, "Selecione um edital.");
                 return;
             }
+
+            EditalDeMonitoria edital = central.recuperarEditalPeloId(id);
+
             if (edital.isResultadoFinal()) {
                 JOptionPane.showMessageDialog(telaLista, "O resultado final já saiu. Impossível desistir.");
                 return;
@@ -80,15 +85,70 @@ public class AlunoController {
             }
         });
 
+        telaLista.adicionarAcaoDetalhar(e -> {
+            Long id = telaLista.getIdEditalSelecionado();
+
+            if (id == null) {
+                JOptionPane.showMessageDialog(telaLista, "Selecione um edital para ver os detalhes.");
+                return;
+            }
+
+            EditalDeMonitoria edital = central.recuperarEditalPeloId(id);
+
+            if (edital != null) {
+                telaLista.dispose();
+                exibirDetalhesEdital(edital);
+            }
+        });
+
         telaLista.adicionarAcaoVoltar(e -> {
             telaLista.dispose();
             exibirMenu();
         });
 
+        telaLista.adicionarAcaoResultado(e -> {
+            Long id = telaLista.getIdEditalSelecionado();
+
+            if (id == null) {
+                JOptionPane.showMessageDialog(telaLista, "Por favor, selecione um edital na tabela primeiro!", "Aviso", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Recupera o edital completo
+            EditalDeMonitoria edital = central.recuperarEditalPeloId(id);
+
+            if (edital.isResultadoCalculado() || edital.isResultadoFinal()) {
+                TelaResultadoEdital telaRes = new TelaResultadoEdital(edital);
+
+                telaRes.adicionarAcaoFechar(ev -> telaRes.dispose());
+
+                telaRes.setVisible(true);
+
+            } else {
+                JOptionPane.showMessageDialog(telaLista,
+                        "O resultado para o edital " + edital.getNumeroEdital() + " ainda não está disponível.",
+                        "Informação",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
         telaLista.setVisible(true);
     }
 
+    private void exibirDetalhesEdital(EditalDeMonitoria edital) {
+        TelaDetalheEditalAluno telaDetalhes = new TelaDetalheEditalAluno(edital);
+        telaDetalhes.configurarModoConsulta(); // Chama o modo de leitura
+
+        telaDetalhes.adicionarAcaoVoltar(e -> {
+            telaDetalhes.dispose();
+            exibirListagemEditais();
+        });
+
+        telaDetalhes.setVisible(true);
+    }
+
     private void exibirInscricaoEdital(EditalDeMonitoria edital) {
+
         TelaDetalheEditalAluno telaInscricao = new TelaDetalheEditalAluno(edital);
 
         telaInscricao.adicionarAcaoInscrever(e -> {
