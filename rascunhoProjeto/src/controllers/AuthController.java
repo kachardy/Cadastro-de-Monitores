@@ -1,7 +1,6 @@
 package controllers;
 
 import javax.swing.JOptionPane;
-
 import models.*;
 import views.*;
 
@@ -14,7 +13,6 @@ public class AuthController {
         this.persistencia = persistencia;
     }
 
-    // Inicia o fluxo do programa
     public void iniciar() {
         if (central.getCoordenador() == null) {
             exibirCadastroCoordenador();
@@ -25,12 +23,17 @@ public class AuthController {
 
     public void exibirLogin() {
         TelaLogin tela = new TelaLogin();
-        
+
         tela.adicionarAcaoSalvar(e -> {
             String email = tela.getEmail();
             String senha = tela.getSenha();
-            
-            // Lógica de Autenticação
+
+            // Verifica se é nulo OU se está vazio (removendo espaços)
+            if (isVazio(email) || isVazio(senha)) {
+                JOptionPane.showMessageDialog(tela, "Por favor, preencha e-mail e senha!");
+                return;
+            }
+
             Coordenador coord = central.getCoordenador();
             if (coord != null && coord.getEmail().equals(email) && coord.getSenha().equals(senha)) {
                 tela.dispose();
@@ -60,13 +63,19 @@ public class AuthController {
 
     private void exibirCadastroAluno() {
         TelaCadastroAluno tela = new TelaCadastroAluno();
-        
+
         tela.adicionarAcaoSalvar(e -> {
+            // Validação múltipla de campos vazios
+            if (isVazio(tela.getNome()) || isVazio(tela.getMatricula()) || isVazio(tela.getEmail()) || isVazio(tela.getSenha())) {
+                JOptionPane.showMessageDialog(tela, "Todos os campos de cadastro são obrigatórios!");
+                return;
+            }
+
             Aluno novo = new Aluno(tela.getNome(), tela.getMatricula(), tela.getEmail(), tela.getSenha());
             try {
                 central.adicionarAluno(novo);
                 persistencia.salvarCentral(central, "central.xml");
-                JOptionPane.showMessageDialog(tela, "Aluno cadastrado!");
+                JOptionPane.showMessageDialog(tela, "Aluno cadastrado com sucesso!");
                 tela.dispose();
                 exibirLogin();
             } catch (Exception ex) {
@@ -78,19 +87,38 @@ public class AuthController {
             tela.dispose();
             exibirLogin();
         });
-        
+
+        tela.adicionarAcaoLinkLogin(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                tela.dispose();
+                exibirLogin();
+            }
+        });
+
         tela.setVisible(true);
     }
 
     private void exibirCadastroCoordenador() {
         TelaCadastroCoordenador tela = new TelaCadastroCoordenador();
         tela.adicionarAcaoSalvar(e -> {
+            // Validação de campos vazios para Coordenador
+            if (isVazio(tela.getNome()) || isVazio(tela.getMatricula()) || isVazio(tela.getEmail()) || isVazio(tela.getSenha())) {
+                JOptionPane.showMessageDialog(tela, "Preencha todos os dados do Coordenador!");
+                return;
+            }
+
             Coordenador c = new Coordenador(tela.getNome(), tela.getMatricula(), tela.getEmail(), tela.getSenha());
             central.setCoordenador(c);
             persistencia.salvarCentral(central, "central.xml");
+            JOptionPane.showMessageDialog(tela, "Coordenador mestre configurado!");
             tela.dispose();
             exibirLogin();
         });
         tela.setVisible(true);
+    }
+
+    // Para manter o código limpo e evitar repetição
+    private boolean isVazio(String texto) {
+        return texto == null || texto.trim().isEmpty();
     }
 }
