@@ -1,5 +1,7 @@
 package utils;
 
+import javax.swing.*;
+
 public class Validador {
 	
 	public static boolean validarNome(String nome) {
