@@ -3,6 +3,7 @@ package controllers;
 import javax.swing.JOptionPane;
 import models.*;
 import views.*;
+import utils.Validador; // Certifique-se de importar o Validador
 
 public class AuthController {
     private CentralDeInformacoes central;
@@ -28,9 +29,14 @@ public class AuthController {
             String email = tela.getEmail();
             String senha = tela.getSenha();
 
-            // Verifica se é nulo OU se está vazio (removendo espaços)
-            if (isVazio(email) || isVazio(senha)) {
-                JOptionPane.showMessageDialog(tela, "Por favor, preencha e-mail e senha!");
+            // USO DO VALIDADOR: Login
+            if (!Validador.validarEmail(email)) {
+                JOptionPane.showMessageDialog(tela, "E-mail inválido ou vazio!");
+                return;
+            }
+
+            if (!Validador.validarSenha(senha)) {
+                JOptionPane.showMessageDialog(tela, "A senha deve ter no mínimo 6 caracteres!");
                 return;
             }
 
@@ -65,13 +71,23 @@ public class AuthController {
         TelaCadastroAluno tela = new TelaCadastroAluno();
 
         tela.adicionarAcaoSalvar(e -> {
-            // Validação múltipla de campos vazios
-            if (isVazio(tela.getNome()) || isVazio(tela.getMatricula()) || isVazio(tela.getEmail()) || isVazio(tela.getSenha())) {
-                JOptionPane.showMessageDialog(tela, "Todos os campos de cadastro são obrigatórios!");
+            String nome = tela.getNome();
+            String matricula = tela.getMatricula();
+            String email = tela.getEmail();
+            String senha = tela.getSenha();
+
+            // USO DO VALIDADOR: Cadastro de Aluno
+            if (!Validador.validarNome(nome) ||
+                    !Validador.validarMatricula(matricula) ||
+                    !Validador.validarEmail(email) ||
+                    !Validador.validarSenha(senha)) {
+
+                // Mensagem genérica caso algum dos outros (exceto nome) falhe
+                JOptionPane.showMessageDialog(tela, "Verifique os campos! Matricula (apenas números), E-mail válido e Senha (mín. 6)");
                 return;
             }
 
-            Aluno novo = new Aluno(tela.getNome(), tela.getMatricula(), tela.getEmail(), tela.getSenha());
+            Aluno novo = new Aluno(nome, matricula, email, senha);
             try {
                 central.adicionarAluno(novo);
                 persistencia.salvarCentral(central, "central.xml");
@@ -88,37 +104,34 @@ public class AuthController {
             exibirLogin();
         });
 
-        tela.adicionarAcaoLinkLogin(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent e) {
-                tela.dispose();
-                exibirLogin();
-            }
-        });
-
         tela.setVisible(true);
     }
 
     private void exibirCadastroCoordenador() {
         TelaCadastroCoordenador tela = new TelaCadastroCoordenador();
         tela.adicionarAcaoSalvar(e -> {
-            // Validação de campos vazios para Coordenador
-            if (isVazio(tela.getNome()) || isVazio(tela.getMatricula()) || isVazio(tela.getEmail()) || isVazio(tela.getSenha())) {
-                JOptionPane.showMessageDialog(tela, "Preencha todos os dados do Coordenador!");
+            String nome = tela.getNome();
+            String matricula = tela.getMatricula();
+            String email = tela.getEmail();
+            String senha = tela.getSenha();
+
+            // Cadastro de Coordenador
+            if (!Validador.validarNome(nome) ||
+                    !Validador.validarMatricula(matricula) ||
+                    !Validador.validarEmail(email) ||
+                    !Validador.validarSenha(senha)) {
+
+                JOptionPane.showMessageDialog(tela, "Preencha todos os dados corretamente para o Coordenador!");
                 return;
             }
 
-            Coordenador c = new Coordenador(tela.getNome(), tela.getMatricula(), tela.getEmail(), tela.getSenha());
+            Coordenador c = new Coordenador(nome, matricula, email, senha);
             central.setCoordenador(c);
             persistencia.salvarCentral(central, "central.xml");
-            JOptionPane.showMessageDialog(tela, "Coordenador mestre configurado!");
+            JOptionPane.showMessageDialog(tela, "Configuração inicial concluída!");
             tela.dispose();
             exibirLogin();
         });
         tela.setVisible(true);
-    }
-
-    // Para manter o código limpo e evitar repetição
-    private boolean isVazio(String texto) {
-        return texto == null || texto.trim().isEmpty();
     }
 }
