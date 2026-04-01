@@ -1,13 +1,19 @@
 package models;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+@Entity
+@Table(name = "editais_tb")
 public class EditalDeMonitoria implements Serializable {
 
     // Atributos de Identificação e Configuração
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private String numeroEdital;
     private LocalDate dataInicio;
     private LocalDate dataFim;
@@ -20,7 +26,12 @@ public class EditalDeMonitoria implements Serializable {
     private boolean resultadoFinal = false;
 
     // O Edital possui as vagas e o Gerenciador para as Inscrições)
+    @OneToMany
+    @JoinColumn(name = "disciplina_id")
     private ArrayList<Disciplina> todasAsDisciplinas = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name = "gerenciador_id")
     private GerenciadorDeInscricoes gerenciador = new GerenciadorDeInscricoes();
 
     public EditalDeMonitoria(long id, String numeroEdital, LocalDate dataInicio, LocalDate dataFim,

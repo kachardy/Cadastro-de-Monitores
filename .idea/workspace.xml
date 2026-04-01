@@ -4,29 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="Refactor: Implementação de Classe Associativa Inscricao e Padrão Strategy para Ordenação">
+    <list default="true" id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="Utilizando a classe Validador para verificar os campos de Login e Cadastro">
+      <change afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/GenericDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/CADASTRO DE MONITORES.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CADASTRO DE MONITORES.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central.xml" beforeDir="false" afterPath="$PROJECT_DIR$/central.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/controllers/AlunoController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/controllers/AlunoController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/CentralDeInformacoes.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/CentralDeInformacoes.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/Disciplina.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/Disciplina.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/EditalDeMonitoria.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/EditalDeMonitoria.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/Programa.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/utils/GeradorDeRelatorio.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/utils/GeradorDeRelatorio.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaDetalheEditalAluno$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaDetalheEditalAluno$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaDetalheEditalAluno.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaDetalheEditalAluno.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaDetalheEditalCoordenador.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaDetalheEditalCoordenador.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaResultadoEdital.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaResultadoEdital.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/Programa.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/Programa.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/AlunoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/AlunoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/CentralDeInformacoes.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/CentralDeInformacoes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/main/resources/META-INFO/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/main/resources/META-INFO/persistence.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/Aluno.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/Aluno.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/Coordenador.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/Coordenador.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/Disciplina.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/Disciplina.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/EditalDeMonitoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/EditalDeMonitoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/GerenciadorDeInscricoes.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/GerenciadorDeInscricoes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/utils/GeradorDeRelatorio.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/utils/GeradorDeRelatorio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaDetalheEditalAluno.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaDetalheEditalAluno.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaDetalheEditalCoordenador.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaDetalheEditalCoordenador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaResultadoEdital.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaResultadoEdital.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/Inscricao.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/Inscricao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/Pessoa.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/Pessoa.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,13 +44,16 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/kachardy/Cadastro-de-Monitores.git&quot;,
-    &quot;accountId&quot;: &quot;a1f2976f-2f4d-469d-910d-eb8393906f58&quot;
+    &quot;accountId&quot;: &quot;198b08fd-5d24-4159-9e57-7268c1dce974&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
   <component name="ProjectId" id="3BJFKpt1jjK60jIoipmicBaNrtk" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -68,6 +63,7 @@
     &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;Application.Programa.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
@@ -80,13 +76,6 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.32098.37" />
-      </set>
-    </attachedChunks>
-  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="" />
@@ -104,11 +93,55 @@
       <option name="project" value="LOCAL" />
       <updated>1774208775555</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Dependência retirada das classes Inscrição e Disciplina">
+      <option name="closed" value="true" />
+      <created>1774275671839</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1774275671839</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Botões da parte do Aluno/Edital funcionando novamente">
+      <option name="closed" value="true" />
+      <created>1774288283606</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1774288283606</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Login e Cadastro de Aluno/Coordenador atualizados e corrigidos">
+      <option name="closed" value="true" />
+      <created>1774371784403</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1774371784403</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Utilizando a classe Validador para verificar os campos de Login e Cadastro">
+      <option name="closed" value="true" />
+      <created>1774372563042</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1774372563042</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Utilizando a classe Validador para verificar os campos de Login e Cadastro">
+      <option name="closed" value="true" />
+      <created>1774372577685</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1774372577685</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Refactor: Implementação de Classe Associativa Inscricao e Padrão Strategy para Ordenação" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor: Implementação de Classe Associativa Inscricao e Padrão Strategy para Ordenação" />
+    <MESSAGE value="Dependência retirada das classes Inscrição e Disciplina" />
+    <MESSAGE value="Botões da parte do Aluno/Edital funcionando novamente" />
+    <MESSAGE value="Login e Cadastro de Aluno/Coordenador atualizados e corrigidos" />
+    <MESSAGE value="Utilizando a classe Validador para verificar os campos de Login e Cadastro" />
+    <option name="LAST_COMMIT_MESSAGE" value="Utilizando a classe Validador para verificar os campos de Login e Cadastro" />
   </component>
 </project>

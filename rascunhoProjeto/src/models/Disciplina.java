@@ -1,9 +1,23 @@
 package models;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "disciplinas_tb")
 public class Disciplina {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
     private String nome;
+
     private int vagasRemuneradas;
     private int vagasVoluntarias;
+
+    public Disciplina() {
+    }
 
     public Disciplina(String nome, int vagasRemuneradas, int vagasVoluntarias) {
         this.nome = nome;
@@ -37,6 +51,14 @@ public class Disciplina {
 
     public int getTotalVagas() {
         return vagasRemuneradas + vagasVoluntarias;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override

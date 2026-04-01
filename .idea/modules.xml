@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/CADASTRO DE MONITORES.iml" filepath="$PROJECT_DIR$/.idea/CADASTRO DE MONITORES.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rascunhoProjeto/cadastro-monitores.iml" filepath="$PROJECT_DIR$/rascunhoProjeto/cadastro-monitores.iml" />
     </modules>
   </component>
 </project>
