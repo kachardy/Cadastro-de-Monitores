@@ -4,11 +4,11 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 public class GenericDao<T> {
-    private EntityManager em;
+    static EntityManager em;
     private Class<T> classe;
 
     public GenericDao (EntityManager em, Class<T> classe) {
-        this.em = em;
+        GenericDao.em = em;
         this.classe = classe;
     }
 
@@ -32,10 +32,6 @@ public class GenericDao<T> {
         }
     }
 
-    public List<T> listarTodos() {
-        return em.createQuery("SELECT e FROM" + classe.getSimpleName() + " e", classe).getResultList();
-    }
-
     public void removerPorId(Long id) {
         try {
             em.getTransaction().begin();
@@ -48,4 +44,9 @@ public class GenericDao<T> {
             em.getTransaction().rollback();
         }
     }
+
+    public List<T> listarTodos() {
+        return em.createQuery("SELECT e FROM" + classe.getSimpleName() + " e", classe).getResultList();
+    }
+
 }

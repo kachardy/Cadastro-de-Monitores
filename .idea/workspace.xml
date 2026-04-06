@@ -5,20 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="Utilizando a classe Validador para verificar os campos de Login e Cadastro">
-      <change afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/GenericDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/CADASTRO DE MONITORES.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CADASTRO DE MONITORES.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/AlunoDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/main/resources/META-INFO/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/main/resources/META-INFO/persistence.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/Aluno.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/Aluno.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/Coordenador.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/Coordenador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/Disciplina.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/Disciplina.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/EditalDeMonitoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/EditalDeMonitoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/Inscricao.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/Inscricao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/Pessoa.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/Pessoa.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/dao/GenericDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/GenericDao.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
