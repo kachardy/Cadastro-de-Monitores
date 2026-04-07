@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "editais_tb")
@@ -28,10 +29,9 @@ public class EditalDeMonitoria implements Serializable {
     // O Edital possui as vagas e o Gerenciador para as Inscrições)
     @OneToMany
     @JoinColumn(name = "disciplina_id")
-    private ArrayList<Disciplina> todasAsDisciplinas = new ArrayList<>();
+    private List<Disciplina> todasAsDisciplinas = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn(name = "gerenciador_id")
+    @Embedded
     private GerenciadorDeInscricoes gerenciador = new GerenciadorDeInscricoes();
 
     public EditalDeMonitoria(long id, String numeroEdital, LocalDate dataInicio, LocalDate dataFim,
@@ -44,6 +44,8 @@ public class EditalDeMonitoria implements Serializable {
         this.pesoCRE = pesoCRE;
         this.pesoMedia = pesoMedia;
     }
+
+    public EditalDeMonitoria () {}
 
     // --- LÓGICA DE NEGÓCIO ---
 
@@ -175,7 +177,7 @@ public class EditalDeMonitoria implements Serializable {
         this.resultadoFinal = status;
     }
 
-    public ArrayList<Disciplina> getTodasAsDisciplinas() {
+    public List<Disciplina> getTodasAsDisciplinas() {
         return todasAsDisciplinas;
     }
 

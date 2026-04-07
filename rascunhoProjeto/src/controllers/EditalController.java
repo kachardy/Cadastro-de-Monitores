@@ -12,15 +12,12 @@ import views.*;
 public class EditalController {
     private Coordenador coord;
     private CentralDeInformacoes central;
-    private Persistencia persistencia;
 
-    public EditalController(Coordenador coord, CentralDeInformacoes central, Persistencia persistencia) {
+    public EditalController(Coordenador coord, CentralDeInformacoes central) {
         this.coord = coord;
         this.central = central;
-        this.persistencia = persistencia;
     }
 
-    // MÉTODO QUE ESTAVA EM VERMELHO
     public void exibirListagem() {
         TelaListagem tela = new TelaListagem();
         tela.preencherTabela(central.getTodosOsEditais());
@@ -36,7 +33,7 @@ public class EditalController {
 
         tela.adicionarAcaoVoltar(e -> {
             tela.dispose();
-            new CoordenadorController(coord, central, persistencia).exibirMenuPrincipal();
+            new CoordenadorController(coord, central).exibirMenuPrincipal();
         });
         tela.setVisible(true);
     }
@@ -58,12 +55,8 @@ public class EditalController {
         tela.adicionarAcaoVerPerfil(e -> {
             String matricula = tela.getMatriculaAlunoSelecionado();
             Aluno aluno = central.recuperarAlunoPorMatricula(matricula);
-            if (aluno == null) {
-                JOptionPane.showMessageDialog(tela, "Selecione um aluno!");
-                return;
-            } else {
-                AlunoController alunoController = new AlunoController(aluno, central, persistencia);
-                alunoController.exibirPerfil(false, new CoordenadorController(coord, central, persistencia));
+            if (aluno != null) {
+                new AlunoController(aluno, central).exibirPerfil(true, new CoordenadorController(coord, central));
                 tela.dispose();
             }
         });
@@ -71,20 +64,14 @@ public class EditalController {
         tela.adicionarAcaoEnviarEmail(e -> {
             String matricula = tela.getMatriculaAlunoSelecionado();
             Aluno aluno = central.recuperarAlunoPorMatricula(matricula);
-            if (aluno == null) {
-                JOptionPane.showMessageDialog(tela, "Selecione um aluno!");
-                return;
-            } else {
-                Mensageiro.enviarEmail(aluno.getEmail());
-            }
+            if (aluno != null) Mensageiro.enviarEmail(aluno.getEmail());
         });
 
         tela.adicionarAcaoEncerrar(e -> {
-            int op = JOptionPane.showConfirmDialog(tela, "Deseja encerrar as inscrições deste edital?");
+            int op = JOptionPane.showConfirmDialog(tela, "Encerrar inscrições?");
             if (op == JOptionPane.YES_OPTION) {
                 edital.setDataFim(LocalDate.now().minusDays(1));
-                persistencia.salvarCentral(central, "central.xml");
-                JOptionPane.showMessageDialog(tela, "Inscrições encerradas com sucesso!");
+                JOptionPane.showMessageDialog(tela, "Encerrado!");
                 tela.dispose();
                 exibirDetalhes(edital);
             }
@@ -92,29 +79,18 @@ public class EditalController {
 
         tela.adicionarAcaoCalcular(e -> {
             if (edital.isResultadoFinal()) {
-                exibirResultadoFinal(edital); // ESTE MÉTODO ESTÁ DEFINIDO ABAIXO
+                exibirResultadoFinal(edital);
                 return;
             }
-
             if (!edital.isResultadoCalculado()) {
-                int op = JOptionPane.showConfirmDialog(tela, "Deseja gerar o ranking preliminar?");
-                if (op == JOptionPane.YES_OPTION) {
-                    edital.calcularResultadoFinal();
-                    persistencia.salvarCentral(central, "central.xml");
-                    JOptionPane.showMessageDialog(tela, "Ranking calculado!");
-                    tela.dispose();
-                    exibirDetalhes(edital);
-                }
+                edital.calcularResultadoFinal();
+                JOptionPane.showMessageDialog(tela, "Ranking calculado!");
             } else {
-                int op = JOptionPane.showConfirmDialog(tela, "Deseja homologar o resultado final?");
-                if (op == JOptionPane.YES_OPTION) {
-                    edital.setResultadoFinal(true);
-                    persistencia.salvarCentral(central, "central.xml");
-                    JOptionPane.showMessageDialog(tela, "Edital finalizado!");
-                    tela.dispose();
-                    exibirDetalhes(edital);
-                }
+                edital.setResultadoFinal(true);
+                JOptionPane.showMessageDialog(tela, "Edital homologado!");
             }
+            tela.dispose();
+            exibirDetalhes(edital);
         });
 
         tela.adicionarAcaoVoltar(e -> {
@@ -136,11 +112,11 @@ public class EditalController {
 
         telaEdital.adicionarAcaoAddDisciplina(e -> {
             String nome = telaEdital.getNomeDisciplina();
-            if (nome.isEmpty()) return;
-            Disciplina d = new Disciplina(nome, telaEdital.getVagasRem(), telaEdital.getVagasVol());
-            disciplinasTemporarias.add(d);
-            telaEdital.adicionarTextoDisciplina(" - " + nome);
-            telaEdital.limparCamposDisciplina();
+            if (!nome.isEmpty()) {
+                disciplinasTemporarias.add(new Disciplina(nome, telaEdital.getVagasRem(), telaEdital.getVagasVol()));
+                telaEdital.adicionarTextoDisciplina(" - " + nome);
+                telaEdital.limparCamposDisciplina();
+            }
         });
 
         telaEdital.adicionarAcaoSalvar(e -> {
@@ -150,33 +126,19 @@ public class EditalController {
                 LocalDate fim = LocalDate.parse(telaEdital.getDataFim(), formatter);
 
                 if (editalBase != null && central.getTodosOsEditais().contains(editalBase)) {
-                    // MODO EDIÇÃO
                     editalBase.setNumeroEdital(telaEdital.getNumeroEdital());
                     editalBase.setDataInicio(inicio);
                     editalBase.setDataFim(fim);
-                    editalBase.setMaxInscricoesPorAluno(telaEdital.getMaxInscricoes());
-                    editalBase.setPesoCRE(telaEdital.getPesoCRE());
-                    editalBase.setPesoMedia(telaEdital.getPesoMedia());
                     editalBase.setTodasAsDisciplinas(disciplinasTemporarias);
                 } else {
-                    // MODO NOVO / CLONE
-                    EditalDeMonitoria novoEdital = new EditalDeMonitoria(
-                            System.currentTimeMillis(),
-                            telaEdital.getNumeroEdital(),
-                            inicio, fim,
-                            telaEdital.getMaxInscricoes(),
-                            telaEdital.getPesoCRE(),
-                            telaEdital.getPesoMedia()
-                    );
-                    novoEdital.setTodasAsDisciplinas(disciplinasTemporarias);
-                    central.getTodosOsEditais().add(novoEdital);
+                    EditalDeMonitoria novo = new EditalDeMonitoria(System.currentTimeMillis(), telaEdital.getNumeroEdital(), inicio, fim, telaEdital.getMaxInscricoes(), telaEdital.getPesoCRE(), telaEdital.getPesoMedia());
+                    novo.setTodasAsDisciplinas(disciplinasTemporarias);
+                    central.adicionarEdital(novo);
                 }
-
-                persistencia.salvarCentral(central, "central.xml");
                 telaEdital.dispose();
                 exibirListagem();
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(telaEdital, "Erro nos dados. Verifique datas e pesos!");
+                JOptionPane.showMessageDialog(telaEdital, "Erro nos dados.");
             }
         });
 
@@ -187,17 +149,16 @@ public class EditalController {
         telaEdital.setVisible(true);
     }
 
-    // MÉTODO QUE ESTAVA EM VERMELHO
     public void exibirResultadoFinal(EditalDeMonitoria edital) {
-        TelaResultadoEdital telaResultado = new TelaResultadoEdital(edital);
-        telaResultado.adicionarAcaoFechar(e -> {
-            telaResultado.dispose();
+        TelaResultadoEdital telaRes = new TelaResultadoEdital(edital);
+        telaRes.adicionarAcaoFechar(e -> {
+            telaRes.dispose();
             exibirDetalhes(edital);
         });
-        telaResultado.adicionarAcaoGerarPdf(e -> {
+        telaRes.adicionarAcaoGerarPdf(e -> {
             GeradorDeRelatorio.gerarPdfResultado(edital);
-            JOptionPane.showMessageDialog(telaResultado, "PDF gerado!");
+            JOptionPane.showMessageDialog(telaRes, "PDF gerado!");
         });
-        telaResultado.setVisible(true);
+        telaRes.setVisible(true);
     }
 }

@@ -5,8 +5,73 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="Utilizando a classe Validador para verificar os campos de Login e Cadastro">
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/CentralDeInformacoes.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/CentralDeInformacoes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/Programa.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/controllers/AlunoController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/controllers/AuthController$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/controllers/AuthController$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/controllers/AuthController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/controllers/CoordenadorController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/controllers/EditalController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/erros/AlunoJaExisteException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/erros/EditalJaExisteException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/erros/UsuarioJaExisteException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/lib/activation.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/lib/itextpdf-5.5.9.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/lib/mail.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/lib/xstream-1.4.21.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/Aluno.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/CentralDeInformacoes.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/Coordenador.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/Disciplina.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/EditalDeMonitoria.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/GerenciadorDeInscricoes.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/Inscricao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/Persistencia.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/models/Pessoa.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/utils/ComparadorDeNotas.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/utils/GeradorDeRelatorio.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/utils/Mensageiro$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/utils/Mensageiro.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/utils/Validador.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaCadastroAluno.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaCadastroCoordenador.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaCadastroEdital.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaDetalheEditalAluno$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaDetalheEditalAluno.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaDetalheEditalCoordenador$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaDetalheEditalCoordenador.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaListaAlunos$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaListaAlunos.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaListagem$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaListagem.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaListagemAluno.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaLogin.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaPadraoCadastro.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaPerfilAluno.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaPerfilAlunoSecundaria.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaPrincipalAluno.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaPrincipalCoordenador.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaPrincipalPadrao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaResultadoEdital$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CADASTRO DE MONITORES/views/TelaResultadoEdital.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/Programa.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/Programa.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/AlunoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/AlunoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/CoordenadorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/CoordenadorController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/EditalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/EditalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/dao/AlunoDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/AlunoDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/dao/GenericDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/GenericDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/dao/PessoaDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/PessoaDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/main/resources/META-INFO/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/main/resources/META-INF/persistence.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/Aluno.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/Aluno.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/Coordenador.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/Coordenador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/EditalDeMonitoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/EditalDeMonitoria.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/GerenciadorDeInscricoes.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/GerenciadorDeInscricoes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/Inscricao.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/Inscricao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/utils/GeradorDeRelatorio.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/utils/GeradorDeRelatorio.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +125,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;proofread&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -123,6 +188,9 @@
     </task>
     <option name="localTasksCounter" value="7" />
     <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.db" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Refactor: Implementação de Classe Associativa Inscricao e Padrão Strategy para Ordenação" />

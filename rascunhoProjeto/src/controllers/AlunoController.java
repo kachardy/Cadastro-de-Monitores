@@ -1,19 +1,16 @@
 package controllers;
 
 import javax.swing.JOptionPane;
-
 import models.*;
 import views.*;
 
 public class AlunoController {
     private Aluno aluno;
     private CentralDeInformacoes central;
-    private Persistencia persistencia;
 
-    public AlunoController(Aluno aluno, CentralDeInformacoes central, Persistencia persistencia) {
+    public AlunoController(Aluno aluno, CentralDeInformacoes central) {
         this.aluno = aluno;
         this.central = central;
-        this.persistencia = persistencia;
     }
 
     public void exibirMenu() {
@@ -31,7 +28,7 @@ public class AlunoController {
 
         tela.adicionarAcaoSair(e -> {
             tela.dispose();
-            new AuthController(central, persistencia).exibirLogin();
+            new AuthController(central).exibirLogin();
         });
 
         tela.setVisible(true);
@@ -43,41 +40,31 @@ public class AlunoController {
 
         telaLista.adicionarAcaoInscrever(e -> {
             Long id = telaLista.getIdEditalSelecionado();
-
             if (id == null) {
                 JOptionPane.showMessageDialog(telaLista, "Selecione um edital.");
                 return;
             }
-
             EditalDeMonitoria edital = central.recuperarEditalPeloId(id);
-
             if (edital.jaAcabou()) {
                 JOptionPane.showMessageDialog(telaLista, "As inscrições já encerraram!");
                 return;
             }
-
             telaLista.dispose();
             exibirInscricaoEdital(edital);
         });
 
         telaLista.adicionarAcaoDesistir(e -> {
             Long id = telaLista.getIdEditalSelecionado();
-
             if (id == null) {
                 JOptionPane.showMessageDialog(telaLista, "Selecione um edital.");
                 return;
             }
-
             EditalDeMonitoria edital = central.recuperarEditalPeloId(id);
-
             if (edital.isResultadoFinal()) {
                 JOptionPane.showMessageDialog(telaLista, "O resultado final já saiu. Impossível desistir.");
                 return;
             }
-
-            boolean ok = edital.desistirDoEdital(aluno);
-            if (ok) {
-                persistencia.salvarCentral(central, "central.xml");
+            if (edital.desistirDoEdital(aluno)) {
                 JOptionPane.showMessageDialog(telaLista, "Desistência realizada!");
                 telaLista.preencherTabela(central.getTodosOsEditais());
             } else {
@@ -87,17 +74,24 @@ public class AlunoController {
 
         telaLista.adicionarAcaoDetalhar(e -> {
             Long id = telaLista.getIdEditalSelecionado();
-
-            if (id == null) {
-                JOptionPane.showMessageDialog(telaLista, "Selecione um edital para ver os detalhes.");
-                return;
-            }
-
+            if (id == null) return;
             EditalDeMonitoria edital = central.recuperarEditalPeloId(id);
-
             if (edital != null) {
                 telaLista.dispose();
                 exibirDetalhesEdital(edital);
+            }
+        });
+
+        telaLista.adicionarAcaoResultado(e -> {
+            Long id = telaLista.getIdEditalSelecionado();
+            if (id == null) return;
+            EditalDeMonitoria edital = central.recuperarEditalPeloId(id);
+            if (edital.isResultadoCalculado() || edital.isResultadoFinal()) {
+                TelaResultadoEdital telaRes = new TelaResultadoEdital(edital);
+                telaRes.adicionarAcaoFechar(ev -> telaRes.dispose());
+                telaRes.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(telaLista, "Resultado ainda não disponível.");
             }
         });
 
@@ -105,136 +99,60 @@ public class AlunoController {
             telaLista.dispose();
             exibirMenu();
         });
-
-        telaLista.adicionarAcaoResultado(e -> {
-            Long id = telaLista.getIdEditalSelecionado();
-
-            if (id == null) {
-                JOptionPane.showMessageDialog(telaLista, "Por favor, selecione um edital na tabela primeiro!", "Aviso", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            // Recupera o edital completo
-            EditalDeMonitoria edital = central.recuperarEditalPeloId(id);
-
-            if (edital.isResultadoCalculado() || edital.isResultadoFinal()) {
-                TelaResultadoEdital telaRes = new TelaResultadoEdital(edital);
-
-                telaRes.adicionarAcaoFechar(ev -> telaRes.dispose());
-
-                telaRes.setVisible(true);
-
-            } else {
-                JOptionPane.showMessageDialog(telaLista,
-                        "O resultado para o edital " + edital.getNumeroEdital() + " ainda não está disponível.",
-                        "Informação",
-                        JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
-
         telaLista.setVisible(true);
     }
 
-    private void exibirDetalhesEdital(EditalDeMonitoria edital) {
-        TelaDetalheEditalAluno telaDetalhes = new TelaDetalheEditalAluno(edital);
-        telaDetalhes.configurarModoConsulta(); // Chama o modo de leitura
-
-        telaDetalhes.adicionarAcaoVoltar(e -> {
-            telaDetalhes.dispose();
-            exibirListagemEditais();
-        });
-
-        telaDetalhes.setVisible(true);
-    }
-
     private void exibirInscricaoEdital(EditalDeMonitoria edital) {
-
         TelaDetalheEditalAluno telaInscricao = new TelaDetalheEditalAluno(edital);
-
         telaInscricao.adicionarAcaoInscrever(e -> {
             Disciplina disc = telaInscricao.getDisciplinaSelecionada();
-            String creStr = telaInscricao.getCRE();
-            String mediaStr = telaInscricao.getMedia();
-
-            if (disc == null || creStr.isEmpty() || mediaStr.isEmpty()) {
-                JOptionPane.showMessageDialog(telaInscricao, "Preencha todos os campos e selecione a disciplina.");
-                return;
-            }
-
             try {
-                double cre = Double.parseDouble(creStr);
-                double media = Double.parseDouble(mediaStr);
-
-                boolean sucesso = edital.inscrever(aluno, disc, cre, media);
-                if (sucesso) {
-                    persistencia.salvarCentral(central, "central.xml");
-                    JOptionPane.showMessageDialog(telaInscricao, "Inscrito com sucesso em " + disc.getNome());
+                double cre = Double.parseDouble(telaInscricao.getCRE());
+                double media = Double.parseDouble(telaInscricao.getMedia());
+                if (edital.inscrever(aluno, disc, cre, media)) {
+                    JOptionPane.showMessageDialog(telaInscricao, "Inscrito com sucesso!");
                     telaInscricao.dispose();
                     exibirListagemEditais();
                 } else {
-                    JOptionPane.showMessageDialog(telaInscricao, "Inscrição negada (Verifique vagas ou limite de editais).");
+                    JOptionPane.showMessageDialog(telaInscricao, "Inscrição negada.");
                 }
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(telaInscricao, "CRE e Média devem ser números.");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(telaInscricao, "Dados inválidos.");
             }
         });
-
         telaInscricao.adicionarAcaoVoltar(e -> {
             telaInscricao.dispose();
             exibirListagemEditais();
         });
-
         telaInscricao.setVisible(true);
     }
 
     public void exibirPerfil(boolean modoLeitura, CoordenadorController voltaPara) {
         TelaPerfilAluno tela = new TelaPerfilAluno(aluno, modoLeitura);
-
         tela.adicionarAcaoSalvar(e -> {
-            String novoNome = tela.getNome();
-            String novoEmail = tela.getEmail();
-            String novaSenha = tela.getSenha();
-
-            if (novoNome.isEmpty() || novoEmail.isEmpty() || novaSenha.isEmpty()) {
-                JOptionPane.showMessageDialog(tela, "Preencha todos os campos!");
-                return;
-            }
-
-            aluno.setNome(novoNome);
-            aluno.setEmail(novoEmail);
-            aluno.setSenha(novaSenha);
-
-            // NOVA ALTERAÇÃO: Sincronização com os editais através da classe Inscricao
-            for (EditalDeMonitoria ed : central.getTodosOsEditais()) {
-                for (Disciplina d : ed.getTodasAsDisciplinas()) {
-                    // Percorre a lista única de inscrições para encontrar e atualizar o aluno
-                    for (Inscricao insc : ed.getGerenciador().getTodasAsInscricoes()) {
-                        if (insc.getCandidato().getMatricula().equals(aluno.getMatricula())) {
-                            insc.getCandidato().setNome(novoNome);
-                            insc.getCandidato().setEmail(novoEmail);
-                            insc.getCandidato().setSenha(novaSenha);
-                        }
-                    }
-                }
-            }
-
-            persistencia.salvarCentral(central, "central.xml");
-            JOptionPane.showMessageDialog(tela, "Perfil atualizado com sucesso!");
-
+            aluno.setNome(tela.getNome());
+            aluno.setEmail(tela.getEmail());
+            aluno.setSenha(tela.getSenha());
+            JOptionPane.showMessageDialog(tela, "Perfil atualizado!");
             tela.dispose();
-            if (voltaPara != null) {
-                voltaPara.exibirMenuPrincipal();
-            } else {
-                exibirMenu();
-            }
+            if (voltaPara != null) voltaPara.exibirMenuPrincipal();
+            else exibirMenu();
         });
-
         tela.adicionarAcaoVoltar(e -> {
             tela.dispose();
             if (voltaPara != null) voltaPara.exibirMenuPrincipal();
             else exibirMenu();
         });
-
         tela.setVisible(true);
+    }
+
+    private void exibirDetalhesEdital(EditalDeMonitoria edital) {
+        TelaDetalheEditalAluno telaDetalhes = new TelaDetalheEditalAluno(edital);
+        telaDetalhes.configurarModoConsulta();
+        telaDetalhes.adicionarAcaoVoltar(e -> {
+            telaDetalhes.dispose();
+            exibirListagemEditais();
+        });
+        telaDetalhes.setVisible(true);
     }
 }

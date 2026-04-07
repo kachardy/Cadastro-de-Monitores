@@ -1,45 +1,13 @@
 import controllers.AuthController;
-import models.Aluno;
 import models.CentralDeInformacoes;
-import models.EditalDeMonitoria;
-import models.Persistencia;
-
-import java.io.File;
-import java.util.ArrayList;
 
 public class Programa {
 
     public static void main(String[] args) {
-        Persistencia persistencia = new Persistencia();
-        final CentralDeInformacoes central = recuperarOuCriarCentral(persistencia);
+        CentralDeInformacoes central = new CentralDeInformacoes();
 
-        // Iniciando tudo
-        AuthController auth = new AuthController(central, persistencia);
+        // O AuthController só precisa da central (facade) para iniciar o programa
+        AuthController auth = new AuthController(central);
         auth.iniciar();
-    }
-
-    // Método para criar ou recuperar a central
-    private static CentralDeInformacoes recuperarOuCriarCentral(Persistencia p) {
-    	CentralDeInformacoes c = null;
-		File arquivo = new File("central.xml");
-
-		if (arquivo.exists() && arquivo.length() > 0) {
-			try {
-				c = p.recuperarCentral("central.xml");
-			} catch (Exception e) {
-			}
-		} else {
-			//System.out.println("Arquivo central.xml não existe ou está vazio. Criando nova base...");
-		}
-		
-		if (c == null) {
-			c = new CentralDeInformacoes();
-		}
-		
-		// Garante que as listas não sejam nulas
-		if (c.getTodosOsEditais() == null) c.setTodosOsEditais(new ArrayList<EditalDeMonitoria>());
-		if (c.getTodosOsAlunos() == null) c.setTodosOsAlunos(new ArrayList<Aluno>());
-		
-		return c;
     }
 }

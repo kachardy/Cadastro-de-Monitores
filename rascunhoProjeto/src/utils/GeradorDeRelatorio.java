@@ -7,7 +7,6 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import models.Aluno;
 import models.Disciplina;
 import models.EditalDeMonitoria;
 import models.Inscricao; // NOVA ALTERAÇÃO: Importação para suportar o novo modelo

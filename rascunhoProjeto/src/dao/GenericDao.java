@@ -4,12 +4,16 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 public class GenericDao<T> {
-    static EntityManager em;
+    private EntityManager em;
     private Class<T> classe;
 
     public GenericDao (EntityManager em, Class<T> classe) {
-        GenericDao.em = em;
+        this.em = em;
         this.classe = classe;
+    }
+
+    protected EntityManager getEm() {
+        return this.em;
     }
 
     public void salvar(T entidade) {
@@ -46,7 +50,7 @@ public class GenericDao<T> {
     }
 
     public List<T> listarTodos() {
-        return em.createQuery("SELECT e FROM" + classe.getSimpleName() + " e", classe).getResultList();
+        return em.createQuery("SELECT e FROM " + classe.getSimpleName() + " e", classe).getResultList();
     }
 
 }

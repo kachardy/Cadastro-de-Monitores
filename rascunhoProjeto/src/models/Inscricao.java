@@ -30,6 +30,8 @@ public class Inscricao {
         this.media = media;
     }
 
+    public Inscricao () {}
+
     public Aluno getCandidato() {
         return candidato;
     }

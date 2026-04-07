@@ -2,19 +2,21 @@ package controllers;
 
 import javax.swing.JOptionPane;
 import models.*;
-import views.*;
-import utils.Validador; // Certifique-se de importar o Validador
+import utils.Validador;
+import views.TelaCadastroAluno;
+import views.TelaCadastroCoordenador;
+import views.TelaLogin;
 
 public class AuthController {
     private CentralDeInformacoes central;
-    private Persistencia persistencia;
 
-    public AuthController(CentralDeInformacoes central, Persistencia persistencia) {
+    // O construtor agora recebe apenas a central, pois a Persistencia é estática
+    public AuthController(CentralDeInformacoes central) {
         this.central = central;
-        this.persistencia = persistencia;
     }
 
     public void iniciar() {
+        // A central busca o coordenador no banco via DAO agora
         if (central.getCoordenador() == null) {
             exibirCadastroCoordenador();
         } else {
@@ -29,31 +31,24 @@ public class AuthController {
             String email = tela.getEmail();
             String senha = tela.getSenha();
 
-            // USO DO VALIDADOR: Login
-            if (!Validador.validarEmail(email)) {
-                JOptionPane.showMessageDialog(tela, "E-mail inválido ou vazio!");
+            if (!Validador.validarEmail(email) || !Validador.validarSenha(senha)) {
+                JOptionPane.showMessageDialog(tela, "E-mail ou senha inválidos!");
                 return;
             }
 
-            if (!Validador.validarSenha(senha)) {
-                JOptionPane.showMessageDialog(tela, "A senha deve ter no mínimo 6 caracteres!");
-                return;
-            }
+            // Busca unificada via PessoaDao (que você já criou) através da Central
+            Pessoa pessoa = central.recuperarPessoaPorEmail(email);
 
-            Coordenador coord = central.getCoordenador();
-            if (coord != null && coord.getEmail().equals(email) && coord.getSenha().equals(senha)) {
+            if (pessoa != null && pessoa.getSenha().equals(senha)) {
                 tela.dispose();
-                new CoordenadorController(coord, central, persistencia).exibirMenuPrincipal();
+                if (pessoa instanceof Coordenador) {
+                    new CoordenadorController((Coordenador) pessoa, central).exibirMenuPrincipal();
+                } else if (pessoa instanceof Aluno) {
+                    new AlunoController((Aluno) pessoa, central).exibirMenu();
+                }
                 return;
             }
 
-            for (Aluno a : central.getTodosOsAlunos()) {
-                if (a.getEmail().equals(email) && a.getSenha().equals(senha)) {
-                    tela.dispose();
-                    new AlunoController(a, central, persistencia).exibirMenu();
-                    return;
-                }
-            }
             JOptionPane.showMessageDialog(tela, "Credenciais inválidas!");
         });
 
@@ -76,21 +71,18 @@ public class AuthController {
             String email = tela.getEmail();
             String senha = tela.getSenha();
 
-            // USO DO VALIDADOR: Cadastro de Aluno
-            if (!Validador.validarNome(nome) ||
-                    !Validador.validarMatricula(matricula) ||
-                    !Validador.validarEmail(email) ||
-                    !Validador.validarSenha(senha)) {
-
-                // Mensagem genérica caso algum dos outros (exceto nome) falhe
-                JOptionPane.showMessageDialog(tela, "Verifique os campos! Matricula (apenas números), E-mail válido e Senha (mín. 6)");
+            if (!Validador.validarNome(nome) || !Validador.validarMatricula(matricula) ||
+                    !Validador.validarEmail(email) || !Validador.validarSenha(senha)) {
+                JOptionPane.showMessageDialog(tela, "Dados inválidos!");
                 return;
             }
 
             Aluno novo = new Aluno(nome, matricula, email, senha);
             try {
+                // A central.adicionarAluno agora chama o alunoDao.salvar() internamente
                 central.adicionarAluno(novo);
-                persistencia.salvarCentral(central, "central.xml");
+                // REMOVIDO: persistencia.salvarCentral(central, "central.xml");
+
                 JOptionPane.showMessageDialog(tela, "Aluno cadastrado com sucesso!");
                 tela.dispose();
                 exibirLogin();
@@ -115,19 +107,15 @@ public class AuthController {
             String email = tela.getEmail();
             String senha = tela.getSenha();
 
-            // Cadastro de Coordenador
-            if (!Validador.validarNome(nome) ||
-                    !Validador.validarMatricula(matricula) ||
-                    !Validador.validarEmail(email) ||
-                    !Validador.validarSenha(senha)) {
-
-                JOptionPane.showMessageDialog(tela, "Preencha todos os dados corretamente para o Coordenador!");
+            if (!Validador.validarNome(nome) || !Validador.validarEmail(email)) {
+                JOptionPane.showMessageDialog(tela, "Dados do Coordenador inválidos!");
                 return;
             }
 
             Coordenador c = new Coordenador(nome, matricula, email, senha);
-            central.setCoordenador(c);
-            persistencia.salvarCentral(central, "central.xml");
+            // A central agora persiste o coordenador no banco imediatamente
+            central.adicionarCoordenador(c);
+
             JOptionPane.showMessageDialog(tela, "Configuração inicial concluída!");
             tela.dispose();
             exibirLogin();

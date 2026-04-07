@@ -12,7 +12,7 @@ public class AlunoDao extends GenericDao {
 
     public Aluno recuperarAlunoPorMatricula(String matricula) {
         try {
-            return em.createQuery("SELECT a FROM Aluno a WHERE a.matricula = :matriculaRecebida", Aluno.class)
+            return getEm().createQuery("SELECT a FROM Aluno a WHERE a.matricula = :matriculaRecebida", Aluno.class)
                     .setParameter("matriculaRecebida", matricula)
                     .getSingleResult();
         } catch (javax.persistence.NoResultException e) {

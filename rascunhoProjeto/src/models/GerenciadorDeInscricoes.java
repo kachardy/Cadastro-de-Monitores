@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 import utils.ComparadorDeNotas;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Embeddable
 public class GerenciadorDeInscricoes {
 
     private ArrayList<Inscricao> todasAsInscricoes = new ArrayList<>();

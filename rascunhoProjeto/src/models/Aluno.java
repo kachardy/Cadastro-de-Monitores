@@ -2,20 +2,19 @@ package models;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "alunos_tb")
 public class Aluno extends Pessoa {
 
-    public Aluno() {
-        super();
-    }
+    public Aluno() {}
 
     // Tabela auxiliar que guarda o histórico das monitorias
     @ElementCollection
     @CollectionTable(name = "aluno_historicos", joinColumns = @JoinColumn(name = "aluno_id"))
     @Column(name = "descricao_monitoria")
-	private ArrayList<String> historicoMonitorias = new ArrayList<>();
+	private List<String> historicoMonitorias = new ArrayList<>();
 	
 	public Aluno(String nome, String matricula, String email, String senha) {
 		super(nome, matricula, email, senha);
@@ -25,7 +24,7 @@ public class Aluno extends Pessoa {
 	    historicoMonitorias.add(descricao);
 	}
 
-	public ArrayList<String> getHistoricoMonitorias() {
+	public List<String> getHistoricoMonitorias() {
 	    return historicoMonitorias;
 	}
 
