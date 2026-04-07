@@ -1,124 +1,95 @@
 package models;
-import java.util.ArrayList;
 
+import dao.AlunoDao;
+import dao.GenericDao;
+import dao.PessoaDao;
 import erros.AlunoJaExisteException;
 import erros.EditalJaExisteException;
-import erros.UsuarioJaExisteException;
+import javax.persistence.EntityManager;
+import java.util.List;
 
+// Essa classe é um Facade
 public class CentralDeInformacoes {
-	private ArrayList<Aluno> todosOsAlunos = new ArrayList<Aluno> ();
-	private ArrayList<EditalDeMonitoria> todosOsEditais = new ArrayList<EditalDeMonitoria> ();
-	private Coordenador coordenador;
 
-	// Getters
-	public ArrayList<Aluno> getTodosOsAlunos() {
-		return todosOsAlunos;
-	}
+    private EntityManager em = Persistencia.getEntityManager();
+    private AlunoDao alunoDao = new AlunoDao(em, Aluno.class);
+    private PessoaDao pessoaDao = new PessoaDao(em, Pessoa.class);
+    private GenericDao<EditalDeMonitoria> editalDao = new GenericDao<>(em, EditalDeMonitoria.class);
+    private GenericDao<Coordenador> coordenadorDao = new GenericDao<>(em, Coordenador.class);
 
-	public ArrayList<EditalDeMonitoria> getTodosOsEditais() {
-		return todosOsEditais;
-	}
+    public List<Aluno> getTodosOsAlunos() {
+        return alunoDao.listarTodos();
+    }
 
-	public Coordenador getCoordenador() {
-		return coordenador;
-	}
+    public List<EditalDeMonitoria> getTodosOsEditais() {
+        return editalDao.listarTodos();
+    }
 
-	// Setters
-	public void setTodosOsAlunos(ArrayList<Aluno> todosOsAlunos) {
-		this.todosOsAlunos = todosOsAlunos;
-	}
+    // O coordenador pode ser buscado por uma regra específica ou ID fixo
+    public Coordenador getCoordenador() {
+        List<Coordenador> lista = coordenadorDao.listarTodos();
+        return lista.isEmpty() ? null : lista.get(0);
+    }
 
-	public void setTodosOsEditais(ArrayList<EditalDeMonitoria> todosOsEditais) {
-		this.todosOsEditais = todosOsEditais;
-	}
+    public Aluno recuperarAlunoPorMatricula(String numMat) {
+        return alunoDao.recuperarAlunoPorMatricula(numMat);
+    }
 
-	public void setCoordenador(Coordenador coordenador) {
-		this.coordenador = coordenador;
-	}
+    public Pessoa recuperarPessoaPorEmail(String email) {
+        return pessoaDao.recuperarPessoaPorEmail(email);
+    }
 
+    public boolean adicionarAluno(Aluno a) throws AlunoJaExisteException {
+        if (recuperarAlunoPorMatricula(a.getMatricula()) != null || recuperarPessoaPorEmail(a.getEmail()) != null) {
+            throw new AlunoJaExisteException();
+        }
 
-	public Aluno recuperarAlunoPorMatricula(String numMat) {
-		for (Aluno aluno: todosOsAlunos) {
-			if (numMat.equals(aluno.getMatricula())){
-				return aluno;
-			}
-		}
-		return null;
-	}
+        alunoDao.salvar(a);
+        return true;
+    }
 
-	public Pessoa recuperarPessoaPorEmail(String email) {
-		if (this.coordenador != null && this.coordenador.getEmail().equals(email)) {
-			return this.coordenador;
-		}
+    public boolean adicionarCoordenador(Coordenador c) {
+        coordenadorDao.salvar(c);
+        return true;
+    }
 
-		for (Aluno a : this.todosOsAlunos) {
-			if (a.getEmail().equals(email)) {
-				return a;
-			}
-		}
+    public boolean adicionarEdital(EditalDeMonitoria edital) throws EditalJaExisteException {
+        if (recuperarEditalPeloId(edital.getId()) != null) {
+            throw new EditalJaExisteException();
+        }
+        editalDao.salvar(edital);
+        return true;
+    }
 
-		return null;
-	}
+    public EditalDeMonitoria recuperarEditalPeloId(long id) {
+        try {
+            return em.createQuery("SELECT e FROM EditalDeMonitoria e WHERE e.id = :id", EditalDeMonitoria.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
-	public boolean adicionarAluno(Aluno a) throws AlunoJaExisteException, UsuarioJaExisteException {
-		for (Aluno aluno: todosOsAlunos) {
-			if (a.getMatricula().equals(aluno.getMatricula()) || (a.getEmail().equals(aluno.getEmail()))){
-				throw new AlunoJaExisteException();
-			}else if ((a.getMatricula().equals(this.coordenador.getMatricula()) || a.getEmail().equals(this.coordenador.getEmail()))) {
-				throw new UsuarioJaExisteException();
-			}
-		}
-		todosOsAlunos.add(a);
-		return true;
-	}
+    public String percorrerEditais() {
+        List<EditalDeMonitoria> editais = getTodosOsEditais();
+        if (editais.isEmpty()) return "Nenhum edital";
 
-	public boolean adicionarCoordenador(Coordenador c) {
-		setCoordenador(c);
-		return true;
-	}
+        StringBuilder resultado = new StringBuilder();
+        for (EditalDeMonitoria e : editais) {
+            resultado.append("\n").append(e.toString());
+        }
+        return resultado.toString();
+    }
 
+    public List<Disciplina> recuperarInscricoesDeUmAlunoEmUmEdital(String matriculaAluno, long idEdital) {
+        Aluno alunoEncontrado = recuperarAlunoPorMatricula(matriculaAluno);
+        EditalDeMonitoria editalEncontrado = recuperarEditalPeloId(idEdital);
 
-	public boolean adicionarEdital(EditalDeMonitoria edital) throws EditalJaExisteException {
-		for (EditalDeMonitoria e : todosOsEditais) {
-			if (e.getId() == edital.getId()) {
-				throw new EditalJaExisteException();
-			}
-		}
-
-		todosOsEditais.add(edital);
-		return true;
-	}
-
-	public String percorrerEditais() {
-		String resultado = "";
-		if (todosOsEditais.isEmpty()) {
-			return "Nenhum edital";
-		}
-		for (EditalDeMonitoria e: todosOsEditais) {
-			resultado += "\n" + e.toString();
-		}
-
-		return resultado;
-	}
-
-	public EditalDeMonitoria recuperarEditalPeloId(long id) {
-		for (EditalDeMonitoria e: todosOsEditais) {
-			if (e.getId() == id){
-				return e;
-			}
-		}
-		return null;
-	}
-
-    // Retorna as incrições de um aluno no edital
-	public ArrayList<Disciplina> recuperarInscricoesDeUmAlunoEmUmEdital(String matriculaAluno, long idEdital) {
-		Aluno alunoEncontrado = recuperarAlunoPorMatricula(matriculaAluno);
-		EditalDeMonitoria editalEncontrado = recuperarEditalPeloId(idEdital);
-
-		if (alunoEncontrado == null || editalEncontrado == null) {
-			return null;
-		}
-
+        if (alunoEncontrado == null || editalEncontrado == null) {
+            return null;
+        }
+        // A lógica de busca de inscrições agora deve ser delegada ao Edital ou um InscricaoDAO
         return editalEncontrado.getGerenciador().getDisciplinasPorAluno(matriculaAluno);
-	}
+    }
 }
