@@ -1,7 +1,7 @@
 package utils;
 
 import java.io.FileOutputStream;
-import java.util.ArrayList;
+import java.util.List; // IMPORTANTE: Trocamos ArrayList por List por conta do JPA
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
@@ -9,7 +9,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import models.Disciplina;
 import models.EditalDeMonitoria;
-import models.Inscricao; // NOVA ALTERAÇÃO: Importação para suportar o novo modelo
+import models.Inscricao;
 
 public class GeradorDeRelatorio {
 
@@ -35,23 +35,27 @@ public class GeradorDeRelatorio {
                 doc.add(new Paragraph("Disciplina: " + d.getNome()));
                 doc.add(new Paragraph("-----------------------------"));
 
-                // NOVA ALTERAÇÃO: Fim das listas paralelas (alunos, cres, medias)
-                // Agora percorremos a lista única de inscrições da disciplina
-                ArrayList<Inscricao> inscricoes = edital.getGerenciador().getTodasAsInscricoes();
+                // NOVA ALTERAÇÃO: Pegamos a lista do banco (no edital) e usamos o gerenciador apenas para FILTRAR pela disciplina atual.
+                List<Inscricao> inscricoesDaDisciplina = edital.getGerenciador()
+                        .getInscricoesPorDisciplina(edital.getInscricoesRealizadas(), d);
 
-                for (int i = 0; i < inscricoes.size(); i++) {
-                    // Recupera o objeto unificado
-                    Inscricao insc = inscricoes.get(i);
+                // Adicionei uma validação rápida para o PDF ficar mais elegante caso não haja inscritos
+                if (inscricoesDaDisciplina.isEmpty()) {
+                    doc.add(new Paragraph("Nenhum inscrito nesta disciplina."));
+                } else {
+                    for (int i = 0; i < inscricoesDaDisciplina.size(); i++) {
+                        // Recupera o objeto da lista filtrada
+                        Inscricao insc = inscricoesDaDisciplina.get(i);
 
-                    // NOVA ALTERAÇÃO: Cálculo da pontuação extraído diretamente do objeto Inscricao
-                    double cre = insc.getCre();
-                    double media = insc.getMedia();
+                        double cre = insc.getCre();
+                        double media = insc.getMedia();
 
-                    double pont = (cre * pesoCRE) + (media * pesoMedia);
-                    String pontStr = String.format("%.2f", pont);
+                        double pont = (cre * pesoCRE) + (media * pesoMedia);
+                        String pontStr = String.format("%.2f", pont);
 
-                    // Acessa o nome do candidato através da associação na Inscrição
-                    doc.add(new Paragraph((i + 1) + "º  - " + insc.getCandidato().getNome() + "   | Pontuação: " + pontStr));
+                        // Acessa o nome do candidato através da associação na Inscrição
+                        doc.add(new Paragraph((i + 1) + "º  - " + insc.getCandidato().getNome() + "   | Pontuação: " + pontStr));
+                    }
                 }
 
                 doc.add(new Paragraph(" ")); // Espaçamento entre as disciplinas

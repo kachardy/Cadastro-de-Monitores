@@ -3,7 +3,7 @@ package views;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.List; // CORREÇÃO: Importação atualizada para a interface List do Java
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -74,7 +74,8 @@ public class TelaResultadoEdital extends JFrame {
 
         for (Disciplina d : edital.getTodasAsDisciplinas()) {
 
-            ArrayList<Inscricao> inscricoes = edital.getGerenciador().getInscricoesPorDisciplina(d);
+            // CORREÇÃO: Usamos List e passamos a lista oficial de inscrições do Edital como primeiro parâmetro
+            List<Inscricao> inscricoes = edital.getGerenciador().getInscricoesPorDisciplina(edital.getInscricoesRealizadas(), d);
 
             for (int i = 0; i < inscricoes.size(); i++) {
                 Inscricao insc = inscricoes.get(i);

@@ -89,7 +89,8 @@ public class CentralDeInformacoes {
         if (alunoEncontrado == null || editalEncontrado == null) {
             return null;
         }
-        // A lógica de busca de inscrições agora deve ser delegada ao Edital ou um InscricaoDAO
-        return editalEncontrado.getGerenciador().getDisciplinasPorAluno(matriculaAluno);
+        // Enviamos a lista que está no edital para o gerenciador filtrar
+        return editalEncontrado.getGerenciador().getDisciplinasPorAluno(
+                editalEncontrado.getInscricoesRealizadas(), matriculaAluno);
     }
 }

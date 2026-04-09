@@ -26,12 +26,20 @@ public class EditalDeMonitoria implements Serializable {
     private boolean resultadoCalculado = false;
     private boolean resultadoFinal = false;
 
-    // O Edital possui as vagas e o Gerenciador para as Inscrições)
-    @OneToMany
-    @JoinColumn(name = "disciplina_id")
+    // Adicionado cascade pra quando salvar o edital, salvar o catálogo de disciplinas junto.
+    // O edital_id vai lá pra tabela de disciplinas, garantindo a chave estrangeira.
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "edital_id")
     private List<Disciplina> todasAsDisciplinas = new ArrayList<>();
 
-    @Embedded
+    // Nossa lista oficial de inscrições. É isso aqui que o JPA vai olhar pra persistir no banco.
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "edital_id")
+    private List<Inscricao> inscricoesRealizadas = new ArrayList<>();
+
+    // Coloquei @Transient pra avisar o Hibernate pra ignorar isso na hora de criar as tabelas.
+    // O gerenciador agora não guarda mais estado (listas), funciona só como um motor de cálculo.
+    @Transient
     private GerenciadorDeInscricoes gerenciador = new GerenciadorDeInscricoes();
 
     public EditalDeMonitoria(long id, String numeroEdital, LocalDate dataInicio, LocalDate dataFim,
@@ -55,7 +63,7 @@ public class EditalDeMonitoria implements Serializable {
      */
     public EditalDeMonitoria clonar() {
         EditalDeMonitoria novoEdital = new EditalDeMonitoria(
-                System.currentTimeMillis(), // Novo ID
+                System.currentTimeMillis(), // Novo ID temporário
                 "Cópia de " + this.numeroEdital,
                 this.dataInicio,
                 this.dataFim,
@@ -64,7 +72,7 @@ public class EditalDeMonitoria implements Serializable {
                 this.pesoMedia
         );
 
-        // Clona as disciplinas como objetos novos (sem vínculos antigos)
+        // Clona as disciplinas limpando os vínculos antigos pra não dar conflito no banco
         for (Disciplina d : this.todasAsDisciplinas) {
             novoEdital.adicionarDisciplina(new Disciplina(
                     d.getNome(),
@@ -75,31 +83,36 @@ public class EditalDeMonitoria implements Serializable {
         return novoEdital;
     }
 
-    // Delega a inscrição para o Gerenciador de Serviços
+    // Registra a inscrição na nossa lista oficial (que vai pro banco)
     public boolean inscrever(Aluno aluno, Disciplina disc, double cre, double media) {
-        if (jaAcabou() || resultadoCalculado) {
-            return false; // Regra: Não inscreve se o prazo acabou ou ranking já saiu
-        }
+        if (jaAcabou() || resultadoCalculado) return false;
 
         Inscricao nova = new Inscricao(aluno, disc, cre, media);
-        gerenciador.realizarInscricao(nova);
+
+        // Passa a lista atual pro gerenciador validar se o cara já não tá inscrito nessa disciplina
+        if (!gerenciador.validarNovaInscricao(this.inscricoesRealizadas, nova)) {
+            return false;
+        }
+
+        this.inscricoesRealizadas.add(nova);
         return true;
     }
 
     // Percorre o catálogo de disciplinas e solicita ao Gerenciador que ordene cada ranking.
     public void calcularResultadoFinal() {
         for (Disciplina d : todasAsDisciplinas) {
-            gerenciador.ordenarRanking(d, pesoCRE, pesoMedia);
+            // O gerenciador precisa receber a nossa lista do banco pra conseguir puxar as notas e ordenar
+            gerenciador.ordenarRanking(this.inscricoesRealizadas, d, pesoCRE, pesoMedia);
         }
         this.resultadoCalculado = true;
     }
 
-    // Remove o aluno do processo seletivo através do Gerenciador.
+    // Remove o aluno do processo seletivo
     public boolean desistirDoEdital(Aluno aluno) {
-        if (resultadoFinal) {
-            return false; // Regra: Após a homologação final, não há mais desistência
-        }
-        gerenciador.removerTodasInscricoesDoAluno(aluno);
+        if (resultadoFinal) return false;
+
+        // Remove direto da lista que vai pro banco usando lambda, bem mais limpo e o gerenciador não precisa mais fazer isso
+        this.inscricoesRealizadas.removeIf(inscricao -> inscricao.getCandidato().equals(aluno));
         return true;
     }
 
@@ -187,6 +200,14 @@ public class EditalDeMonitoria implements Serializable {
 
     public void adicionarDisciplina(Disciplina d) {
         this.todasAsDisciplinas.add(d);
+    }
+
+    public List<Inscricao> getInscricoesRealizadas() {
+        return inscricoesRealizadas;
+    }
+
+    public void setInscricoesRealizadas(List<Inscricao> inscricoesRealizadas) {
+        this.inscricoesRealizadas = inscricoesRealizadas;
     }
 
     public GerenciadorDeInscricoes getGerenciador() {

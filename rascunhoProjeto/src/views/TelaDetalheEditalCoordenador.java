@@ -3,14 +3,14 @@ package views;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.List; // CORREÇÃO: Importação atualizada para a interface List do Java
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import models.Aluno;
 import models.Disciplina;
 import models.EditalDeMonitoria;
-import models.Inscricao; // NOVA ALTERAÇÃO: Importação da classe Inscricao
+import models.Inscricao;
 
 public class TelaDetalheEditalCoordenador extends JFrame {
 
@@ -28,7 +28,6 @@ public class TelaDetalheEditalCoordenador extends JFrame {
     private JLabel labelStatus;
 
     public TelaDetalheEditalCoordenador(EditalDeMonitoria edital) {
-        // ... (O construtor e a interface gráfica permanecem idênticos)
         setTitle("Detalhes do Edital " + edital.getNumeroEdital());
         setSize(700, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -138,7 +137,8 @@ public class TelaDetalheEditalCoordenador extends JFrame {
         modeloTabela.setRowCount(0);
 
         for (Disciplina d : edital.getTodasAsDisciplinas()) {
-            ArrayList<Inscricao> inscricoes = edital.getGerenciador().getInscricoesPorDisciplina(d);
+            // CORREÇÃO: Usamos a interface List e passamos a lista oficial de inscrições do Edital
+            List<Inscricao> inscricoes = edital.getGerenciador().getInscricoesPorDisciplina(edital.getInscricoesRealizadas(), d);
 
             for (Inscricao inscricao : inscricoes) {
                 Aluno a = inscricao.getCandidato();
