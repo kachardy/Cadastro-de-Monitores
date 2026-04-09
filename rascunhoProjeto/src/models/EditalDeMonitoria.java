@@ -28,12 +28,16 @@ public class EditalDeMonitoria implements Serializable {
 
     // Adicionado cascade pra quando salvar o edital, salvar o catálogo de disciplinas junto.
     // O edital_id vai lá pra tabela de disciplinas, garantindo a chave estrangeira.
-    @OneToMany(cascade = CascadeType.ALL)
+    // Adicionamos orphanRemoval = true para garantir que as disciplinas removidas do edital
+    // sejam apagadas do banco de dados definitivamente.
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "edital_id")
     private List<Disciplina> todasAsDisciplinas = new ArrayList<>();
 
     // Nossa lista oficial de inscrições. É isso aqui que o JPA vai olhar pra persistir no banco.
-    @OneToMany(cascade = CascadeType.ALL)
+    // Adicionamos orphanRemoval = true para garantir a eliminação real das inscrições
+    // quando um aluno desiste do processo seletivo.
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "edital_id")
     private List<Inscricao> inscricoesRealizadas = new ArrayList<>();
 
