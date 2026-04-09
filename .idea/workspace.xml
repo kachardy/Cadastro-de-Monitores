@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="Continuei a migração para JPA, ajuste nas views e refatoração do gerenciador&quot;.">
+    <list default="true" id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="Otimização de Armazenamento com Remoção de Órfãos (orphanRemoval)">
+      <change afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/EditalDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/EditalDeMonitoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/EditalDeMonitoria.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/CentralDeInformacoes.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/CentralDeInformacoes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/EditalDeMonitoria.class" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/EditalDeMonitoria.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,7 +139,15 @@
       <option name="project" value="LOCAL" />
       <updated>1775697819561</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Otimização de Armazenamento com Remoção de Órfãos (orphanRemoval)">
+      <option name="closed" value="true" />
+      <created>1775701181574</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1775701181574</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -150,6 +160,7 @@
     <MESSAGE value="Login e Cadastro de Aluno/Coordenador atualizados e corrigidos" />
     <MESSAGE value="Utilizando a classe Validador para verificar os campos de Login e Cadastro" />
     <MESSAGE value="Continuei a migração para JPA, ajuste nas views e refatoração do gerenciador&quot;." />
-    <option name="LAST_COMMIT_MESSAGE" value="Continuei a migração para JPA, ajuste nas views e refatoração do gerenciador&quot;." />
+    <MESSAGE value="Otimização de Armazenamento com Remoção de Órfãos (orphanRemoval)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Otimização de Armazenamento com Remoção de Órfãos (orphanRemoval)" />
   </component>
 </project>

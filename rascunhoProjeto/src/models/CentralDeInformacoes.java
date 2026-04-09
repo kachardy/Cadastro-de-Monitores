@@ -1,6 +1,7 @@
 package models;
 
 import dao.AlunoDao;
+import dao.EditalDao;
 import dao.GenericDao;
 import dao.PessoaDao;
 import erros.AlunoJaExisteException;
@@ -14,8 +15,10 @@ public class CentralDeInformacoes {
     private EntityManager em = Persistencia.getEntityManager();
     private AlunoDao alunoDao = new AlunoDao(em, Aluno.class);
     private PessoaDao pessoaDao = new PessoaDao(em, Pessoa.class);
-    private GenericDao<EditalDeMonitoria> editalDao = new GenericDao<>(em, EditalDeMonitoria.class);
+    // Agora usamos o DAO especializado que acabamos de criar
+    private EditalDao editalDao = new EditalDao(em);
     private GenericDao<Coordenador> coordenadorDao = new GenericDao<>(em, Coordenador.class);
+
 
     public List<Aluno> getTodosOsAlunos() {
         return alunoDao.listarTodos();
@@ -62,13 +65,8 @@ public class CentralDeInformacoes {
     }
 
     public EditalDeMonitoria recuperarEditalPeloId(long id) {
-        try {
-            return em.createQuery("SELECT e FROM EditalDeMonitoria e WHERE e.id = :id", EditalDeMonitoria.class)
-                    .setParameter("id", id)
-                    .getSingleResult();
-        } catch (Exception e) {
-            return null;
-        }
+        // Agora a Central apenas delega o trabalho pesado da busca para o nosso EditalDao
+        return editalDao.recuperarEditalPeloId(id);
     }
 
     public String percorrerEditais() {
