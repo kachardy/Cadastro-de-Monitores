@@ -9,16 +9,18 @@ import erros.EditalJaExisteException;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-// Essa classe é um Facade
+// Essa classe funciona como o nosso Facade (Fachada) para o sistema.
 public class CentralDeInformacoes {
 
     private EntityManager em = Persistencia.getEntityManager();
+
+    // Instancio os DAOs passando a conexão e a classe que eles vão gerenciar.
     private AlunoDao alunoDao = new AlunoDao(em, Aluno.class);
     private PessoaDao pessoaDao = new PessoaDao(em, Pessoa.class);
-    // Agora usamos o DAO especializado que acabamos de criar
     private EditalDao editalDao = new EditalDao(em);
     private GenericDao<Coordenador> coordenadorDao = new GenericDao<>(em, Coordenador.class);
 
+    // --- MÉTODOS DE BUSCA (READ) ---
 
     public List<Aluno> getTodosOsAlunos() {
         return alunoDao.listarTodos();
@@ -28,7 +30,6 @@ public class CentralDeInformacoes {
         return editalDao.listarTodos();
     }
 
-    // O coordenador pode ser buscado por uma regra específica ou ID fixo
     public Coordenador getCoordenador() {
         List<Coordenador> lista = coordenadorDao.listarTodos();
         return lista.isEmpty() ? null : lista.get(0);
@@ -42,11 +43,16 @@ public class CentralDeInformacoes {
         return pessoaDao.recuperarPessoaPorEmail(email);
     }
 
+    public EditalDeMonitoria recuperarEditalPeloId(long id) {
+        return editalDao.recuperarEditalPeloId(id);
+    }
+
+    // --- MÉTODOS DE PERSISTÊNCIA---
+
     public boolean adicionarAluno(Aluno a) throws AlunoJaExisteException {
         if (recuperarAlunoPorMatricula(a.getMatricula()) != null || recuperarPessoaPorEmail(a.getEmail()) != null) {
             throw new AlunoJaExisteException();
         }
-
         alunoDao.salvar(a);
         return true;
     }
@@ -56,6 +62,9 @@ public class CentralDeInformacoes {
         return true;
     }
 
+    // Mantenho este metodo para o cadastro inicial, pois ele valida se o Edital já existe
+    // e evita duplicidade acidental na hora da criação.
+
     public boolean adicionarEdital(EditalDeMonitoria edital) throws EditalJaExisteException {
         if (recuperarEditalPeloId(edital.getId()) != null) {
             throw new EditalJaExisteException();
@@ -64,10 +73,15 @@ public class CentralDeInformacoes {
         return true;
     }
 
-    public EditalDeMonitoria recuperarEditalPeloId(long id) {
-        // Agora a Central apenas delega o trabalho pesado da busca para o nosso EditalDao
-        return editalDao.recuperarEditalPeloId(id);
+    // NOVO METODO: Este é o nosso "Smart Save".
+    // Como o mEtodo salvar() do GenericDao agora usa o merge(), este metodo serve
+    // tanto para salvar um edital novo quanto para atualizar um que já existe.
+    // É o metodo que vou usar nos Controllers para confirmar inscrições e resultados.
+    public void salvarEdital(EditalDeMonitoria edital) {
+        editalDao.salvar(edital);
     }
+
+    // --- MÉTODOS DE LÓGICA E RELATÓRIOS ---
 
     public String percorrerEditais() {
         List<EditalDeMonitoria> editais = getTodosOsEditais();
@@ -87,8 +101,14 @@ public class CentralDeInformacoes {
         if (alunoEncontrado == null || editalEncontrado == null) {
             return null;
         }
-        // Enviamos a lista que está no edital para o gerenciador filtrar
+
+        // Uso o gerenciador interno do edital para filtrar o que eu preciso.
         return editalEncontrado.getGerenciador().getDisciplinasPorAluno(
                 editalEncontrado.getInscricoesRealizadas(), matriculaAluno);
+    }
+
+    public List<Aluno> buscarAlunosPorNome(String nome) {
+        // A Central apenas pede para o DAO fazer a busca filtrada no banco
+        return alunoDao.buscarAlunosPorNome(nome);
     }
 }

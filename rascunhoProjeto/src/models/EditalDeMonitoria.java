@@ -14,7 +14,7 @@ public class EditalDeMonitoria implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
+    @Column(unique = true)
     private String numeroEdital;
     private LocalDate dataInicio;
     private LocalDate dataFim;

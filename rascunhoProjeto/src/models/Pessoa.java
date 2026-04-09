@@ -2,6 +2,7 @@ package models;
 
 import javax.persistence.*;
 
+
 @Entity
 @Table(name = "pessoas_tb")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -10,7 +11,9 @@ public abstract class Pessoa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+    @Column(unique = true)
     private String matricula;
+    @Column(unique = true)
     private String email;
     private String senha;
 

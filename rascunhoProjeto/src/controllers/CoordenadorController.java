@@ -9,9 +9,7 @@ import java.util.ArrayList;
 public class CoordenadorController {
     private Coordenador coord;
     private CentralDeInformacoes central;
-    // REMOVIDO: private Persistencia persistencia;
 
-    // Construtor atualizado: removido o parâmetro Persistencia
     public CoordenadorController(Coordenador coord, CentralDeInformacoes central) {
         this.coord = coord;
         this.central = central;
@@ -22,13 +20,11 @@ public class CoordenadorController {
 
         tela.adicionarAcaoCadastrarEdital(e -> {
             tela.dispose();
-            // Removido 'persistencia' da chamada
             new EditalController(coord, central).exibirCadastro(null);
         });
 
         tela.adicionarAcaoListarEditais(e -> {
             tela.dispose();
-            // Removido 'persistencia' da chamada
             new EditalController(coord, central).exibirListagem();
         });
 
@@ -39,7 +35,6 @@ public class CoordenadorController {
 
         tela.adicionarAcaoSair(e -> {
             tela.dispose();
-            // Removido 'persistencia' da chamada
             new AuthController(central).iniciar();
         });
 
@@ -48,26 +43,26 @@ public class CoordenadorController {
 
     private void exibirListagemAlunos() {
         TelaListaAlunos tela = new TelaListaAlunos();
+        // Começo a tela listando todo mundo normalmente
         tela.preencherTabela(central.getTodosOsAlunos());
 
-        // Lógica de Busca/Filtro
+        // Lógica de Busca/Filtro otimizada para o Banco de Dados
         tela.adicionarAcaoBuscar(e -> {
-            String filtro = tela.getTextoFiltro().toLowerCase();
+            String filtro = tela.getTextoFiltro();
 
             if (filtro.isEmpty()) {
+                // Se o campo estiver vazio, mostro a lista completa
                 tela.preencherTabela(central.getTodosOsAlunos());
             } else {
-                List<Aluno> filtrados = new ArrayList<>();
-                for (Aluno a : central.getTodosOsAlunos()) {
-                    if (a.getNome().toLowerCase().contains(filtro)) { // Troquei para contains para ser mais flexível
-                        filtrados.add(a);
-                    }
-                }
+                // Agora eu não faço mais o loop 'for' aqui no Controller.
+                // Eu peço para a Central (que pede para o AlunoDao) buscar direto no SQLite
+                // usando o comando LIKE, o que é muito mais performático.
+                List<Aluno> filtrados = central.buscarAlunosPorNome(filtro);
                 tela.preencherTabela(filtrados);
             }
         });
 
-        // Lógica para Ver/Editar Perfil do Aluno selecionado
+        // Lógica para Ver Perfil do Aluno selecionado
         tela.adicionarAcaoPerfil(e -> {
             String mat = tela.getMatriculaAlunoSelecionado();
 
@@ -76,7 +71,7 @@ public class CoordenadorController {
 
                 if (alunoEncontrado != null) {
                     tela.dispose();
-                    // Removido 'persistencia' da chamada
+                    // Abro o perfil do aluno em modo leitura para o coordenador visualizar
                     new AlunoController(alunoEncontrado, central).exibirPerfil(true, this);
                 }
             } else {

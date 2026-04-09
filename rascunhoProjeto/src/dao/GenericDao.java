@@ -16,25 +16,27 @@ public class GenericDao<T> {
         return this.em;
     }
 
+    // Unifiquei o salvar e o atualizar aqui. O merge() é esperto:
+    // se o objeto não existe no banco, ele cria (INSERT); se já existe, ele atualiza (UPDATE).
     public void salvar(T entidade) {
         try {
             em.getTransaction().begin();
-            em.persist(entidade);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-        }
-    }
-
-    public void atualizar(T entidade) {
-        try {
-            em.getTransaction().begin();
+            // Agora uso o merge como meu "salvamento padrão" para evitar erros de
+            // objeto duplicado ou objeto destacado (detached) na memória.
             em.merge(entidade);
             em.getTransaction().commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
+            // Se der qualquer problema no banco (como uma matrícula duplicada),
+            // eu dou o rollback para não deixar a transação "pendurada" ou corromper os dados.
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            e.printStackTrace(); // Deixo o erro no console pra eu conseguir debugar depois.
         }
     }
+
+    // Removi o método atualizar() daqui porque o salvar() com merge já resolve tudo.
+    // Menos código para manter e menos chance de erro nos Controllers.
 
     public void removerPorId(Long id) {
         try {
@@ -45,12 +47,15 @@ public class GenericDao<T> {
             }
             em.getTransaction().commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            e.printStackTrace();
         }
     }
 
+    // Busca simples de todos os registros da tabela usando o nome da classe.
     public List<T> listarTodos() {
         return em.createQuery("SELECT e FROM " + classe.getSimpleName() + " e", classe).getResultList();
     }
-
 }

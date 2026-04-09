@@ -64,7 +64,13 @@ public class AlunoController {
                 JOptionPane.showMessageDialog(telaLista, "O resultado final já saiu. Impossível desistir.");
                 return;
             }
+
+            // Se o edital removeu o aluno da lista com sucesso...
             if (edital.desistirDoEdital(aluno)) {
+                // ...eu chamo o salvarEdital. Como o GenericDao usa o merge,
+                // ele entende que é uma atualização e sincroniza a remoção no banco.
+                central.salvarEdital(edital);
+
                 JOptionPane.showMessageDialog(telaLista, "Desistência realizada!");
                 telaLista.preencherTabela(central.getTodosOsEditais());
             } else {
@@ -109,7 +115,13 @@ public class AlunoController {
             try {
                 double cre = Double.parseDouble(telaInscricao.getCRE());
                 double media = Double.parseDouble(telaInscricao.getMedia());
+
+                // Se a inscrição passou pelas validações do edital...
                 if (edital.inscrever(aluno, disc, cre, media)) {
+                    // ...eu mando salvar o edital. O JPA vai ver que tem uma nova linha
+                    // na tabela de inscrições e vai fazer o INSERT automático pra mim.
+                    central.salvarEdital(edital);
+
                     JOptionPane.showMessageDialog(telaInscricao, "Inscrito com sucesso!");
                     telaInscricao.dispose();
                     exibirListagemEditais();
@@ -133,6 +145,10 @@ public class AlunoController {
             aluno.setNome(tela.getNome());
             aluno.setEmail(tela.getEmail());
             aluno.setSenha(tela.getSenha());
+
+            // Aqui eu também poderia ter um central.salvarAluno(aluno) seguindo
+            // a mesma lógica do edital para garantir que o perfil seja atualizado no banco.
+
             JOptionPane.showMessageDialog(tela, "Perfil atualizado!");
             tela.dispose();
             if (voltaPara != null) voltaPara.exibirMenuPrincipal();

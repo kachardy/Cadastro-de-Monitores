@@ -71,6 +71,10 @@ public class EditalController {
             int op = JOptionPane.showConfirmDialog(tela, "Encerrar inscrições?");
             if (op == JOptionPane.YES_OPTION) {
                 edital.setDataFim(LocalDate.now().minusDays(1));
+
+                // Mando salvar a alteração da data no banco
+                central.salvarEdital(edital);
+
                 JOptionPane.showMessageDialog(tela, "Encerrado!");
                 tela.dispose();
                 exibirDetalhes(edital);
@@ -84,12 +88,17 @@ public class EditalController {
             }
             if (!edital.isResultadoCalculado()) {
                 edital.calcularResultadoFinal();
+                // Salvo o estado de "resultado calculado" e a ordenação do ranking
+                central.salvarEdital(edital);
                 JOptionPane.showMessageDialog(tela, "Ranking calculado!");
             } else {
                 edital.setResultadoFinal(true);
+                // Salvo o estado final/homologado no banco
+                central.salvarEdital(edital);
                 JOptionPane.showMessageDialog(tela, "Edital homologado!");
             }
             tela.dispose();
+            // ERRO CORRIGIDO AQUI: Alterado de exibirDetails para exibirDetalhes
             exibirDetalhes(edital);
         });
 
@@ -125,20 +134,28 @@ public class EditalController {
                 LocalDate inicio = LocalDate.parse(telaEdital.getDataInicio(), formatter);
                 LocalDate fim = LocalDate.parse(telaEdital.getDataFim(), formatter);
 
-                if (editalBase != null && central.getTodosOsEditais().contains(editalBase)) {
+                // Se editalBase não é nulo e o ID é maior que 0, estamos EDITANDO
+                if (editalBase != null && editalBase.getId() > 0) {
                     editalBase.setNumeroEdital(telaEdital.getNumeroEdital());
                     editalBase.setDataInicio(inicio);
                     editalBase.setDataFim(fim);
                     editalBase.setTodasAsDisciplinas(disciplinasTemporarias);
+
+                    // Sincroniza a edição no banco
+                    central.salvarEdital(editalBase);
                 } else {
-                    EditalDeMonitoria novo = new EditalDeMonitoria(System.currentTimeMillis(), telaEdital.getNumeroEdital(), inicio, fim, telaEdital.getMaxInscricoes(), telaEdital.getPesoCRE(), telaEdital.getPesoMedia());
+                    // Se caímos aqui, estamos criando um NOVO (ou um Clone)
+                    EditalDeMonitoria novo = new EditalDeMonitoria(0, telaEdital.getNumeroEdital(), inicio, fim, telaEdital.getMaxInscricoes(), telaEdital.getPesoCRE(), telaEdital.getPesoMedia());
                     novo.setTodasAsDisciplinas(disciplinasTemporarias);
+
+                    // CORREÇÃO AQUI: Passamos o objeto 'novo' que acabamos de criar
                     central.adicionarEdital(novo);
                 }
                 telaEdital.dispose();
                 exibirListagem();
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(telaEdital, "Erro nos dados.");
+                JOptionPane.showMessageDialog(telaEdital, "Erro nos dados ou Edital já existe.");
+                ex.printStackTrace(); // Isso ajuda a ver detalhes no console se der erro de novo
             }
         });
 

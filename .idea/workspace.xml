@@ -4,11 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="Otimização de Armazenamento com Remoção de Órfãos (orphanRemoval)">
-      <change afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/EditalDao.java" afterDir="false" />
+    <list default="true" id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="Especialização da Camada de Persistência: Implementação do EditalDao">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/AlunoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/AlunoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/CoordenadorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/CoordenadorController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/EditalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/EditalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/dao/AlunoDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/AlunoDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/dao/GenericDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/GenericDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/CentralDeInformacoes.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/CentralDeInformacoes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/EditalDeMonitoria.class" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/EditalDeMonitoria.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/EditalDeMonitoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/EditalDeMonitoria.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/Pessoa.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/Pessoa.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,7 +152,15 @@
       <option name="project" value="LOCAL" />
       <updated>1775701181574</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Especialização da Camada de Persistência: Implementação do EditalDao">
+      <option name="closed" value="true" />
+      <created>1775702735058</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1775702735058</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -161,6 +174,7 @@
     <MESSAGE value="Utilizando a classe Validador para verificar os campos de Login e Cadastro" />
     <MESSAGE value="Continuei a migração para JPA, ajuste nas views e refatoração do gerenciador&quot;." />
     <MESSAGE value="Otimização de Armazenamento com Remoção de Órfãos (orphanRemoval)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Otimização de Armazenamento com Remoção de Órfãos (orphanRemoval)" />
+    <MESSAGE value="Especialização da Camada de Persistência: Implementação do EditalDao" />
+    <option name="LAST_COMMIT_MESSAGE" value="Especialização da Camada de Persistência: Implementação do EditalDao" />
   </component>
 </project>
