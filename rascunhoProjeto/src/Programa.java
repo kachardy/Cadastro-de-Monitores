@@ -1,5 +1,5 @@
 import controllers.AuthController;
-import models.CentralDeInformacoes;
+import services.CentralDeInformacoes;
 
 public class Programa {
 

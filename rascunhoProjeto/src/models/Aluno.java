@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "alunos_tb")
+@DiscriminatorValue("ALUNO")
 public class Aluno extends Pessoa {
 
     public Aluno() {}

@@ -3,8 +3,8 @@ package controllers;
 import java.util.List;
 import javax.swing.JOptionPane;
 import models.*;
+import services.CentralDeInformacoes;
 import views.*;
-import java.util.ArrayList;
 
 public class CoordenadorController {
     private Coordenador coord;

@@ -5,7 +5,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "pessoas_tb")
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo_usuario", discriminatorType = DiscriminatorType.STRING)// Single-Table pois minimiza trabalho, menos chance de bugs
 public abstract class Pessoa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

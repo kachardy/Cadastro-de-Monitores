@@ -1,10 +1,10 @@
 package models;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "coordenador_tb")
+@DiscriminatorValue("COORDENADOR")
 public class Coordenador extends Pessoa{
     public Coordenador () {
     }

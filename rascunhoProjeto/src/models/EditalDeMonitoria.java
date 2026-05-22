@@ -1,5 +1,6 @@
 package models;
 
+import services.GerenciadorDeInscricoes;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;

@@ -2,6 +2,7 @@ package controllers;
 
 import javax.swing.JOptionPane;
 import models.*;
+import services.CentralDeInformacoes;
 import utils.Validador;
 import views.TelaCadastroAluno;
 import views.TelaCadastroCoordenador;

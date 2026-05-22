@@ -2,6 +2,7 @@ package controllers;
 
 import javax.swing.JOptionPane;
 import models.*;
+import services.CentralDeInformacoes;
 import views.*;
 
 public class AlunoController {

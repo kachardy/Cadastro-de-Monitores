@@ -16,27 +16,28 @@ public class GenericDao<T> {
         return this.em;
     }
 
-    // Unifiquei o salvar e o atualizar aqui. O merge() é esperto:
-    // se o objeto não existe no banco, ele cria (INSERT); se já existe, ele atualiza (UPDATE).
-    public void salvar(T entidade) {
+    // Agora retorna a entidade gerenciada (T)
+    public T salvar(T entidade) {
         try {
             em.getTransaction().begin();
-            // Agora uso o merge como meu "salvamento padrão" para evitar erros de
-            // objeto duplicado ou objeto destacado (detached) na memória.
-            em.merge(entidade);
+            // O merge retorna a instância gerenciada. Salvamos ela na variável.
+            T entidadeGerenciada = em.merge(entidade);
             em.getTransaction().commit();
+            return entidadeGerenciada; // Retorna o objeto pronto para uso seguro
         } catch (Exception e) {
-            // Se der qualquer problema no banco (como uma matrícula duplicada),
-            // eu dou o rollback para não deixar a transação "pendurada" ou corromper os dados.
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            e.printStackTrace(); // Deixo o erro no console pra eu conseguir debugar depois.
+            e.printStackTrace();
+            // ADICIONADO: Lança a exceção para que o sistema saiba que o salvamento falhou
+            throw new RuntimeException("Erro ao salvar/atualizar registro.", e);
         }
     }
 
-    // Removi o método atualizar() daqui porque o salvar() com merge já resolve tudo.
-    // Menos código para manter e menos chance de erro nos Controllers.
+    // Método essencial para buscar um único registro pelo ID
+    public T buscarPorId(Long id) {
+        return em.find(classe, id);
+    }
 
     public void removerPorId(Long id) {
         try {
@@ -51,10 +52,10 @@ public class GenericDao<T> {
                 em.getTransaction().rollback();
             }
             e.printStackTrace();
+            throw new RuntimeException("Erro ao remover registro.", e); // Lança o erro para a frente
         }
     }
 
-    // Busca simples de todos os registros da tabela usando o nome da classe.
     public List<T> listarTodos() {
         return em.createQuery("SELECT e FROM " + classe.getSimpleName() + " e", classe).getResultList();
     }

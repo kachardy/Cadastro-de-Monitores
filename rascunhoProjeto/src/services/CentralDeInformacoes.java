@@ -1,4 +1,4 @@
-package models;
+package services;
 
 import dao.AlunoDao;
 import dao.EditalDao;
@@ -6,6 +6,8 @@ import dao.GenericDao;
 import dao.PessoaDao;
 import erros.AlunoJaExisteException;
 import erros.EditalJaExisteException;
+import models.*;
+
 import javax.persistence.EntityManager;
 import java.util.List;
 

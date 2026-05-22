@@ -1,7 +1,10 @@
-package models;
+package services;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import models.Disciplina;
+import models.Inscricao;
 import utils.ComparadorDeNotas;
 
 // Removemos as anotações @Embeddable, @Entity ou @Table.
