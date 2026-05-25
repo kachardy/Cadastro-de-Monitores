@@ -1,21 +1,15 @@
 package models;
 
 import services.GerenciadorDeInscricoes;
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "editais_tb")
 public class EditalDeMonitoria implements Serializable {
 
     // Atributos de Identificação e Configuração
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(unique = true)
     private String numeroEdital;
     private LocalDate dataInicio;
     private LocalDate dataFim;
@@ -31,20 +25,15 @@ public class EditalDeMonitoria implements Serializable {
     // O edital_id vai lá pra tabela de disciplinas, garantindo a chave estrangeira.
     // Adicionamos orphanRemoval = true para garantir que as disciplinas removidas do edital
     // sejam apagadas do banco de dados definitivamente.
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "edital_id")
     private List<Disciplina> todasAsDisciplinas = new ArrayList<>();
 
     // Nossa lista oficial de inscrições. É isso aqui que o JPA vai olhar pra persistir no banco.
     // Adicionamos orphanRemoval = true para garantir a eliminação real das inscrições
     // quando um aluno desiste do processo seletivo.
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "edital_id")
     private List<Inscricao> inscricoesRealizadas = new ArrayList<>();
 
     // Coloquei @Transient pra avisar o Hibernate pra ignorar isso na hora de criar as tabelas.
     // O gerenciador agora não guarda mais estado (listas), funciona só como um motor de cálculo.
-    @Transient
     private GerenciadorDeInscricoes gerenciador = new GerenciadorDeInscricoes();
 
     public EditalDeMonitoria(long id, String numeroEdital, LocalDate dataInicio, LocalDate dataFim,

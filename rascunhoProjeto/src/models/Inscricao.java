@@ -1,21 +1,13 @@
 package models;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "inscricoes_tb")
 public class Inscricao {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "aluno_id", nullable = false)
+
     private Aluno candidato;
 
-    @ManyToOne
-    @JoinColumn(name = "disciplina_id", nullable = false)
     private Disciplina disciplina;
 
     private double cre;
