@@ -1,26 +1,19 @@
 package services;
 
-import dao.AlunoDao;
-import dao.EditalDao;
-import dao.GenericDao;
-import dao.PessoaDao;
+import dao.*;
 import erros.AlunoJaExisteException;
 import erros.EditalJaExisteException;
 import models.*;
-
-import javax.persistence.EntityManager;
 import java.util.List;
 
 // Essa classe funciona como o nosso Facade (Fachada) para o sistema.
 public class CentralDeInformacoes {
 
-    private EntityManager em = Persistencia.getEntityManager();
-
-    // Instancio os DAOs passando a conexão e a classe que eles vão gerenciar.
-    private AlunoDao alunoDao = new AlunoDao(em, Aluno.class);
-    private PessoaDao pessoaDao = new PessoaDao(em, Pessoa.class);
-    private EditalDao editalDao = new EditalDao(em);
-    private GenericDao<Coordenador> coordenadorDao = new GenericDao<>(em, Coordenador.class);
+    // Usando a Factory
+    private AlunoDao alunoDao = DaoFactory.getAlunoDAO();
+    private PessoaDao pessoaDao = DaoFactory.getPessoaDAO();
+    private EditalDao editalDao = DaoFactory.getEditalDAO();
+    private GenericDao<Coordenador> coordenadorDao = DaoFactory.getDAO(Coordenador.class);
 
     // --- MÉTODOS DE BUSCA (READ) ---
 
