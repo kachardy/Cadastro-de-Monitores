@@ -4,27 +4,30 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+// Padrão Singleton
 public class Persistencia {
 
-    // A fábrica de conexões é estática para garantir o Singleton (instância única)
+    // Atributo estático privado que guarda a única instância da fábrica
     private static EntityManagerFactory emf;
 
-    static {
-        try {
-            emf = Persistence.createEntityManagerFactory("monitoriaPU");
-        } catch (Exception e) {
-            System.err.println("Erro ao inicializar a fábrica de persistência: " + e.getMessage());
-        }
-    }
+    private Persistencia() {}
 
-    public static EntityManager getEntityManager() {
+    // O synchronized garante que uma ou mais threads não criem EntityManager diferentes
+    public static synchronized EntityManager getEntityManager() {
         if (emf == null) {
-            throw new IllegalStateException("EntityManagerFactory não foi inicializada.");
+            try {
+                // Criação tardia apenas na primeira vez que for necessário
+                emf = Persistence.createEntityManagerFactory("monitoriaPU");
+            } catch (Exception e) {
+                System.err.println("Erro ao inicializar a fábrica de persistência: " + e.getMessage());
+                throw new RuntimeException(e);
+            }
         }
         return emf.createEntityManager();
     }
 
-    public static void encerrar() {
+    // Método para fechar a fábrica graciosamente no encerramento do programa
+    public static void fecharFabrica() {
         if (emf != null && emf.isOpen()) {
             emf.close();
         }
