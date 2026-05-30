@@ -1,5 +1,6 @@
 package models;
 
+import lombok.Getter;
 import services.GerenciadorDeInscricoes;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -83,6 +84,8 @@ public class EditalDeMonitoria implements Serializable {
 
         Inscricao nova = new Inscricao(aluno, disc, cre, media);
 
+        nova.setEdital(this);
+
         // Passa a lista atual pro gerenciador validar se o cara já não tá inscrito nessa disciplina
         if (!gerenciador.validarNovaInscricao(this.inscricoesRealizadas, nova)) {
             return false;
@@ -118,6 +121,10 @@ public class EditalDeMonitoria implements Serializable {
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getNumeroEdital() {
@@ -188,7 +195,7 @@ public class EditalDeMonitoria implements Serializable {
         return todasAsDisciplinas;
     }
 
-    public void setTodasAsDisciplinas(ArrayList<Disciplina> lista) {
+    public void setTodasAsDisciplinas(List<Disciplina> lista) {
         this.todasAsDisciplinas = lista;
     }
 
@@ -206,5 +213,11 @@ public class EditalDeMonitoria implements Serializable {
 
     public GerenciadorDeInscricoes getGerenciador() {
         return gerenciador;
+    }
+
+    public void setGerenciador(
+            GerenciadorDeInscricoes gerenciador
+    ) {
+        this.gerenciador = gerenciador;
     }
 }

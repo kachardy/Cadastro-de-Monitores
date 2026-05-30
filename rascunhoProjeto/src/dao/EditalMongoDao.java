@@ -7,6 +7,8 @@ import org.bson.Document;
 import services.MongoConnection;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -22,17 +24,25 @@ public class EditalMongoDao {
     public void salvar(EditalDeMonitoria edital) {
 
         Document doc = new Document()
-                .append("titulo", edital.getTitulo())
-                .append("descricao", edital.getDescricao())
+                .append(
+                        "id",
+                        edital.getId()
+                )
+                .append("numeroEdital", edital.getNumeroEdital())
+                .append("maxInscricoesPorAluno", edital.getMaxInscricoesPorAluno())
+                .append("pesoCRE", edital.getPesoCRE())
+                .append("pesoMedia", edital.getPesoMedia())
                 .append("dataInicio", edital.getDataInicio().toString())
                 .append("dataFim", edital.getDataFim().toString());
 
         collection.insertOne(doc);
     }
 
-    public EditalDeMonitoria buscarPorTitulo(String titulo) {
+    public EditalDeMonitoria buscarPorNumero(String numero) {
 
-        Document doc = collection.find(eq("titulo", titulo)).first();
+        Document doc = collection.find(
+                eq("numeroEdital", numero)
+        ).first();
 
         if(doc == null) {
             return null;
@@ -40,8 +50,21 @@ public class EditalMongoDao {
 
         EditalDeMonitoria edital = new EditalDeMonitoria();
 
-        edital.setTitulo(doc.getString("titulo"));
-        edital.setDescricao(doc.getString("descricao"));
+        edital.setNumeroEdital(
+                doc.getString("numeroEdital")
+        );
+
+        edital.setMaxInscricoesPorAluno(
+                doc.getInteger("maxInscricoesPorAluno")
+        );
+
+        edital.setPesoCRE(
+                doc.getDouble("pesoCRE")
+        );
+
+        edital.setPesoMedia(
+                doc.getDouble("pesoMedia")
+        );
 
         edital.setDataInicio(
                 LocalDate.parse(doc.getString("dataInicio"))
@@ -49,6 +72,122 @@ public class EditalMongoDao {
 
         edital.setDataFim(
                 LocalDate.parse(doc.getString("dataFim"))
+        );
+
+        return edital;
+    }
+
+    public List<EditalDeMonitoria> listarTodos() {
+
+        List<EditalDeMonitoria> editais =
+                new ArrayList<>();
+
+        for(Document doc : collection.find()) {
+
+            EditalDeMonitoria edital =
+                    new EditalDeMonitoria();
+
+            edital.setId(
+                    doc.getLong("id")
+            );
+
+            edital.setNumeroEdital(
+                    doc.getString("numeroEdital")
+            );
+
+            edital.setDataInicio(
+                    LocalDate.parse(
+                            doc.getString("dataInicio")
+                    )
+            );
+
+            edital.setDataFim(
+                    LocalDate.parse(
+                            doc.getString("dataFim")
+                    )
+            );
+
+            edital.setMaxInscricoesPorAluno(
+                    doc.getInteger(
+                            "maxInscricoesPorAluno"
+                    )
+            );
+
+            edital.setPesoCRE(
+                    doc.getDouble(
+                            "pesoCRE"
+                    )
+            );
+
+            edital.setPesoMedia(
+                    doc.getDouble(
+                            "pesoMedia"
+                    )
+            );
+
+            editais.add(edital);
+        }
+
+        return editais;
+    }
+
+    public EditalDeMonitoria recuperarEditalPeloId(
+            long id
+    ) {
+
+        Document doc =
+                collection.find(
+                        eq("id", id)
+                ).first();
+
+        if(doc == null)
+            return null;
+
+        EditalDeMonitoria edital =
+                new EditalDeMonitoria();
+
+        edital.setId(
+                doc.getLong("id")
+        );
+
+        edital.setNumeroEdital(
+                doc.getString(
+                        "numeroEdital"
+                )
+        );
+
+        edital.setDataInicio(
+                LocalDate.parse(
+                        doc.getString(
+                                "dataInicio"
+                        )
+                )
+        );
+
+        edital.setDataFim(
+                LocalDate.parse(
+                        doc.getString(
+                                "dataFim"
+                        )
+                )
+        );
+
+        edital.setMaxInscricoesPorAluno(
+                doc.getInteger(
+                        "maxInscricoesPorAluno"
+                )
+        );
+
+        edital.setPesoCRE(
+                doc.getDouble(
+                        "pesoCRE"
+                )
+        );
+
+        edital.setPesoMedia(
+                doc.getDouble(
+                        "pesoMedia"
+                )
         );
 
         return edital;

@@ -12,7 +12,7 @@ public class CentralDeInformacoes {
     // Usando a Factory
     private AlunoDao alunoDao = DaoFactory.getAlunoDAO();
     private PessoaDao pessoaDao = DaoFactory.getPessoaDAO();
-    private EditalDao editalDao = DaoFactory.getEditalDAO();
+    private EditalMongoDao editalMongoDao = DaoFactory.getEditalMongoDAO();
     private GenericDao<Coordenador> coordenadorDao = DaoFactory.getDAO(Coordenador.class);
 
     // --- MÉTODOS DE BUSCA (READ) ---
@@ -22,7 +22,7 @@ public class CentralDeInformacoes {
     }
 
     public List<EditalDeMonitoria> getTodosOsEditais() {
-        return editalDao.listarTodos();
+        return editalMongoDao.listarTodos();
     }
 
     public Coordenador getCoordenador() {
@@ -39,7 +39,7 @@ public class CentralDeInformacoes {
     }
 
     public EditalDeMonitoria recuperarEditalPeloId(long id) {
-        return editalDao.recuperarEditalPeloId(id);
+        return editalMongoDao.recuperarEditalPeloId(id);
     }
 
     // --- MÉTODOS DE PERSISTÊNCIA---
@@ -64,7 +64,7 @@ public class CentralDeInformacoes {
         if (recuperarEditalPeloId(edital.getId()) != null) {
             throw new EditalJaExisteException();
         }
-        editalDao.salvar(edital);
+        editalMongoDao.salvar(edital);
         return true;
     }
 
@@ -73,7 +73,7 @@ public class CentralDeInformacoes {
     // tanto para salvar um edital novo quanto para atualizar um que já existe.
     // É o metodo que vou usar nos Controllers para confirmar inscrições e resultados.
     public void salvarEdital(EditalDeMonitoria edital) {
-        editalDao.salvar(edital);
+        editalMongoDao.salvar(edital);
     }
 
     // --- MÉTODOS DE LÓGICA E RELATÓRIOS ---

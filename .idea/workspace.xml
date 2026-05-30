@@ -5,23 +5,51 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="Especialização da Camada de Persistência: Implementação do EditalDao">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/DisciplinaMongoDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/EditalMongoDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/InscricaoMongoDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rascunhoProjeto/src/services/MongoConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banco_monitoria.db" beforeDir="false" afterPath="$PROJECT_DIR$/banco_monitoria.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rascunhoProjeto/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/Disciplina.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/Disciplina.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/dao/DaoFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/DaoFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/dao/EditalMongoDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/EditalMongoDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/dao/InscricaoMongoDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/InscricaoMongoDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/EditalDeMonitoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/EditalDeMonitoria.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/Inscricao.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/Inscricao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/CentralDeInformacoes.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/services/CentralDeInformacoes.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/services/CentralDeInformacoes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/controllers/AuthController$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/controllers/AuthController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/controllers/CoordenadorController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/controllers/EditalController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/dao/AlunoDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/dao/PessoaDao.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/erros/AlunoJaExisteException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/erros/UsuarioJaExisteException.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/Disciplina.class" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/Disciplina.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/EditalDeMonitoria.class" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/EditalDeMonitoria.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/Inscricao.class" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/Inscricao.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/services/CentralDeInformacoes.class" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/target/classes/services/CentralDeInformacoes.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/services/Persistencia.class" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/target/classes/services/Persistencia.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/services/CentralDeInformacoes.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/services/Persistencia.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/utils/ComparadorDeNotas.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/utils/GeradorDeRelatorio.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/utils/Mensageiro$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/utils/Mensageiro.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/utils/Validador.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaCadastroAluno.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaCadastroCoordenador.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaCadastroEdital.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaDetalheEditalAluno$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaDetalheEditalAluno.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaDetalheEditalCoordenador$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaDetalheEditalCoordenador.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaListaAlunos$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaListaAlunos.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaListagemAluno.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaLogin.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaPadraoCadastro.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaPerfilAluno.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaPerfilAlunoSecundaria.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaPrincipalAluno.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaPrincipalCoordenador.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaResultadoEdital$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaResultadoEdital.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,30 +95,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Application.Programa.executor": "Run",
-    "Maven.cadastro-monitores [clean,compile].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "(BDII)-MongoDB",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Romulo/Desktop/ROMULO/ADS/CADASTRO DE MONITORES/IMPLEMENTAÇÃO DE JPA/Cadastro-de-Monitores-master/Cadastro-de-Monitores-master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Application.Programa.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.cadastro-monitores [clean,compile].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;(BDII)-MongoDB&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Romulo/Desktop/ROMULO/ADS/CADASTRO DE MONITORES/IMPLEMENTAÇÃO DE JPA/Cadastro-de-Monitores-master/Cadastro-de-Monitores-master&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Programa" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Programa" />
@@ -105,6 +133,14 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.24374.151" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.24374.151" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="" />
@@ -113,6 +149,7 @@
       <option name="presentableId" value="Default" />
       <updated>1774199205748</updated>
       <workItem from="1774199207556" duration="12000" />
+      <workItem from="1780137333134" duration="3929000" />
     </task>
     <task id="LOCAL-00001" summary="Refactor: Implementação de Classe Associativa Inscricao e Padrão Strategy para Ordenação">
       <option name="closed" value="true" />
@@ -188,6 +225,9 @@
     </task>
     <option name="localTasksCounter" value="10" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.db" />

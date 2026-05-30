@@ -10,6 +10,8 @@ public class Inscricao {
 
     private Disciplina disciplina;
 
+    private EditalDeMonitoria edital;
+
     private double cre;
     private double media;
 
@@ -54,5 +56,21 @@ public class Inscricao {
 
     public void setMedia(double media) {
         this.media = media;
+    }
+
+    public EditalDeMonitoria getEdital() {
+        return edital;
+    }
+
+    public void setEdital(EditalDeMonitoria edital) {
+        this.edital = edital;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

@@ -25,7 +25,7 @@ public class DaoFactory {
         return new AlunoDao(Persistencia.getEntityManager(), Aluno.class);
     }
 
-    public static EditalMongoDao getEditalMongoDAO() {
-        return new EditalMongoDao(Persistencia.getEntityManager());
-    }
+    //public static EditalMongoDao getEditalMongoDAO() {
+    //    return new EditalMongoDao(Persistencia.getEntityManager());
+    //}
 }
