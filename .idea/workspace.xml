@@ -4,52 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="Especialização da Camada de Persistência: Implementação do EditalDao">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+    <list default="true" id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="Continuação de atualização para MongoDB (falta testar)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/dao/DaoFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/DaoFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/dao/EditalMongoDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/EditalMongoDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/dao/EditalDao.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/dao/InscricaoMongoDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/InscricaoMongoDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/EditalDeMonitoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/EditalDeMonitoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/Inscricao.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/Inscricao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/services/CentralDeInformacoes.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/services/CentralDeInformacoes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/controllers/AuthController$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/controllers/AuthController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/controllers/CoordenadorController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/controllers/EditalController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/dao/AlunoDao.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/dao/PessoaDao.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/erros/AlunoJaExisteException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/erros/UsuarioJaExisteException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/Disciplina.class" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/Disciplina.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/EditalDeMonitoria.class" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/EditalDeMonitoria.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/Inscricao.class" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/Inscricao.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/services/CentralDeInformacoes.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/services/Persistencia.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/utils/ComparadorDeNotas.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/utils/GeradorDeRelatorio.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/utils/Mensageiro$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/utils/Mensageiro.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/utils/Validador.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaCadastroAluno.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaCadastroCoordenador.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaCadastroEdital.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaDetalheEditalAluno$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaDetalheEditalAluno.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaDetalheEditalCoordenador$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaDetalheEditalCoordenador.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaListaAlunos$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaListaAlunos.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaListagemAluno.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaLogin.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaPadraoCadastro.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaPerfilAluno.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaPerfilAlunoSecundaria.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaPrincipalAluno.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaPrincipalCoordenador.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaResultadoEdital$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaResultadoEdital.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,12 +36,12 @@
     &quot;assignee&quot;: &quot;romuloluan&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/kachardy/Cadastro-de-Monitores.git&quot;,
-    &quot;accountId&quot;: &quot;198b08fd-5d24-4159-9e57-7268c1dce974&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/kachardy/Cadastro-de-Monitores.git",
+    "accountId": "4d5511c3-3730-49e5-befc-ecd0bc9cd4f9"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -149,7 +108,7 @@
       <option name="presentableId" value="Default" />
       <updated>1774199205748</updated>
       <workItem from="1774199207556" duration="12000" />
-      <workItem from="1780137333134" duration="3929000" />
+      <workItem from="1780137333134" duration="7313000" />
     </task>
     <task id="LOCAL-00001" summary="Refactor: Implementação de Classe Associativa Inscricao e Padrão Strategy para Ordenação">
       <option name="closed" value="true" />
@@ -223,7 +182,15 @@
       <option name="project" value="LOCAL" />
       <updated>1775702735058</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Continuação de atualização para MongoDB (falta testar)">
+      <option name="closed" value="true" />
+      <created>1780141493693</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1780141493693</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -252,6 +219,7 @@
     <MESSAGE value="Continuei a migração para JPA, ajuste nas views e refatoração do gerenciador&quot;." />
     <MESSAGE value="Otimização de Armazenamento com Remoção de Órfãos (orphanRemoval)" />
     <MESSAGE value="Especialização da Camada de Persistência: Implementação do EditalDao" />
-    <option name="LAST_COMMIT_MESSAGE" value="Especialização da Camada de Persistência: Implementação do EditalDao" />
+    <MESSAGE value="Continuação de atualização para MongoDB (falta testar)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Continuação de atualização para MongoDB (falta testar)" />
   </component>
 </project>

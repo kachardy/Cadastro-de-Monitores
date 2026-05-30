@@ -1,10 +1,10 @@
 package dao;
 
-import javax.persistence.EntityManager;
-
 import models.Aluno;
 import models.Pessoa;
 import services.Persistencia;
+
+import javax.persistence.EntityManager;
 
 public class DaoFactory {
 
@@ -25,7 +25,15 @@ public class DaoFactory {
         return new AlunoDao(Persistencia.getEntityManager(), Aluno.class);
     }
 
-    //public static EditalMongoDao getEditalMongoDAO() {
-    //    return new EditalMongoDao(Persistencia.getEntityManager());
-    //}
+    public static EditalMongoDao getEditalMongoDAO() {
+        return new EditalMongoDao();
+    }
+
+    public static DisciplinaMongoDao getDisciplinaMongoDAO() {
+        return new DisciplinaMongoDao();
+    }
+
+    public static InscricaoMongoDao getInscricaoMongoDAO() {
+        return new InscricaoMongoDao();
+    }
 }

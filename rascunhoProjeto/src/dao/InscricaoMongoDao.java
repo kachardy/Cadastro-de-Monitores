@@ -2,6 +2,7 @@ package dao;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import models.Aluno;
 import models.Inscricao;
 import org.bson.Document;
 import services.MongoConnection;
@@ -31,10 +32,11 @@ public class InscricaoMongoDao {
                                 inscricao.getDisciplina().getNome()
                         )
 
-                        //.append(
-                        //        "edital",
-                        //        inscricao.getEdital().getTitulo()
-                        //)
+                        .append(
+                                "edital",
+                                inscricao.getEdital()
+                                        .getNumeroEdital()
+                        )
 
                         .append(
                                 "candidato",
@@ -84,7 +86,17 @@ public class InscricaoMongoDao {
 
         i.setMedia(
                 doc.getDouble("media")
-        );;
+        );
+
+        Aluno aluno = new Aluno();
+
+        aluno.setNome(
+                doc.getString(
+                        "candidato"
+                )
+        );
+
+        i.setCandidato(aluno);
 
         i.setDisciplina(
                 disciplinaDao.buscarPorNome(
