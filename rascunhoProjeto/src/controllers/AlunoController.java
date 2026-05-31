@@ -111,28 +111,47 @@ public class AlunoController {
 
     private void exibirInscricaoEdital(EditalDeMonitoria edital) {
         TelaDetalheEditalAluno telaInscricao = new TelaDetalheEditalAluno(edital);
+
         telaInscricao.adicionarAcaoInscrever(e -> {
-            Disciplina disc = telaInscricao.getDisciplinaSelecionada();
+
+            Disciplina discDaTela = telaInscricao.getDisciplinaSelecionada();
+
+            if (discDaTela == null) {
+                JOptionPane.showMessageDialog(telaInscricao, "Selecione uma disciplina!");
+                return;
+            }
+
+
+            // Cache aqui: Pegamos o nome e pedimos para a Central. Ela vai procurar no Redis primeiro!
+            String nomeDisciplina = discDaTela.getNome();
+            Disciplina discValidadaPeloCache = central.recuperarDisciplinaPorNome(nomeDisciplina);
+
+            // Verifica se o Redis/Mongo conseguiu encontrar a disciplina
+            if (discValidadaPeloCache == null) {
+                JOptionPane.showMessageDialog(telaInscricao, "Erro de sistema: Disciplina não encontrada no banco.");
+                return;
+            }
+
             try {
                 double cre = Double.parseDouble(telaInscricao.getCRE());
                 double media = Double.parseDouble(telaInscricao.getMedia());
 
-                // Se a inscrição passou pelas validações do edital...
-                if (edital.inscrever(aluno, disc, cre, media)) {
-                    // ...eu mando salvar o edital. O JPA vai ver que tem uma nova linha
-                    // na tabela de inscrições e vai fazer o INSERT automático pra mim.
+                // 3. Passamos a disciplina validada pelo cache para a regra de negócio
+                if (edital.inscrever(aluno, discValidadaPeloCache, cre, media)) {
+                    // Mando salvar o edital. O MongoDao vai usar replaceOne com upsert!
                     central.salvarEdital(edital);
 
                     JOptionPane.showMessageDialog(telaInscricao, "Inscrito com sucesso!");
                     telaInscricao.dispose();
                     exibirListagemEditais();
                 } else {
-                    JOptionPane.showMessageDialog(telaInscricao, "Inscrição negada.");
+                    JOptionPane.showMessageDialog(telaInscricao, "Inscrição negada. Você já pode estar inscrito!");
                 }
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(telaInscricao, "Dados inválidos.");
+                JOptionPane.showMessageDialog(telaInscricao, "Dados inválidos. Verifique suas notas.");
             }
         });
+
         telaInscricao.adicionarAcaoVoltar(e -> {
             telaInscricao.dispose();
             exibirListagemEditais();

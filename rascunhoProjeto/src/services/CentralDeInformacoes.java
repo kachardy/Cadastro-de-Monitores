@@ -14,6 +14,7 @@ public class CentralDeInformacoes {
     private PessoaDao pessoaDao = DaoFactory.getPessoaDAO();
     private EditalMongoDao editalMongoDao = DaoFactory.getEditalMongoDAO();
     private GenericDao<Coordenador> coordenadorDao = DaoFactory.getDAO(Coordenador.class);
+    private DisciplinaService disciplinaService = new DisciplinaService(editalMongoDao);
 
     // --- MÉTODOS DE BUSCA (READ) ---
 
@@ -106,4 +107,15 @@ public class CentralDeInformacoes {
         // A Central apenas pede para o DAO fazer a busca filtrada no banco
         return alunoDao.buscarAlunosPorNome(nome);
     }
+
+    public Disciplina recuperarDisciplinaPorNome(String nome) {
+        try {
+            return disciplinaService.buscarPorNome(nome);
+        } catch (Exception e) {
+            System.out.println("Erro ao buscar disciplina no Redis/Mongo");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

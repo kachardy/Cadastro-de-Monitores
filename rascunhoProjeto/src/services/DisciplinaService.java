@@ -2,33 +2,22 @@ package services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dao.DisciplinaMongoDao;
+import dao.EditalMongoDao;
 import models.Disciplina;
 import redis.clients.jedis.Jedis;
 
 public class DisciplinaService {
-    private final DisciplinaMongoDao disciplinaMongoDao;
+    // Agora ele depende do DAO do Edital, pois a disciplina mora lá dentro
+    private final EditalMongoDao editalMongoDao;
     private final Jedis jedis = new Jedis("localhost", 6379);
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public DisciplinaService(DisciplinaMongoDao disciplinaMongoDao) {
-        this.disciplinaMongoDao = disciplinaMongoDao;
-    }
-
-    public void salvar(Disciplina disciplina) {
-        disciplinaMongoDao.salvar(disciplina);
-
-        // Atualiza o cache após salvar
-        try {
-            String chave = "disciplina:" + disciplina.getId();
-            jedis.setex(chave, 3600, objectMapper.writeValueAsString(disciplina));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+    public DisciplinaService(EditalMongoDao editalMongoDao) {
+        this.editalMongoDao = editalMongoDao;
     }
 
     public Disciplina buscarPorNome(String nome) throws JsonProcessingException {
-        String chave = "disciplina" + nome;
+        String chave = "disciplina:" + nome;
 
         String cache = jedis.get(chave);
 
@@ -38,7 +27,8 @@ public class DisciplinaService {
         }
 
         System.out.println("Disciplina veio do MongoDB");
-        Disciplina disciplina = disciplinaMongoDao.buscarPorNome(nome);
+        // Usa o novo método do EditalMongoDao para pescar a disciplina
+        Disciplina disciplina = editalMongoDao.buscarDisciplinaEmbutidaPorNome(nome);
 
         if (disciplina != null) {
             // Guarda no cache e expira em 1 hora

@@ -150,4 +150,29 @@ public class EditalMongoDao {
         return edital;
     }
 
+    // Método que o Redis usa para buscar a disciplina no Mongo se não achar no cache
+    public Disciplina buscarDisciplinaEmbutidaPorNome(String nome) {
+        // Busca no MongoDB o edital que tem essa disciplina na lista
+        Document doc = collection.find(eq("disciplinas.nome", nome)).first();
+
+        if (doc == null) return null;
+
+        // Pega a lista de disciplinas embutidas
+        List<Document> disciplinasDocs = doc.getList("disciplinas", Document.class);
+
+        // Acha a disciplina certa e devolve
+        if (disciplinasDocs != null) {
+            for (Document docDisc : disciplinasDocs) {
+                if (docDisc.getString("nome").equals(nome)) {
+                    return new Disciplina(
+                            docDisc.getString("nome"),
+                            docDisc.getInteger("vagasRemuneradas"),
+                            docDisc.getInteger("vagasVoluntarias")
+                    );
+                }
+            }
+        }
+        return null;
+    }
+
 }

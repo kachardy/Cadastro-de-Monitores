@@ -29,10 +29,6 @@ public class DaoFactory {
         return new EditalMongoDao();
     }
 
-    public static DisciplinaMongoDao getDisciplinaMongoDAO() {
-        return new DisciplinaMongoDao();
-    }
-
     public static InscricaoMongoDao getInscricaoMongoDAO() {
         return new InscricaoMongoDao();
     }
