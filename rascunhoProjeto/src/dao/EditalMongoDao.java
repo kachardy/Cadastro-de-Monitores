@@ -3,6 +3,7 @@ package dao;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.ReplaceOptions;
+import models.Disciplina;
 import models.EditalDeMonitoria;
 import org.bson.Document;
 import services.MongoConnection;
@@ -24,27 +25,26 @@ public class EditalMongoDao {
 
     public void salvar(EditalDeMonitoria edital) {
 
+        List<Document> disciplinasDocs = new ArrayList<>();
+        for (Disciplina d : edital.getTodasAsDisciplinas()) {
+            Document docDisc = new Document()
+                    .append("nome", d.getNome())
+                    .append("vagasRemuneradas", d.getVagasRemuneradas())
+                    .append("vagasVoluntarias", d.getVagasVoluntarias());
+            disciplinasDocs.add(docDisc);
+        }
+
         Document doc = new Document()
-                .append(
-                        "id",
-                        edital.getId()
-                )
+                .append("id", edital.getId())
                 .append("numeroEdital", edital.getNumeroEdital())
                 .append("maxInscricoesPorAluno", edital.getMaxInscricoesPorAluno())
                 .append("pesoCRE", edital.getPesoCRE())
                 .append("pesoMedia", edital.getPesoMedia())
                 .append("dataInicio", edital.getDataInicio().toString())
-                .append("dataFim", edital.getDataFim().toString());
+                .append("dataFim", edital.getDataFim().toString())
+                .append("disciplinas", disciplinasDocs);
 
-        collection.replaceOne(
-                eq(
-                        "id",
-                        edital.getId()
-                ),
-                doc,
-                new ReplaceOptions()
-                        .upsert(true)
-        );
+        collection.replaceOne(eq("id", edital.getId()), doc, new ReplaceOptions().upsert(true));
     }
 
     public EditalDeMonitoria buscarPorNumero(String numero) {
@@ -58,81 +58,57 @@ public class EditalMongoDao {
         }
 
         EditalDeMonitoria edital = new EditalDeMonitoria();
+        edital.setId(doc.getLong("id"));
+        edital.setNumeroEdital(doc.getString("numeroEdital"));
+        edital.setMaxInscricoesPorAluno(doc.getInteger("maxInscricoesPorAluno"));
+        edital.setPesoCRE(doc.getDouble("pesoCRE"));
+        edital.setPesoMedia(doc.getDouble("pesoMedia"));
+        edital.setDataInicio(LocalDate.parse(doc.getString("dataInicio")));
+        edital.setDataFim(LocalDate.parse(doc.getString("dataFim")));
 
-        edital.setNumeroEdital(
-                doc.getString("numeroEdital")
-        );
-
-        edital.setMaxInscricoesPorAluno(
-                doc.getInteger("maxInscricoesPorAluno")
-        );
-
-        edital.setPesoCRE(
-                doc.getDouble("pesoCRE")
-        );
-
-        edital.setPesoMedia(
-                doc.getDouble("pesoMedia")
-        );
-
-        edital.setDataInicio(
-                LocalDate.parse(doc.getString("dataInicio"))
-        );
-
-        edital.setDataFim(
-                LocalDate.parse(doc.getString("dataFim"))
-        );
+        // RECUPERANDO A LISTA DE DISCIPLINAS EMBUTIDA
+        List<Document> disciplinasDocs = doc.getList("disciplinas", Document.class);
+        if (disciplinasDocs != null) {
+            for (Document docDisc : disciplinasDocs) {
+                Disciplina d = new Disciplina(
+                        docDisc.getString("nome"),
+                        docDisc.getInteger("vagasRemuneradas"),
+                        docDisc.getInteger("vagasVoluntarias")
+                );
+                edital.adicionarDisciplina(d);
+            }
+        }
 
         return edital;
     }
 
     public List<EditalDeMonitoria> listarTodos() {
 
-        List<EditalDeMonitoria> editais =
-                new ArrayList<>();
+        List<EditalDeMonitoria> editais = new ArrayList<>();
 
         for(Document doc : collection.find()) {
 
-            EditalDeMonitoria edital =
-                    new EditalDeMonitoria();
+            EditalDeMonitoria edital = new EditalDeMonitoria();
+            edital.setId(doc.getLong("id"));
+            edital.setNumeroEdital(doc.getString("numeroEdital"));
+            edital.setDataInicio(LocalDate.parse(doc.getString("dataInicio")));
+            edital.setDataFim(LocalDate.parse(doc.getString("dataFim")));
+            edital.setMaxInscricoesPorAluno(doc.getInteger("maxInscricoesPorAluno"));
+            edital.setPesoCRE(doc.getDouble("pesoCRE"));
+            edital.setPesoMedia(doc.getDouble("pesoMedia"));
 
-            edital.setId(
-                    doc.getLong("id")
-            );
-
-            edital.setNumeroEdital(
-                    doc.getString("numeroEdital")
-            );
-
-            edital.setDataInicio(
-                    LocalDate.parse(
-                            doc.getString("dataInicio")
-                    )
-            );
-
-            edital.setDataFim(
-                    LocalDate.parse(
-                            doc.getString("dataFim")
-                    )
-            );
-
-            edital.setMaxInscricoesPorAluno(
-                    doc.getInteger(
-                            "maxInscricoesPorAluno"
-                    )
-            );
-
-            edital.setPesoCRE(
-                    doc.getDouble(
-                            "pesoCRE"
-                    )
-            );
-
-            edital.setPesoMedia(
-                    doc.getDouble(
-                            "pesoMedia"
-                    )
-            );
+            // RECUPERANDO A LISTA DE DISCIPLINAS EMBUTIDA
+            List<Document> disciplinasDocs = doc.getList("disciplinas", Document.class);
+            if (disciplinasDocs != null) {
+                for (Document docDisc : disciplinasDocs) {
+                    Disciplina d = new Disciplina(
+                            docDisc.getString("nome"),
+                            docDisc.getInteger("vagasRemuneradas"),
+                            docDisc.getInteger("vagasVoluntarias")
+                    );
+                    edital.adicionarDisciplina(d);
+                }
+            }
 
             editais.add(edital);
         }
@@ -140,65 +116,38 @@ public class EditalMongoDao {
         return editais;
     }
 
-    public EditalDeMonitoria recuperarEditalPeloId(
-            long id
-    ) {
+    public EditalDeMonitoria recuperarEditalPeloId(long id) {
 
-        Document doc =
-                collection.find(
-                        eq("id", id)
-                ).first();
+        Document doc = collection.find(
+                eq("id", id)
+        ).first();
 
         if(doc == null)
             return null;
 
-        EditalDeMonitoria edital =
-                new EditalDeMonitoria();
+        EditalDeMonitoria edital = new EditalDeMonitoria();
+        edital.setId(doc.getLong("id"));
+        edital.setNumeroEdital(doc.getString("numeroEdital"));
+        edital.setDataInicio(LocalDate.parse(doc.getString("dataInicio")));
+        edital.setDataFim(LocalDate.parse(doc.getString("dataFim")));
+        edital.setMaxInscricoesPorAluno(doc.getInteger("maxInscricoesPorAluno"));
+        edital.setPesoCRE(doc.getDouble("pesoCRE"));
+        edital.setPesoMedia(doc.getDouble("pesoMedia"));
 
-        edital.setId(
-                doc.getLong("id")
-        );
-
-        edital.setNumeroEdital(
-                doc.getString(
-                        "numeroEdital"
-                )
-        );
-
-        edital.setDataInicio(
-                LocalDate.parse(
-                        doc.getString(
-                                "dataInicio"
-                        )
-                )
-        );
-
-        edital.setDataFim(
-                LocalDate.parse(
-                        doc.getString(
-                                "dataFim"
-                        )
-                )
-        );
-
-        edital.setMaxInscricoesPorAluno(
-                doc.getInteger(
-                        "maxInscricoesPorAluno"
-                )
-        );
-
-        edital.setPesoCRE(
-                doc.getDouble(
-                        "pesoCRE"
-                )
-        );
-
-        edital.setPesoMedia(
-                doc.getDouble(
-                        "pesoMedia"
-                )
-        );
+        // RECUPERANDO A LISTA DE DISCIPLINAS EMBUTIDA
+        List<Document> disciplinasDocs = doc.getList("disciplinas", Document.class);
+        if (disciplinasDocs != null) {
+            for (Document docDisc : disciplinasDocs) {
+                Disciplina d = new Disciplina(
+                        docDisc.getString("nome"),
+                        docDisc.getInteger("vagasRemuneradas"),
+                        docDisc.getInteger("vagasVoluntarias")
+                );
+                edital.adicionarDisciplina(d);
+            }
+        }
 
         return edital;
     }
+
 }

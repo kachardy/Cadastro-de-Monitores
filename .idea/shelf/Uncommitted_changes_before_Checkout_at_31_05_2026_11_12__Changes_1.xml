@@ -1,0 +1,14 @@
+<changelist name="Uncommitted_changes_before_Checkout_at_31_05_2026_11_12_[Changes]1" date="1780236784481" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_31_05_2026_11_12_[Changes]1/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 31/05/2026 11:12 [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="rascunhoProjeto/target/classes/services/Persistencia.class" />
+    <option name="AFTER_PATH" value="rascunhoProjeto/target/classes/services/Persistencia.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_31_05_2026_11_12_[Changes]1/Persistencia.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="rascunhoProjeto/target/classes/services/CentralDeInformacoes.class" />
+    <option name="AFTER_PATH" value="rascunhoProjeto/target/classes/services/CentralDeInformacoes.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_31_05_2026_11_12_[Changes]1/CentralDeInformacoes.class" />
+  </binary>
+</changelist>

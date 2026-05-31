@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="Eliminação do JPA Hibernate (falta olhar as telas pra ver se todos os métodos estão atualizados lá)">
+    <list default="true" id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="Especialização da Camada de Persistência: Implementação do EditalDao">
+      <change afterPath="$PROJECT_DIR$/rascunhoProjeto/src/services/DisciplinaService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/EditalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/EditalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/dao/DisciplinaMongoDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/DisciplinaMongoDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/dao/EditalMongoDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/dao/EditalMongoDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/EditalDeMonitoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/EditalDeMonitoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/EditalDeMonitoria.class" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/EditalDeMonitoria.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,12 +37,12 @@
     &quot;assignee&quot;: &quot;romuloluan&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/kachardy/Cadastro-de-Monitores.git",
-    "accountId": "4d5511c3-3730-49e5-befc-ecd0bc9cd4f9"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/kachardy/Cadastro-de-Monitores.git&quot;,
+    &quot;accountId&quot;: &quot;198b08fd-5d24-4159-9e57-7268c1dce974&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -51,56 +51,28 @@
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
-    <option name="autoscrollFromSource" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Application.Programa.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.cadastro-monitores [clean,compile].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;(BDII)-MongoDB&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Romulo/Desktop/ROMULO/ADS/CADASTRO DE MONITORES/IMPLEMENTAÇÃO DE JPA/Cadastro-de-Monitores-master/Cadastro-de-Monitores-master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Application.Programa.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "(BDII)-MongoDB",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Romulo/Desktop/ROMULO/ADS/CADASTRO DE MONITORES/IMPLEMENTAÇÃO DE JPA/Cadastro-de-Monitores-master/Cadastro-de-Monitores-master",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager">
-    <configuration name="Programa" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Programa" />
-      <module name="cadastro-monitores" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.Programa" />
-      </list>
-    </recent_temporary>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.24374.151" />
-        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.24374.151" />
-      </set>
-    </attachedChunks>
-  </component>
+}]]></component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="" />
@@ -109,7 +81,6 @@
       <option name="presentableId" value="Default" />
       <updated>1774199205748</updated>
       <workItem from="1774199207556" duration="12000" />
-      <workItem from="1780137333134" duration="10760000" />
     </task>
     <task id="LOCAL-00001" summary="Refactor: Implementação de Classe Associativa Inscricao e Padrão Strategy para Ordenação">
       <option name="closed" value="true" />
@@ -183,27 +154,8 @@
       <option name="project" value="LOCAL" />
       <updated>1775702735058</updated>
     </task>
-    <task id="LOCAL-00010" summary="Continuação de atualização para MongoDB (falta testar)">
-      <option name="closed" value="true" />
-      <created>1780141493693</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1780141493693</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Eliminação do JPA Hibernate (falta olhar as telas pra ver se todos os métodos estão atualizados lá)">
-      <option name="closed" value="true" />
-      <created>1780162340196</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1780162340196</updated>
-    </task>
-    <option name="localTasksCounter" value="12" />
+    <option name="localTasksCounter" value="10" />
     <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.db" />
@@ -228,8 +180,6 @@
     <MESSAGE value="Continuei a migração para JPA, ajuste nas views e refatoração do gerenciador&quot;." />
     <MESSAGE value="Otimização de Armazenamento com Remoção de Órfãos (orphanRemoval)" />
     <MESSAGE value="Especialização da Camada de Persistência: Implementação do EditalDao" />
-    <MESSAGE value="Continuação de atualização para MongoDB (falta testar)" />
-    <MESSAGE value="Eliminação do JPA Hibernate (falta olhar as telas pra ver se todos os métodos estão atualizados lá)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Eliminação do JPA Hibernate (falta olhar as telas pra ver se todos os métodos estão atualizados lá)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Especialização da Camada de Persistência: Implementação do EditalDao" />
   </component>
 </project>

@@ -15,9 +15,6 @@ public class DisciplinaMongoDao {
 
     private final MongoCollection<Document> collection;
 
-    // CACHE ASIDE
-    private static final Map<String, Disciplina> cache = new HashMap<>();
-
     public DisciplinaMongoDao() {
         MongoDatabase db = MongoConnection.getDatabase();
         this.collection = db.getCollection("disciplinas");
@@ -32,17 +29,9 @@ public class DisciplinaMongoDao {
 
         collection.insertOne(doc);
 
-        // atualiza cache
-        cache.put(disciplina.getNome(), disciplina);
     }
 
     public Disciplina buscarPorNome(String nome) {
-
-        // CACHE ASIDE
-        if(cache.containsKey(nome)) {
-            System.out.println("DISCIPLINA VEIO DO CACHE");
-            return cache.get(nome);
-        }
 
         System.out.println("DISCIPLINA VEIO DO MONGODB");
 
@@ -52,14 +41,10 @@ public class DisciplinaMongoDao {
             return null;
         }
 
-        Disciplina disciplina = new Disciplina(
+        return new Disciplina(
                 doc.getString("nome"),
                 doc.getInteger("vagasRemuneradas"),
                 doc.getInteger("vagasVoluntarias")
         );
-
-        cache.put(nome, disciplina);
-
-        return disciplina;
     }
 }
