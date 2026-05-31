@@ -5,6 +5,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.ReplaceOptions;
 import models.Disciplina;
 import models.EditalDeMonitoria;
+import models.Inscricao;
 import org.bson.Document;
 import services.MongoConnection;
 
@@ -25,6 +26,7 @@ public class EditalMongoDao {
 
     public void salvar(EditalDeMonitoria edital) {
 
+        // 1. Embutindo as Disciplinas
         List<Document> disciplinasDocs = new ArrayList<>();
         for (Disciplina d : edital.getTodasAsDisciplinas()) {
             Document docDisc = new Document()
@@ -34,6 +36,19 @@ public class EditalMongoDao {
             disciplinasDocs.add(docDisc);
         }
 
+        // Embutindo as Inscrições
+        List<Document> inscricoesDocs = new ArrayList<>();
+        for (Inscricao i : edital.getInscricoesRealizadas()) {
+            Document docInsc = new Document()
+                    .append("candidatoNome", i.getCandidato().getNome())
+                    .append("candidatoMatricula", i.getCandidato().getMatricula())
+                    .append("disciplinaNome", i.getDisciplina().getNome())
+                    .append("cre", i.getCre())
+                    .append("media", i.getMedia());
+            inscricoesDocs.add(docInsc);
+        }
+
+        // 3. Montando o Documento Principal do Edital
         Document doc = new Document()
                 .append("id", edital.getId())
                 .append("numeroEdital", edital.getNumeroEdital())
@@ -42,7 +57,8 @@ public class EditalMongoDao {
                 .append("pesoMedia", edital.getPesoMedia())
                 .append("dataInicio", edital.getDataInicio().toString())
                 .append("dataFim", edital.getDataFim().toString())
-                .append("disciplinas", disciplinasDocs);
+                .append("disciplinas", disciplinasDocs) // Array de Disciplinas
+                .append("inscricoes", inscricoesDocs);  // Array de Inscrições!
 
         collection.replaceOne(eq("id", edital.getId()), doc, new ReplaceOptions().upsert(true));
     }
