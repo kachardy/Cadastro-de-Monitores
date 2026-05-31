@@ -146,7 +146,16 @@ public class EditalController {
                     central.salvarEdital(editalBase);
                 } else {
                     // Se caímos aqui, estamos criando um NOVO (ou um Clone)
-                    EditalDeMonitoria novo = new EditalDeMonitoria(0, telaEdital.getNumeroEdital(), inicio, fim, telaEdital.getMaxInscricoes(), telaEdital.getPesoCRE(), telaEdital.getPesoMedia());
+                    EditalDeMonitoria novo =
+                            new EditalDeMonitoria(
+                                    System.currentTimeMillis(),
+                                    telaEdital.getNumeroEdital(),
+                                    inicio,
+                                    fim,
+                                    telaEdital.getMaxInscricoes(),
+                                    telaEdital.getPesoCRE(),
+                                    telaEdital.getPesoMedia()
+                            );
                     novo.setTodasAsDisciplinas(disciplinasTemporarias);
 
                     // CORREÇÃO AQUI: Passamos o objeto 'novo' que acabamos de criar

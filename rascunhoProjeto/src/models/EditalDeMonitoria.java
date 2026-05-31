@@ -1,6 +1,5 @@
 package models;
 
-import lombok.Getter;
 import services.GerenciadorDeInscricoes;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -219,5 +218,17 @@ public class EditalDeMonitoria implements Serializable {
             GerenciadorDeInscricoes gerenciador
     ) {
         this.gerenciador = gerenciador;
+    }
+
+    @Override
+    public String toString() {
+
+        return numeroEdital +
+                " | Início: " +
+                dataInicio +
+                " | Fim: " +
+                dataFim +
+                " | Disciplinas: " +
+                todasAsDisciplinas.size();
     }
 }

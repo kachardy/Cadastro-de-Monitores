@@ -2,6 +2,7 @@ package dao;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.ReplaceOptions;
 import models.EditalDeMonitoria;
 import org.bson.Document;
 import services.MongoConnection;
@@ -35,7 +36,15 @@ public class EditalMongoDao {
                 .append("dataInicio", edital.getDataInicio().toString())
                 .append("dataFim", edital.getDataFim().toString());
 
-        collection.insertOne(doc);
+        collection.replaceOne(
+                eq(
+                        "id",
+                        edital.getId()
+                ),
+                doc,
+                new ReplaceOptions()
+                        .upsert(true)
+        );
     }
 
     public EditalDeMonitoria buscarPorNumero(String numero) {
