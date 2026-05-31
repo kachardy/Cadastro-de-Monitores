@@ -1,5 +1,7 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Inscricao {
 
 
@@ -9,7 +11,7 @@ public class Inscricao {
     private Aluno candidato;
 
     private Disciplina disciplina;
-
+    @JsonIgnore
     private EditalDeMonitoria edital;
 
     private double cre;

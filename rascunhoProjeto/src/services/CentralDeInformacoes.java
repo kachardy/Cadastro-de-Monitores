@@ -14,16 +14,19 @@ public class CentralDeInformacoes {
     private PessoaDao pessoaDao = DaoFactory.getPessoaDAO();
     private EditalMongoDao editalMongoDao = DaoFactory.getEditalMongoDAO();
     private GenericDao<Coordenador> coordenadorDao = DaoFactory.getDAO(Coordenador.class);
-    private DisciplinaService disciplinaService = new DisciplinaService(editalMongoDao);
 
-    // --- MÉTODOS DE BUSCA (READ) ---
+    // Services
+    private DisciplinaService disciplinaService = new DisciplinaService(editalMongoDao);
+    private EditalService editalService = new EditalService(DaoFactory.getEditalMongoDAO());
+
+    // Métodos de Busca
 
     public List<Aluno> getTodosOsAlunos() {
         return alunoDao.listarTodos();
     }
 
     public List<EditalDeMonitoria> getTodosOsEditais() {
-        return editalMongoDao.listarTodos();
+        return editalService.listarTodos();
     }
 
     public Coordenador getCoordenador() {
@@ -40,10 +43,10 @@ public class CentralDeInformacoes {
     }
 
     public EditalDeMonitoria recuperarEditalPeloId(long id) {
-        return editalMongoDao.recuperarEditalPeloId(id);
+        return editalService.recuperarEditalPeloId(id);
     }
 
-    // --- MÉTODOS DE PERSISTÊNCIA---
+    // Métodos de persistência
 
     public boolean adicionarAluno(Aluno a) throws AlunoJaExisteException {
         if (recuperarAlunoPorMatricula(a.getMatricula()) != null || recuperarPessoaPorEmail(a.getEmail()) != null) {
@@ -65,7 +68,7 @@ public class CentralDeInformacoes {
         if (recuperarEditalPeloId(edital.getId()) != null) {
             throw new EditalJaExisteException();
         }
-        editalMongoDao.salvar(edital);
+        editalService.salvar(edital);
         return true;
     }
 
@@ -74,7 +77,7 @@ public class CentralDeInformacoes {
     // tanto para salvar um edital novo quanto para atualizar um que já existe.
     // É o metodo que vou usar nos Controllers para confirmar inscrições e resultados.
     public void salvarEdital(EditalDeMonitoria edital) {
-        editalMongoDao.salvar(edital);
+        editalService.salvar(edital);
     }
 
     // --- MÉTODOS DE LÓGICA E RELATÓRIOS ---

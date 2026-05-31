@@ -1,5 +1,9 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Disciplina {
 
     private Long id;
@@ -42,6 +46,7 @@ public class Disciplina {
         this.vagasVoluntarias = vagas;
     }
 
+    @JsonIgnore
     public int getTotalVagas() {
         return vagasRemuneradas + vagasVoluntarias;
     }

@@ -30,6 +30,8 @@ public abstract class Pessoa {
         return matricula;
     }
 
+    public void setMatricula(String matricula) { this.matricula = matricula; }
+
     public String getEmail() {
         return email;
     }

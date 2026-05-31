@@ -1,6 +1,12 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import services.GerenciadorDeInscricoes;
+import utils.LocalDateDeserializer;
+import utils.LocalDateSerializer;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,8 +17,15 @@ public class EditalDeMonitoria implements Serializable {
     // Atributos de Identificação e Configuração
     private long id;
     private String numeroEdital;
+
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate dataInicio;
+
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate dataFim;
+
     private int maxInscricoesPorAluno;
     private double pesoCRE;
     private double pesoMedia;
@@ -34,6 +47,7 @@ public class EditalDeMonitoria implements Serializable {
 
     // Coloquei @Transient pra avisar o Hibernate pra ignorar isso na hora de criar as tabelas.
     // O gerenciador agora não guarda mais estado (listas), funciona só como um motor de cálculo.
+    @JsonIgnore
     private GerenciadorDeInscricoes gerenciador = new GerenciadorDeInscricoes();
 
     public EditalDeMonitoria(long id, String numeroEdital, LocalDate dataInicio, LocalDate dataFim,

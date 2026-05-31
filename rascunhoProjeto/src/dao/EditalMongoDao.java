@@ -3,6 +3,7 @@ package dao;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.ReplaceOptions;
+import models.Aluno;
 import models.Disciplina;
 import models.EditalDeMonitoria;
 import models.Inscricao;
@@ -26,29 +27,35 @@ public class EditalMongoDao {
 
     public void salvar(EditalDeMonitoria edital) {
 
-        // 1. Embutindo as Disciplinas
         List<Document> disciplinasDocs = new ArrayList<>();
+
         for (Disciplina d : edital.getTodasAsDisciplinas()) {
+
+            List<Document> inscricoesDocs = new ArrayList<>();
+
+
+            for (Inscricao i : edital.getInscricoesRealizadas()) {
+                if (i.getDisciplina().getNome().equals(d.getNome())) {
+                    Document docInsc = new Document()
+                            .append("candidatoNome", i.getCandidato().getNome())
+                            .append("candidatoMatricula", i.getCandidato().getMatricula())
+                            .append("cre", i.getCre())
+                            .append("media", i.getMedia());
+                    inscricoesDocs.add(docInsc);
+                }
+            }
+
+
             Document docDisc = new Document()
                     .append("nome", d.getNome())
                     .append("vagasRemuneradas", d.getVagasRemuneradas())
-                    .append("vagasVoluntarias", d.getVagasVoluntarias());
+                    .append("vagasVoluntarias", d.getVagasVoluntarias())
+                    .append("inscricoes", inscricoesDocs);
+
             disciplinasDocs.add(docDisc);
         }
 
-        // Embutindo as Inscrições
-        List<Document> inscricoesDocs = new ArrayList<>();
-        for (Inscricao i : edital.getInscricoesRealizadas()) {
-            Document docInsc = new Document()
-                    .append("candidatoNome", i.getCandidato().getNome())
-                    .append("candidatoMatricula", i.getCandidato().getMatricula())
-                    .append("disciplinaNome", i.getDisciplina().getNome())
-                    .append("cre", i.getCre())
-                    .append("media", i.getMedia());
-            inscricoesDocs.add(docInsc);
-        }
 
-        // 3. Montando o Documento Principal do Edital
         Document doc = new Document()
                 .append("id", edital.getId())
                 .append("numeroEdital", edital.getNumeroEdital())
@@ -57,17 +64,47 @@ public class EditalMongoDao {
                 .append("pesoMedia", edital.getPesoMedia())
                 .append("dataInicio", edital.getDataInicio().toString())
                 .append("dataFim", edital.getDataFim().toString())
-                .append("disciplinas", disciplinasDocs) // Array de Disciplinas
-                .append("inscricoes", inscricoesDocs);  // Array de Inscrições!
+                .append("disciplinas", disciplinasDocs); // Array de Disciplinas que já contém as inscrições
 
         collection.replaceOne(eq("id", edital.getId()), doc, new ReplaceOptions().upsert(true));
     }
 
+    // Método ajudante pra ler do MongoDB sem repetir código
+    private void extrairDisciplinasEInscricoes(Document doc, EditalDeMonitoria edital) {
+        List<Document> disciplinasDocs = doc.getList("disciplinas", Document.class);
+
+        if (disciplinasDocs != null) {
+            for (Document docDisc : disciplinasDocs) {
+                // Recria a disciplina
+                Disciplina d = new Disciplina(
+                        docDisc.getString("nome"),
+                        docDisc.getInteger("vagasRemuneradas"),
+                        docDisc.getInteger("vagasVoluntarias")
+                );
+                edital.adicionarDisciplina(d);
+
+                // Extrai as inscrições que estão dentro DESTA disciplina
+                List<Document> inscricoesDocs = docDisc.getList("inscricoes", Document.class);
+                if (inscricoesDocs != null) {
+                    for (Document docInsc : inscricoesDocs) {
+                        Aluno aluno = new Aluno();
+                        aluno.setNome(docInsc.getString("candidatoNome"));
+                        aluno.setMatricula(docInsc.getString("candidatoMatricula"));
+
+                        Inscricao i = new Inscricao(aluno, d, docInsc.getDouble("cre"), docInsc.getDouble("media"));
+                        i.setEdital(edital);
+
+                        // Adiciona a inscrição de volta na lista geral do Java
+                        edital.getInscricoesRealizadas().add(i);
+                    }
+                }
+            }
+        }
+    }
+
     public EditalDeMonitoria buscarPorNumero(String numero) {
 
-        Document doc = collection.find(
-                eq("numeroEdital", numero)
-        ).first();
+        Document doc = collection.find(eq("numeroEdital", numero)).first();
 
         if(doc == null) {
             return null;
@@ -82,18 +119,8 @@ public class EditalMongoDao {
         edital.setDataInicio(LocalDate.parse(doc.getString("dataInicio")));
         edital.setDataFim(LocalDate.parse(doc.getString("dataFim")));
 
-        // RECUPERANDO A LISTA DE DISCIPLINAS EMBUTIDA
-        List<Document> disciplinasDocs = doc.getList("disciplinas", Document.class);
-        if (disciplinasDocs != null) {
-            for (Document docDisc : disciplinasDocs) {
-                Disciplina d = new Disciplina(
-                        docDisc.getString("nome"),
-                        docDisc.getInteger("vagasRemuneradas"),
-                        docDisc.getInteger("vagasVoluntarias")
-                );
-                edital.adicionarDisciplina(d);
-            }
-        }
+        // Puxa as disciplinas e inscrições embutidas
+        extrairDisciplinasEInscricoes(doc, edital);
 
         return edital;
     }
@@ -113,18 +140,8 @@ public class EditalMongoDao {
             edital.setPesoCRE(doc.getDouble("pesoCRE"));
             edital.setPesoMedia(doc.getDouble("pesoMedia"));
 
-            // RECUPERANDO A LISTA DE DISCIPLINAS EMBUTIDA
-            List<Document> disciplinasDocs = doc.getList("disciplinas", Document.class);
-            if (disciplinasDocs != null) {
-                for (Document docDisc : disciplinasDocs) {
-                    Disciplina d = new Disciplina(
-                            docDisc.getString("nome"),
-                            docDisc.getInteger("vagasRemuneradas"),
-                            docDisc.getInteger("vagasVoluntarias")
-                    );
-                    edital.adicionarDisciplina(d);
-                }
-            }
+            // Puxa as disciplinas e inscrições embutidas
+            extrairDisciplinasEInscricoes(doc, edital);
 
             editais.add(edital);
         }
@@ -134,12 +151,9 @@ public class EditalMongoDao {
 
     public EditalDeMonitoria recuperarEditalPeloId(long id) {
 
-        Document doc = collection.find(
-                eq("id", id)
-        ).first();
+        Document doc = collection.find(eq("id", id)).first();
 
-        if(doc == null)
-            return null;
+        if(doc == null) return null;
 
         EditalDeMonitoria edital = new EditalDeMonitoria();
         edital.setId(doc.getLong("id"));
@@ -150,33 +164,20 @@ public class EditalMongoDao {
         edital.setPesoCRE(doc.getDouble("pesoCRE"));
         edital.setPesoMedia(doc.getDouble("pesoMedia"));
 
-        // RECUPERANDO A LISTA DE DISCIPLINAS EMBUTIDA
-        List<Document> disciplinasDocs = doc.getList("disciplinas", Document.class);
-        if (disciplinasDocs != null) {
-            for (Document docDisc : disciplinasDocs) {
-                Disciplina d = new Disciplina(
-                        docDisc.getString("nome"),
-                        docDisc.getInteger("vagasRemuneradas"),
-                        docDisc.getInteger("vagasVoluntarias")
-                );
-                edital.adicionarDisciplina(d);
-            }
-        }
+        // Puxa as disciplinas e inscrições embutidas
+        extrairDisciplinasEInscricoes(doc, edital);
 
         return edital;
     }
 
     // Método que o Redis usa para buscar a disciplina no Mongo se não achar no cache
     public Disciplina buscarDisciplinaEmbutidaPorNome(String nome) {
-        // Busca no MongoDB o edital que tem essa disciplina na lista
         Document doc = collection.find(eq("disciplinas.nome", nome)).first();
 
         if (doc == null) return null;
 
-        // Pega a lista de disciplinas embutidas
         List<Document> disciplinasDocs = doc.getList("disciplinas", Document.class);
 
-        // Acha a disciplina certa e devolve
         if (disciplinasDocs != null) {
             for (Document docDisc : disciplinasDocs) {
                 if (docDisc.getString("nome").equals(nome)) {
@@ -190,5 +191,4 @@ public class EditalMongoDao {
         }
         return null;
     }
-
 }

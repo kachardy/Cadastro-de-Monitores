@@ -15,104 +15,46 @@ public class InscricaoMongoDao {
 
     public InscricaoMongoDao() {
 
-        MongoDatabase db =
-                MongoConnection.getDatabase();
+        MongoDatabase db = MongoConnection.getDatabase();
 
-        collection =
-                db.getCollection("inscricoes");
+        collection = db.getCollection("inscricoes");
     }
 
     public void salvar(Inscricao inscricao) {
 
-        Document doc =
-                new Document()
-
-                        .append(
-                                "disciplina",
-                                inscricao.getDisciplina().getNome()
-                        )
-
-                        .append(
-                                "edital",
-                                inscricao.getEdital()
-                                        .getNumeroEdital()
-                        )
-
-                        .append(
-                                "candidato",
-                                inscricao.getCandidato().getNome()
-                        )
-
-                        .append(
-                                "cre",
-                                inscricao.getCre()
-                        )
-
-                        .append(
-                                "media",
-                                inscricao.getMedia()
-                        );
+        Document doc = new Document()
+                .append("disciplina", inscricao.getDisciplina().getNome())
+                .append("edital", inscricao.getEdital().getNumeroEdital())
+                .append("candidato", inscricao.getCandidato().getNome())
+                .append("cre", inscricao.getCre())
+                .append("media", inscricao.getMedia());
 
         collection.insertOne(doc);
     }
 
-    public Inscricao buscarPorCandidato(
-            String nome
-    ) {
+    public Inscricao buscarPorCandidato(String nome) {
 
-        Document doc =
-                collection.find(
-                        eq(
-                                "candidato",
-                                nome
-                        )
-                ).first();
+        Document doc = collection.find(eq("candidato", nome)).first();
 
-        if(doc == null)
-            return null;
+        if (doc == null) return null;
 
-        DisciplinaMongoDao disciplinaDao =
-                new DisciplinaMongoDao();
+        EditalMongoDao editalDao = new EditalMongoDao();
 
-        EditalMongoDao editalDao =
-                new EditalMongoDao();
+        Inscricao i = new Inscricao();
 
-        Inscricao i =
-                new Inscricao();
+        i.setCre(doc.getDouble("cre"));
 
-        i.setCre(
-                doc.getDouble("cre")
-        );
-
-        i.setMedia(
-                doc.getDouble("media")
-        );
+        i.setMedia(doc.getDouble("media"));
 
         Aluno aluno = new Aluno();
 
-        aluno.setNome(
-                doc.getString(
-                        "candidato"
-                )
-        );
+        aluno.setNome(doc.getString("candidato"));
 
         i.setCandidato(aluno);
 
-        i.setDisciplina(
-                disciplinaDao.buscarPorNome(
-                        doc.getString(
-                                "disciplina"
-                        )
-                )
-        );
+        i.setDisciplina(editalDao.buscarDisciplinaEmbutidaPorNome(doc.getString("disciplina")));
 
-        i.setEdital(
-                editalDao.buscarPorNumero(
-                        doc.getString(
-                                "edital"
-                        )
-                )
-        );
+        i.setEdital(editalDao.buscarPorNumero(doc.getString("edital")));
 
         return i;
     }
