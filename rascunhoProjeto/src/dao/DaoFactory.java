@@ -29,7 +29,4 @@ public class DaoFactory {
         return new EditalMongoDao();
     }
 
-    public static InscricaoMongoDao getInscricaoMongoDAO() {
-        return new InscricaoMongoDao();
-    }
 }
