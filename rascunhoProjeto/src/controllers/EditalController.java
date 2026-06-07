@@ -6,16 +6,16 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import models.*;
 import models.estados.FaseDoEdital;
-import services.CentralDeInformacoes;
+import services.CentralFacade;
 import utils.GeradorDeRelatorio;
 import utils.Mensageiro;
 import views.*;
 
 public class EditalController {
     private Coordenador coord;
-    private CentralDeInformacoes central;
+    private CentralFacade central;
 
-    public EditalController(Coordenador coord, CentralDeInformacoes central) {
+    public EditalController(Coordenador coord, CentralFacade central) {
         this.coord = coord;
         this.central = central;
     }

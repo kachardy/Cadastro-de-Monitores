@@ -3,14 +3,14 @@ package controllers;
 import java.util.List;
 import javax.swing.JOptionPane;
 import models.*;
-import services.CentralDeInformacoes;
+import services.CentralFacade;
 import views.*;
 
 public class CoordenadorController {
     private Coordenador coord;
-    private CentralDeInformacoes central;
+    private CentralFacade central;
 
-    public CoordenadorController(Coordenador coord, CentralDeInformacoes central) {
+    public CoordenadorController(Coordenador coord, CentralFacade central) {
         this.coord = coord;
         this.central = central;
     }

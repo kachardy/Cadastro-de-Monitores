@@ -17,8 +17,7 @@ public class CoordenadorService {
         return lista.isEmpty() ? null : lista.get(0);
     }
 
-    public boolean adicionarCoordenador(Coordenador c) {
+    public void adicionarCoordenador(Coordenador c) {
         coordenadorDao.salvar(c);
-        return true;
     }
 }

@@ -3,14 +3,14 @@ package controllers;
 import javax.swing.JOptionPane;
 import models.*;
 import models.estados.FaseDoEdital;
-import services.CentralDeInformacoes;
+import services.CentralFacade;
 import views.*;
 
 public class AlunoController {
     private Aluno aluno;
-    private CentralDeInformacoes central;
+    private CentralFacade central;
 
-    public AlunoController(Aluno aluno, CentralDeInformacoes central) {
+    public AlunoController(Aluno aluno, CentralFacade central) {
         this.aluno = aluno;
         this.central = central;
     }

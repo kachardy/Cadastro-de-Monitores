@@ -1,18 +1,25 @@
 package services;
 
-import dao.*;
 import erros.AlunoJaExisteException;
 import erros.EditalJaExisteException;
+import factories.ServiceFactory;
 import models.*;
 import java.util.List;
 
-// Essa classe funciona como o nosso Facade (Fachada) para o sistema.
-public class CentralDeInformacoes {
+// Classe Facade
+public class CentralFacade {
 
-    private CoordenadorService coordenadorService = new CoordenadorService(DaoFactory.getDAO(Coordenador.class));
-    private PessoaService pessoaService = new PessoaService(DaoFactory.getPessoaDAO());
-    private AlunoService alunoService = new AlunoService (DaoFactory.getAlunoDAO(), pessoaService);
-    private EditalService editalService= new EditalService(DaoFactory.getEditalDAO());
+    private CoordenadorService coordenadorService;
+    private PessoaService pessoaService;
+    private AlunoService alunoService;
+    private EditalService editalService;
+
+    public CentralFacade() {
+        this.coordenadorService = ServiceFactory.getCoordenadorService();
+        this.pessoaService = ServiceFactory.getPessoaService();
+        this.alunoService = ServiceFactory.getAlunoService();
+        this.editalService = ServiceFactory.getEditalService();
+    }
 
     // --- MÉTODOS DE BUSCA (READ) ---
 
@@ -46,8 +53,8 @@ public class CentralDeInformacoes {
         alunoService.adicionarAluno(a);
     }
 
-    public boolean adicionarCoordenador(Coordenador c) {
-        return coordenadorService.adicionarCoordenador(c);
+    public void adicionarCoordenador(Coordenador c) {
+        coordenadorService.adicionarCoordenador(c);
     }
 
     public void adicionarEdital(EditalDeMonitoria edital) throws EditalJaExisteException {

@@ -1,7 +1,11 @@
-package dao;
+package factories;
 
 import javax.persistence.EntityManager;
 
+import dao.AlunoDao;
+import dao.EditalDao;
+import dao.GenericDao;
+import dao.PessoaDao;
 import models.Aluno;
 import models.Pessoa;
 import services.Persistencia;

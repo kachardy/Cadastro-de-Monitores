@@ -1,10 +1,10 @@
 import controllers.AuthController;
-import services.CentralDeInformacoes;
+import services.CentralFacade;
 
 public class Programa {
 
     public static void main(String[] args) {
-        CentralDeInformacoes central = new CentralDeInformacoes();
+        CentralFacade central = new CentralFacade();
 
         // O AuthController só precisa da central (facade) para iniciar o programa
         AuthController auth = new AuthController(central);

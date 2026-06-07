@@ -2,17 +2,17 @@ package controllers;
 
 import javax.swing.JOptionPane;
 import models.*;
-import services.CentralDeInformacoes;
+import services.CentralFacade;
 import utils.Validador;
 import views.TelaCadastroAluno;
 import views.TelaCadastroCoordenador;
 import views.TelaLogin;
 
 public class AuthController {
-    private CentralDeInformacoes central;
+    private CentralFacade central;
 
     // O construtor agora recebe apenas a central, pois a Persistencia é estática
-    public AuthController(CentralDeInformacoes central) {
+    public AuthController(CentralFacade central) {
         this.central = central;
     }
 
