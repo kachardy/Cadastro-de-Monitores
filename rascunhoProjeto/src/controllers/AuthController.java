@@ -1,6 +1,9 @@
 package controllers;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
+
 import models.*;
 import services.CentralFacade;
 import utils.Validador;
@@ -11,13 +14,11 @@ import views.TelaLogin;
 public class AuthController {
     private CentralFacade central;
 
-    // O construtor agora recebe apenas a central, pois a Persistencia é estática
     public AuthController(CentralFacade central) {
         this.central = central;
     }
 
     public void iniciar() {
-        // A central busca o coordenador no banco via DAO agora
         if (central.getCoordenador() == null) {
             exibirCadastroCoordenador();
         } else {
@@ -28,20 +29,25 @@ public class AuthController {
     public void exibirLogin() {
         TelaLogin tela = new TelaLogin();
 
+        // Ação do Botão Login (Método adicionarAcaoSalvar na TelaLogin)
         tela.adicionarAcaoSalvar(e -> {
             String email = tela.getEmail();
             String senha = tela.getSenha();
 
+            // Validação
             if (!Validador.validarEmail(email) || !Validador.validarSenha(senha)) {
                 JOptionPane.showMessageDialog(tela, "E-mail ou senha inválidos!");
                 return;
             }
 
-            // Busca unificada via PessoaDao (que você já criou) através da Central
+            // Busca no banco/central
             Pessoa pessoa = central.recuperarPessoaPorEmail(email);
 
+            // Verifica se a pessoa existe e a senha bate
             if (pessoa != null && pessoa.getSenha().equals(senha)) {
                 tela.dispose();
+
+                // Redireciona para o painel correto dependendo do tipo de usuário
                 if (pessoa instanceof Coordenador) {
                     new CoordenadorController((Coordenador) pessoa, central).exibirMenuPrincipal();
                 } else if (pessoa instanceof Aluno) {
@@ -53,8 +59,16 @@ public class AuthController {
             JOptionPane.showMessageDialog(tela, "Credenciais inválidas!");
         });
 
-        tela.adicionarAcaoLinkCadastro(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent e) {
+        // Ação do Botão Cancelar
+        tela.adicionarAcaoCancelar(e -> {
+            tela.dispose();
+            System.exit(0); // Fecha o sistema
+        });
+
+        // Ação do Link de Cadastro (Método adicionarAcaoLinkCadastro na TelaLogin)
+        tela.adicionarAcaoLinkCadastro(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
                 tela.dispose();
                 exibirCadastroAluno();
             }
@@ -80,9 +94,7 @@ public class AuthController {
 
             Aluno novo = new Aluno(nome, matricula, email, senha);
             try {
-                // A central.adicionarAluno agora chama o alunoDao.salvar() internamente
                 central.adicionarAluno(novo);
-                // REMOVIDO: persistencia.salvarCentral(central, "central.xml");
 
                 JOptionPane.showMessageDialog(tela, "Aluno cadastrado com sucesso!");
                 tela.dispose();
@@ -114,7 +126,6 @@ public class AuthController {
             }
 
             Coordenador c = new Coordenador(nome, matricula, email, senha);
-            // A central agora persiste o coordenador no banco imediatamente
             central.adicionarCoordenador(c);
 
             JOptionPane.showMessageDialog(tela, "Configuração inicial concluída!");

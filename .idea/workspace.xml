@@ -5,75 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="Aplicado o padrão State">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/META-INF/persistence.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/Programa.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/controllers/AlunoController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/controllers/AuthController$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/controllers/AuthController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/controllers/CoordenadorController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/controllers/EditalController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/dao/AlunoDao.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/dao/EditalDao.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/dao/GenericDao.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/dao/PessoaDao.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/erros/AlunoJaExisteException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/erros/EditalJaExisteException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/erros/UsuarioJaExisteException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/factories/DaoFactory.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/factories/ServiceFactory.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/lib/activation.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/lib/itextpdf-5.5.9.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/lib/mail.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/lib/xstream-1.4.21.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/main/resources/META-INF/persistence.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/Aluno.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/CentralDeInformacoes.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/Coordenador.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/Disciplina.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/EditalDeMonitoria.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/Inscricao.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/Pessoa.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/estados/FaseDoEdital$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/estados/FaseDoEdital$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/estados/FaseDoEdital$3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/estados/FaseDoEdital$4.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/models/estados/FaseDoEdital.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/services/AlunoService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/services/CentralDeInformacoes.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/services/CoordenadorService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/services/EditalService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/services/GerenciadorDeInscricoes.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/services/Persistencia.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/services/PessoaService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/utils/ComparadorDeNotas.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/utils/GeradorDeRelatorio.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/utils/Mensageiro$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/utils/Mensageiro.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/utils/Validador.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaCadastroAluno.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaCadastroCoordenador.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaCadastroEdital.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaDetalheEditalAluno$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaDetalheEditalAluno.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaDetalheEditalCoordenador$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaDetalheEditalCoordenador.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaListaAlunos$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaListaAlunos.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaListagem$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaListagem.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaListagemAluno.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaLogin.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaPadraoCadastro.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaPerfilAluno.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaPerfilAlunoSecundaria.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaPrincipalAluno.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaPrincipalCoordenador.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaPrincipalPadrao.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaResultadoEdital$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/target/classes/views/TelaResultadoEdital.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaCadastroAluno.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaCadastroAluno.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaCadastroCoordenador.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaCadastroCoordenador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaLogin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaPadraoCadastro.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaPadraoCadastro.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/builders/BotaoBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/builders/BotaoBuilder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,6 +79,7 @@
   "keyToString": {
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Application.Programa.executor": "Run",
+    "Application.TelaLogin.executor": "Run",
     "Application.TelaPrincipalPadrao.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
