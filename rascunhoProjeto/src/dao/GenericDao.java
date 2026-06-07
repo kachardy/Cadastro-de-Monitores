@@ -34,28 +34,6 @@ public class GenericDao<T> {
         }
     }
 
-    // Método essencial para buscar um único registro pelo ID
-    public T buscarPorId(Long id) {
-        return em.find(classe, id);
-    }
-
-    public void removerPorId(Long id) {
-        try {
-            em.getTransaction().begin();
-            T entidade = em.find(classe, id);
-            if (entidade != null) {
-                em.remove(entidade);
-            }
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            e.printStackTrace();
-            throw new RuntimeException("Erro ao remover registro.", e); // Lança o erro para a frente
-        }
-    }
-
     public List<T> listarTodos() {
         return em.createQuery("SELECT e FROM " + classe.getSimpleName() + " e", classe).getResultList();
     }

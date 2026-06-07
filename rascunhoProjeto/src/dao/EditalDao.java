@@ -18,17 +18,4 @@ public class EditalDao extends GenericDao<EditalDeMonitoria> {
         return getEm().find(EditalDeMonitoria.class, id);
     }
 
-    // Adicionei esta busca customizada usando JPQL caso precise localizar um edital
-    // diretamente pelo seu número de identificação (ex: "Edital 01/2025") nas telas de listagem.
-    public EditalDeMonitoria buscarEditalPorNumero(String numeroEdital) {
-        try {
-            return getEm().createQuery("SELECT e FROM EditalDeMonitoria e WHERE e.numeroEdital = :numero", EditalDeMonitoria.class)
-                    .setParameter("numero", numeroEdital)
-                    .getSingleResult();
-        } catch (javax.persistence.NoResultException e) {
-            // Se a query não encontrar nenhum edital com esse número, o JPA lança uma exceção.
-            // Eu capturo ela aqui e devolvo null pra evitar que o programa quebre na tela do usuário.
-            return null;
-        }
-    }
 }

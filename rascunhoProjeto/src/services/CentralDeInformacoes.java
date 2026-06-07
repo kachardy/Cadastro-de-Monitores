@@ -9,101 +9,56 @@ import java.util.List;
 // Essa classe funciona como o nosso Facade (Fachada) para o sistema.
 public class CentralDeInformacoes {
 
-    // Usando a Factory
-    private AlunoDao alunoDao = DaoFactory.getAlunoDAO();
-    private PessoaDao pessoaDao = DaoFactory.getPessoaDAO();
-    private EditalDao editalDao = DaoFactory.getEditalDAO();
-    private GenericDao<Coordenador> coordenadorDao = DaoFactory.getDAO(Coordenador.class);
+    private CoordenadorService coordenadorService = new CoordenadorService(DaoFactory.getDAO(Coordenador.class));
+    private PessoaService pessoaService = new PessoaService(DaoFactory.getPessoaDAO());
+    private AlunoService alunoService = new AlunoService (DaoFactory.getAlunoDAO(), pessoaService);
+    private EditalService editalService= new EditalService(DaoFactory.getEditalDAO());
 
     // --- MÉTODOS DE BUSCA (READ) ---
 
     public List<Aluno> getTodosOsAlunos() {
-        return alunoDao.listarTodos();
+        return alunoService.getTodosOsAlunos();
     }
 
     public List<EditalDeMonitoria> getTodosOsEditais() {
-        return editalDao.listarTodos();
+        return editalService.getTodosOsEditais();
     }
 
     public Coordenador getCoordenador() {
-        List<Coordenador> lista = coordenadorDao.listarTodos();
-        return lista.isEmpty() ? null : lista.get(0);
+        return coordenadorService.getCoordenador();
     }
 
     public Aluno recuperarAlunoPorMatricula(String numMat) {
-        return alunoDao.recuperarAlunoPorMatricula(numMat);
+        return alunoService.recuperarAlunoPorMatricula(numMat);
     }
 
     public Pessoa recuperarPessoaPorEmail(String email) {
-        return pessoaDao.recuperarPessoaPorEmail(email);
+        return pessoaService.buscarPorEmail(email);
     }
 
     public EditalDeMonitoria recuperarEditalPeloId(long id) {
-        return editalDao.recuperarEditalPeloId(id);
+        return editalService.recuperarEditalPeloId(id);
     }
 
     // --- MÉTODOS DE PERSISTÊNCIA---
 
-    public boolean adicionarAluno(Aluno a) throws AlunoJaExisteException {
-        if (recuperarAlunoPorMatricula(a.getMatricula()) != null || recuperarPessoaPorEmail(a.getEmail()) != null) {
-            throw new AlunoJaExisteException();
-        }
-        alunoDao.salvar(a);
-        return true;
+    public void adicionarAluno(Aluno a) throws AlunoJaExisteException {
+        alunoService.adicionarAluno(a);
     }
 
     public boolean adicionarCoordenador(Coordenador c) {
-        coordenadorDao.salvar(c);
-        return true;
+        return coordenadorService.adicionarCoordenador(c);
     }
 
-    // Mantenho este metodo para o cadastro inicial, pois ele valida se o Edital já existe
-    // e evita duplicidade acidental na hora da criação.
-
-    public boolean adicionarEdital(EditalDeMonitoria edital) throws EditalJaExisteException {
-        if (recuperarEditalPeloId(edital.getId()) != null) {
-            throw new EditalJaExisteException();
-        }
-        editalDao.salvar(edital);
-        return true;
+    public void adicionarEdital(EditalDeMonitoria edital) throws EditalJaExisteException {
+        editalService.adicionarEdital(edital);
     }
 
-    // NOVO METODO: Este é o nosso "Smart Save".
-    // Como o mEtodo salvar() do GenericDao agora usa o merge(), este metodo serve
-    // tanto para salvar um edital novo quanto para atualizar um que já existe.
-    // É o metodo que vou usar nos Controllers para confirmar inscrições e resultados.
     public void salvarEdital(EditalDeMonitoria edital) {
-        editalDao.salvar(edital);
-    }
-
-    // --- MÉTODOS DE LÓGICA E RELATÓRIOS ---
-
-    public String percorrerEditais() {
-        List<EditalDeMonitoria> editais = getTodosOsEditais();
-        if (editais.isEmpty()) return "Nenhum edital";
-
-        StringBuilder resultado = new StringBuilder();
-        for (EditalDeMonitoria e : editais) {
-            resultado.append("\n").append(e.toString());
-        }
-        return resultado.toString();
-    }
-
-    public List<Disciplina> recuperarInscricoesDeUmAlunoEmUmEdital(String matriculaAluno, long idEdital) {
-        Aluno alunoEncontrado = recuperarAlunoPorMatricula(matriculaAluno);
-        EditalDeMonitoria editalEncontrado = recuperarEditalPeloId(idEdital);
-
-        if (alunoEncontrado == null || editalEncontrado == null) {
-            return null;
-        }
-
-        // Uso o gerenciador interno do edital para filtrar o que eu preciso.
-        return editalEncontrado.getGerenciador().getDisciplinasPorAluno(
-                editalEncontrado.getInscricoesRealizadas(), matriculaAluno);
+        editalService.salvarEdital(edital);
     }
 
     public List<Aluno> buscarAlunosPorNome(String nome) {
-        // A Central apenas pede para o DAO fazer a busca filtrada no banco
-        return alunoDao.buscarAlunosPorNome(nome);
+        return alunoService.buscarAlunosPorNome(nome);
     }
 }

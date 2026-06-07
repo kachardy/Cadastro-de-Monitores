@@ -24,13 +24,4 @@ public class TelaCadastroAluno extends TelaPadraoCadastro {
         
         add(labelLinkLogin);
 	}
-	
-	
-	 public void adicionarAcaoLinkLogin(MouseListener acao) {
-	        labelLinkLogin.addMouseListener(acao);
-	 }
-	
-	public static void main (String[] args) {
-		new TelaCadastroAluno();
-	}
 }

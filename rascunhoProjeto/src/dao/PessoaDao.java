@@ -4,7 +4,7 @@ import models.Pessoa;
 
 import javax.persistence.EntityManager;
 
-public class PessoaDao extends GenericDao{
+public class PessoaDao extends GenericDao<Pessoa>{
 
     public PessoaDao(EntityManager em, Class classe) {
         super(em, classe);

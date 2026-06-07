@@ -35,8 +35,5 @@ public class TelaPrincipalPadrao extends JFrame {
         labelTitulo.setBounds(0, 30, 500, 40); 
         add(labelTitulo);
 	}
-	
-	public static void main(String[] args) {
-		new TelaPrincipalPadrao();
-	}
+
 }

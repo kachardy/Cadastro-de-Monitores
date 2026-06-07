@@ -77,12 +77,6 @@ public class TelaPrincipalCoordenador extends TelaPrincipalPadrao {
     public void adicionarAcaoSair(ActionListener acao) {
         botaoSair.addActionListener(acao);
     }
-    
-    /*
-    public static void main(String[] args) {
-		new TelaPrincipalCoordenador();
-	}
-	*/
 	
     
 }
