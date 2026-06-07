@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import models.*;
+import models.estados.FaseDoEdital;
 import services.CentralDeInformacoes;
 import utils.GeradorDeRelatorio;
 import utils.Mensageiro;
@@ -83,17 +84,17 @@ public class EditalController {
         });
 
         tela.adicionarAcaoCalcular(e -> {
-            if (edital.isResultadoFinal()) {
+            if (edital.getFase() == FaseDoEdital.HOMOLOGADO) {
                 exibirResultadoFinal(edital);
                 return;
             }
-            if (!edital.isResultadoCalculado()) {
+            if (edital.getFase() == FaseDoEdital.ENCERRADO) {
                 edital.calcularResultadoFinal();
                 // Salvo o estado de "resultado calculado" e a ordenação do ranking
                 central.salvarEdital(edital);
                 JOptionPane.showMessageDialog(tela, "Ranking calculado!");
             } else {
-                edital.setResultadoFinal(true);
+                edital.setFase(FaseDoEdital.HOMOLOGADO);
                 // Salvo o estado final/homologado no banco
                 central.salvarEdital(edital);
                 JOptionPane.showMessageDialog(tela, "Edital homologado!");

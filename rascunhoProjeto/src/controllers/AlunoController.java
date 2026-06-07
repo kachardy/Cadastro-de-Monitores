@@ -2,6 +2,7 @@ package controllers;
 
 import javax.swing.JOptionPane;
 import models.*;
+import models.estados.FaseDoEdital;
 import services.CentralDeInformacoes;
 import views.*;
 
@@ -61,7 +62,7 @@ public class AlunoController {
                 return;
             }
             EditalDeMonitoria edital = central.recuperarEditalPeloId(id);
-            if (edital.isResultadoFinal()) {
+            if (edital.getFase() == FaseDoEdital.HOMOLOGADO) {
                 JOptionPane.showMessageDialog(telaLista, "O resultado final já saiu. Impossível desistir.");
                 return;
             }
@@ -93,7 +94,7 @@ public class AlunoController {
             Long id = telaLista.getIdEditalSelecionado();
             if (id == null) return;
             EditalDeMonitoria edital = central.recuperarEditalPeloId(id);
-            if (edital.isResultadoCalculado() || edital.isResultadoFinal()) {
+            if (edital.getFase() == FaseDoEdital.CALCULADO || edital.getFase() == FaseDoEdital.HOMOLOGADO) {
                 TelaResultadoEdital telaRes = new TelaResultadoEdital(edital);
                 telaRes.adicionarAcaoFechar(ev -> telaRes.dispose());
                 telaRes.setVisible(true);

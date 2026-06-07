@@ -1,6 +1,8 @@
 package models;
 
+import models.estados.FaseDoEdital;
 import services.GerenciadorDeInscricoes;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -23,9 +25,8 @@ public class EditalDeMonitoria implements Serializable {
     private double pesoCRE;
     private double pesoMedia;
 
-    // Atributos de Estado do Processo
-    private boolean resultadoCalculado = false;
-    private boolean resultadoFinal = false;
+    @Enumerated(EnumType.STRING)
+    private FaseDoEdital fase = FaseDoEdital.ABERTO;
 
     // Adicionado cascade pra quando salvar o edital, salvar o catálogo de disciplinas junto.
     // O edital_id vai lá pra tabela de disciplinas, garantindo a chave estrangeira.
@@ -47,8 +48,7 @@ public class EditalDeMonitoria implements Serializable {
     @Transient
     private GerenciadorDeInscricoes gerenciador = new GerenciadorDeInscricoes();
 
-    public EditalDeMonitoria(long id, String numeroEdital, LocalDate dataInicio, LocalDate dataFim,
-                             int maxInscricoes, double pesoCRE, double pesoMedia) {
+    public EditalDeMonitoria(long id, String numeroEdital, LocalDate dataInicio, LocalDate dataFim, int maxInscricoes, double pesoCRE, double pesoMedia) {
         this.id = id;
         this.numeroEdital = numeroEdital;
         this.dataInicio = dataInicio;
@@ -58,7 +58,8 @@ public class EditalDeMonitoria implements Serializable {
         this.pesoMedia = pesoMedia;
     }
 
-    public EditalDeMonitoria () {}
+    public EditalDeMonitoria() {
+    }
 
     // --- LÓGICA DE NEGÓCIO ---
 
@@ -67,65 +68,37 @@ public class EditalDeMonitoria implements Serializable {
      * Mantém as disciplinas (Catálogo), mas zera as inscrições (Estado).
      */
     public EditalDeMonitoria clonar() {
-        EditalDeMonitoria novoEdital = new EditalDeMonitoria(
-                System.currentTimeMillis(), // Novo ID temporário
-                "Cópia de " + this.numeroEdital,
-                this.dataInicio,
-                this.dataFim,
-                this.maxInscricoesPorAluno,
-                this.pesoCRE,
-                this.pesoMedia
-        );
+        EditalDeMonitoria novoEdital = new EditalDeMonitoria(System.currentTimeMillis(), // Novo ID temporário
+                "Cópia de " + this.numeroEdital, this.dataInicio, this.dataFim, this.maxInscricoesPorAluno, this.pesoCRE, this.pesoMedia);
 
         // Clona as disciplinas limpando os vínculos antigos pra não dar conflito no banco
         for (Disciplina d : this.todasAsDisciplinas) {
-            novoEdital.adicionarDisciplina(new Disciplina(
-                    d.getNome(),
-                    d.getVagasRemuneradas(),
-                    d.getVagasVoluntarias()
-            ));
+            novoEdital.adicionarDisciplina(new Disciplina(d.getNome(), d.getVagasRemuneradas(), d.getVagasVoluntarias()));
         }
         return novoEdital;
     }
 
     // Registra a inscrição na nossa lista oficial (que vai pro banco)
     public boolean inscrever(Aluno aluno, Disciplina disc, double cre, double media) {
-        if (jaAcabou() || resultadoCalculado) return false;
-
-        Inscricao nova = new Inscricao(aluno, disc, cre, media);
-
-        // Passa a lista atual pro gerenciador validar se o cara já não tá inscrito nessa disciplina
-        if (!gerenciador.validarNovaInscricao(this.inscricoesRealizadas, nova)) {
-            return false;
-        }
-
-        this.inscricoesRealizadas.add(nova);
-        return true;
+        return this.fase.inscrever(this, aluno, disc, cre, media);
     }
 
     // Percorre o catálogo de disciplinas e solicita ao Gerenciador que ordene cada ranking.
     public void calcularResultadoFinal() {
-        for (Disciplina d : todasAsDisciplinas) {
-            // O gerenciador precisa receber a nossa lista do banco pra conseguir puxar as notas e ordenar
-            gerenciador.ordenarRanking(this.inscricoesRealizadas, d, pesoCRE, pesoMedia);
-        }
-        this.resultadoCalculado = true;
+        this.fase.calcularResultado(this);
     }
 
     // Remove o aluno do processo seletivo
     public boolean desistirDoEdital(Aluno aluno) {
-        if (resultadoFinal) return false;
-
-        // Remove direto da lista que vai pro banco usando lambda, bem mais limpo e o gerenciador não precisa mais fazer isso
-        this.inscricoesRealizadas.removeIf(inscricao -> inscricao.getCandidato().equals(aluno));
-        return true;
+        return this.fase.desistir(this, aluno);
     }
+
 
     public boolean jaAcabou() {
         return LocalDate.now().isAfter(dataFim);
     }
 
-    // --- GETTERS E SETTERS ---
+    // Getter e Setters
 
     public long getId() {
         return id;
@@ -159,41 +132,17 @@ public class EditalDeMonitoria implements Serializable {
         return maxInscricoesPorAluno;
     }
 
-    public void setMaxInscricoesPorAluno(int max) {
-        this.maxInscricoesPorAluno = max;
-    }
-
     public double getPesoCRE() {
         return pesoCRE;
-    }
-
-    public void setPesoCRE(double peso) {
-        this.pesoCRE = peso;
     }
 
     public double getPesoMedia() {
         return pesoMedia;
     }
 
-    public void setPesoMedia(double peso) {
-        this.pesoMedia = peso;
-    }
+    public FaseDoEdital getFase() { return fase; }
 
-    public boolean isResultadoCalculado() {
-        return resultadoCalculado;
-    }
-
-    public void setResultadoCalculado(boolean status) {
-        this.resultadoCalculado = status;
-    }
-
-    public boolean isResultadoFinal() {
-        return resultadoFinal;
-    }
-
-    public void setResultadoFinal(boolean status) {
-        this.resultadoFinal = status;
-    }
+    public void setFase(FaseDoEdital fase) { this.fase = fase; }
 
     public List<Disciplina> getTodasAsDisciplinas() {
         return todasAsDisciplinas;
@@ -209,10 +158,6 @@ public class EditalDeMonitoria implements Serializable {
 
     public List<Inscricao> getInscricoesRealizadas() {
         return inscricoesRealizadas;
-    }
-
-    public void setInscricoesRealizadas(List<Inscricao> inscricoesRealizadas) {
-        this.inscricoesRealizadas = inscricoesRealizadas;
     }
 
     public GerenciadorDeInscricoes getGerenciador() {

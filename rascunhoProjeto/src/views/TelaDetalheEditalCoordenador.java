@@ -11,6 +11,7 @@ import models.Aluno;
 import models.Disciplina;
 import models.EditalDeMonitoria;
 import models.Inscricao;
+import models.estados.FaseDoEdital;
 
 public class TelaDetalheEditalCoordenador extends JFrame {
 
@@ -109,7 +110,7 @@ public class TelaDetalheEditalCoordenador extends JFrame {
         btnVoltar.setBounds(540, 460, 120, 35);
 
         // Regra de Visualização
-        if (edital.isResultadoCalculado()) {
+        if (edital.getFase() == FaseDoEdital.CALCULADO) {
             btnEditar.setEnabled(false);
             btnEncerrar.setEnabled(false);
             btnCalcularResultado.setText("Ver Resultado Final");
