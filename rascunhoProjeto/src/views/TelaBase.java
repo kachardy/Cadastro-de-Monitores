@@ -1,7 +1,8 @@
 package views;
 
-import java.awt.Color;
-import java.awt.Font;
+import views.tema.Tema;
+
+import java.awt.*;
 import javax.swing.JFrame;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -34,13 +35,23 @@ public abstract class TelaBase extends JFrame {
     // Metodo utilitário herdável para adicionar o cabeçalho verde padronizado
     public void adicionarCabecalho(String titulo, int largura) {
         JLabel labelTitulo = new JLabel(titulo);
-        labelTitulo.setFont(new Font("Arial", Font.BOLD, 24));
+        labelTitulo.setFont(Tema.FONTE_CABECALHO);
         labelTitulo.setOpaque(true);
-        labelTitulo.setBackground(new Color(0, 128, 0)); // Verde padrão do IFPB
-        labelTitulo.setForeground(Color.WHITE);
+        labelTitulo.setBackground(Tema.COR_PRIMARIA_VERDE);
+        labelTitulo.setForeground(Tema.COR_TEXTO_BRANCO);
         labelTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+
         labelTitulo.setBounds(0, 0, largura, 50);
-        add(labelTitulo);
+
+        // Define um tamanho preferencial para as telas novas e responsivas
+        labelTitulo.setPreferredSize(new Dimension(largura, 50));
+
+        // Magia da Arquitetura: A TelaBase descobre se a tela filha é moderna ou legada
+        if (getLayout() instanceof java.awt.BorderLayout) {
+            add(labelTitulo, java.awt.BorderLayout.NORTH); // Cola no topo
+        } else {
+            add(labelTitulo); // Adiciona solto (Modo antigo)
+        }
     }
 
     // Metodo abstrato que toda tela filha será obrigada a fornecer

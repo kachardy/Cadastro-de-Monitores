@@ -1,13 +1,21 @@
 package views;
 
-import java.awt.Color;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import views.builders.BotaoBuilder; // Importando nosso construtor de botões
+import views.builders.BotaoBuilder;
+import views.factories.FabricaDeComponentes;
+import views.tema.Tema;
 
 public class TelaPadraoCadastro extends TelaBase {
 
@@ -19,71 +27,89 @@ public class TelaPadraoCadastro extends TelaBase {
     private JButton botaoCancelar;
 
     public TelaPadraoCadastro() {
-        // Repassa o nome genérico da janela e o tamanho para a classe mãe
         super("Cadastro", 500, 600);
     }
 
     @Override
     protected void inicializarComponentes() {
-        // NOTA: O adicionarCabecalho foi retirado daqui para permitir
-        // que as telas filhas decidam qual cabeçalho vão desenhar!
+        // 1. Layout principal em blocos (Norte, Sul, Centro...)
+        setLayout(new BorderLayout());
 
-        // Labels
-        JLabel labelNome = new JLabel("Nome: ");
-        labelNome.setBounds(50, 100, 80, 30);
+        // 2. Cabeçalho vai automaticamente para o topo (NORTH)
+        adicionarCabecalho("Novo Cadastro", 500);
 
-        JLabel labelMatricula = new JLabel("Matrícula: ");
-        labelMatricula.setBounds(50, 150, 80, 30);
+        // 3. Preparar a grelha central
+        JPanel painelCentro = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10); // Margem uniforme
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        JLabel labelEmail = new JLabel("Email: ");
-        labelEmail.setBounds(50, 200, 80, 30);
+        // 4. Instanciar os componentes usando a Fábrica e definir o tamanho responsivo
+        JLabel labelNome = FabricaDeComponentes.criarLabel("Nome: ");
+        tfNome = FabricaDeComponentes.criarTextField();
+        tfNome.setPreferredSize(new Dimension(280, 35));
 
-        JLabel labelSenha = new JLabel("Senha: ");
-        labelSenha.setBounds(50, 250, 80, 30);
+        JLabel labelMatricula = FabricaDeComponentes.criarLabel("Matrícula: ");
+        tfMatricula = FabricaDeComponentes.criarTextField();
+        tfMatricula.setPreferredSize(new Dimension(280, 35));
 
-        // TextFields
-        tfNome = new JTextField();
-        tfNome.setBounds(130, 100, 280, 30);
+        JLabel labelEmail = FabricaDeComponentes.criarLabel("Email: ");
+        tfEmail = FabricaDeComponentes.criarTextField();
+        tfEmail.setPreferredSize(new Dimension(280, 35));
 
-        tfMatricula = new JTextField();
-        tfMatricula.setBounds(130, 150, 280, 30);
+        JLabel labelSenha = FabricaDeComponentes.criarLabel("Senha: ");
+        tfSenha = FabricaDeComponentes.criarPasswordField();
+        tfSenha.setPreferredSize(new Dimension(280, 35));
 
-        tfEmail = new JTextField();
-        tfEmail.setBounds(130, 200, 280, 30);
-
-        tfSenha = new JPasswordField();
-        tfSenha.setEchoChar('*');
-        tfSenha.setBounds(130, 250, 280, 30);
-
-        // Criação dos botões usando o nosso Builder
+        // Botões usando o Builder e o Tema
         botaoCadastrar = new BotaoBuilder()
                 .comTexto("Cadastrar")
-                .comPosicao(110, 330, 110, 35)
-                .comCorFundo(new Color(200, 255, 200))
+                .comCorFundo(Tema.COR_FUNDO_BOTAO_ACAO)
                 .build();
+        botaoCadastrar.setPreferredSize(new Dimension(110, 35));
 
         botaoCancelar = new BotaoBuilder()
                 .comTexto("Cancelar")
-                .comPosicao(260, 330, 110, 35)
                 .build();
+        botaoCancelar.setPreferredSize(new Dimension(110, 35));
 
-        // Adicionando tudo na tela
-        add(labelNome); add(tfNome);
-        add(labelMatricula); add(tfMatricula);
-        add(labelEmail); add(tfEmail);
-        add(labelSenha); add(tfSenha);
-        add(botaoCadastrar); add(botaoCancelar);
+        // --- 5. Montar o formulário na Grelha ---
 
-        setVisible(true);
+        // Linha 0 (Nome)
+        gbc.gridx = 0; gbc.gridy = 0; painelCentro.add(labelNome, gbc);
+        gbc.gridx = 1; gbc.gridy = 0; painelCentro.add(tfNome, gbc);
+
+        // Linha 1 (Matrícula)
+        gbc.gridx = 0; gbc.gridy = 1; painelCentro.add(labelMatricula, gbc);
+        gbc.gridx = 1; gbc.gridy = 1; painelCentro.add(tfMatricula, gbc);
+
+        // Linha 2 (Email)
+        gbc.gridx = 0; gbc.gridy = 2; painelCentro.add(labelEmail, gbc);
+        gbc.gridx = 1; gbc.gridy = 2; painelCentro.add(tfEmail, gbc);
+
+        // Linha 3 (Senha)
+        gbc.gridx = 0; gbc.gridy = 3; painelCentro.add(labelSenha, gbc);
+        gbc.gridx = 1; gbc.gridy = 3; painelCentro.add(tfSenha, gbc);
+
+        // Linha 4 (Painel de Botões - Agrupados na mesma célula estendida)
+        JPanel painelBotoes = new JPanel();
+        painelBotoes.add(botaoCadastrar);
+        painelBotoes.add(botaoCancelar);
+
+        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.gridwidth = 2; // Ocupar duas colunas para centralizar abaixo do formulário
+        painelCentro.add(painelBotoes, gbc);
+
+        // 6. Colar o painel completo no centro do ecrã
+        add(painelCentro, BorderLayout.CENTER);
     }
 
-    // Getters
+    // --- Getters e Listeners permanecem 100% inalterados ---
     public String getNome() { return tfNome.getText(); }
     public String getMatricula() { return tfMatricula.getText(); }
     public String getEmail() { return tfEmail.getText(); }
     public String getSenha() { return new String(tfSenha.getPassword()); }
 
-    // Listeners
     public void adicionarAcaoSalvar(ActionListener acao) { botaoCadastrar.addActionListener(acao); }
     public void adicionarAcaoCancelar(ActionListener acao) { botaoCancelar.addActionListener(acao); }
 }

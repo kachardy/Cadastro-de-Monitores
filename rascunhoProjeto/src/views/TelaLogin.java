@@ -1,112 +1,108 @@
 package views;
 
-import java.awt.Color;
+import java.awt.BorderLayout;
 import java.awt.Cursor;
-import java.awt.Font;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import views.builders.BotaoBuilder;
+import views.factories.FabricaDeComponentes;
+import views.tema.Tema;
+
 public class TelaLogin extends TelaBase {
 
-	// Atributos
-	private JTextField tfEmail;
-	private JPasswordField tfSenha;
-	private JButton botaoLogin;
-	private JButton botaoCancelar;
-	private JLabel labelLinkCadastro;
+    private JTextField tfEmail;
+    private JPasswordField tfSenha;
+    private JButton botaoLogin;
+    private JButton botaoCancelar;
+    private JLabel labelLinkCadastro;
 
-	public TelaLogin() {
-		// Passando as dimensões originais (500x600) para a TelaBase
-		super("Login", 500, 600);
+    public TelaLogin() {
+        super("Login", 500, 600);
+    }
 
-		// Ícone da Janela restaurado
-		try {
-			ImageIcon imagemIcone = new ImageIcon("ifpblogo.png");
-			setIconImage(imagemIcone.getImage());
-		} catch (Exception e) {
-			System.out.println("Logo não encontrada");
-		}
-	}
+    @Override
+    protected void inicializarComponentes() {
+        // 1. MUDANÇA DE PARADIGMA: Sobrescrevemos o layout nulo para um layout em blocos!
+        setLayout(new BorderLayout());
 
-	@Override
-	protected void inicializarComponentes() {
-		// Cabeçalho restaurado
-		JLabel labelTitulo = new JLabel("Login");
-		labelTitulo.setFont(new Font("Arial", Font.BOLD, 26));
-		labelTitulo.setOpaque(true);
-		labelTitulo.setBackground(new Color(0, 128, 0));
-		labelTitulo.setForeground(Color.WHITE);
-		labelTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-		labelTitulo.setBounds(0, 30, 500, 40);
+        // 2. Cabeçalho (O nosso método inteligente vai enviá-lo logo para o Topo/NORTH)
+        adicionarCabecalho("Login", 500);
 
-		// Labels
-		JLabel labelEmail = new JLabel("Email: ");
-		labelEmail.setBounds(50, 150, 80, 30);
+        // 3. Criar a "Grelha" (GridBagLayout) para o centro do ecrã
+        JPanel painelCentro = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10); // Margem de segurança de 10px entre cada item
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Esticar sempre na horizontal
 
-		JLabel labelSenha = new JLabel("Senha: ");
-		labelSenha.setBounds(50, 200, 80, 30);
+        // 4. Instanciar os componentes com a Fábrica Responsiva (Zero coordenadas!)
+        JLabel labelEmail = FabricaDeComponentes.criarLabel("Email: ");
+        tfEmail = FabricaDeComponentes.criarTextField();
+        tfEmail.setPreferredSize(new Dimension(280, 35)); // Definimos o tamanho ideal que queremos
 
-		// TextFields com as larguras originais
-		tfEmail = new JTextField();
-		tfEmail.setBounds(130, 150, 280, 30);
+        JLabel labelSenha = FabricaDeComponentes.criarLabel("Senha: ");
+        tfSenha = FabricaDeComponentes.criarPasswordField();
+        tfSenha.setPreferredSize(new Dimension(280, 35));
 
-		tfSenha = new JPasswordField();
-		tfSenha.setBounds(130, 200, 280, 30);
-		tfSenha.setEchoChar('*');
+        botaoLogin = new BotaoBuilder()
+                .comTexto("Login")
+                .comCorFundo(Tema.COR_FUNDO_BOTAO_ACAO)
+                .build();
+        botaoLogin.setPreferredSize(new Dimension(110, 35));
 
-		// Botões com as posições originais
-		botaoLogin = new JButton("Login");
-		botaoLogin.setBounds(110, 330, 110, 35);
-		botaoLogin.setBackground(new Color(200, 255, 200));
+        botaoCancelar = new BotaoBuilder()
+                .comTexto("Cancelar")
+                .build();
+        botaoCancelar.setPreferredSize(new Dimension(110, 35));
 
-		botaoCancelar = new JButton("Cancelar");
-		botaoCancelar.setBounds(260, 330, 110, 35);
+        labelLinkCadastro = new JLabel("Não tem conta? Faça o cadastro aqui.");
+        labelLinkCadastro.setForeground(Tema.COR_PRIMARIA_VERDE);
+        labelLinkCadastro.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        labelLinkCadastro.setHorizontalAlignment(SwingConstants.CENTER);
 
-		// Link pra cadastro restaurado com a cor verde original
-		labelLinkCadastro = new JLabel("Não tem conta? Faça o cadastro aqui.");
-		labelLinkCadastro.setForeground(new Color(0, 128, 0));
-		labelLinkCadastro.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		labelLinkCadastro.setBounds(0, 420, 500, 30);
-		labelLinkCadastro.setHorizontalAlignment(SwingConstants.CENTER);
+        // --- 5. Montar o Puzzle na Grelha ---
 
-		// Adicionando tudo na tela
-		add(labelTitulo);
-		add(labelEmail);
-		add(tfEmail);
-		add(labelSenha);
-		add(tfSenha);
-		add(botaoLogin);
-		add(botaoCancelar);
-		add(labelLinkCadastro);
+        // Linha 0 (Email) - Coluna 0 e Coluna 1
+        gbc.gridx = 0; gbc.gridy = 0; painelCentro.add(labelEmail, gbc);
+        gbc.gridx = 1; gbc.gridy = 0; painelCentro.add(tfEmail, gbc);
 
-		// Nota: setVisible(true) não é necessário aqui se o seu AuthController já faz isso no final.
-	}
+        // Linha 1 (Senha)
+        gbc.gridx = 0; gbc.gridy = 1; painelCentro.add(labelSenha, gbc);
+        gbc.gridx = 1; gbc.gridy = 1; painelCentro.add(tfSenha, gbc);
 
-	// Getters
-	public String getEmail() {
-		return tfEmail.getText();
-	}
-	public String getSenha() {
-		return new String(tfSenha.getPassword());
-	}
+        // Linha 2 (Painel auxiliar para empacotar os dois botões juntos)
+        JPanel painelBotoes = new JPanel();
+        painelBotoes.add(botaoLogin);
+        painelBotoes.add(botaoCancelar);
 
-	// Ações (Nomes restaurados para funcionar com seu AuthController)
-	public void adicionarAcaoSalvar(ActionListener acao) {
-		botaoLogin.addActionListener(acao);
-	}
+        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridwidth = 2; // Dizemos que os botões vão ocupar o espaço de 2 colunas!
+        painelCentro.add(painelBotoes, gbc);
 
-	public void adicionarAcaoCancelar(ActionListener acao) {
-		botaoCancelar.addActionListener(acao);
-	}
+        // Linha 3 (Link de Cadastro)
+        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2;
+        painelCentro.add(labelLinkCadastro, gbc);
 
-	public void adicionarAcaoLinkCadastro(MouseListener acao) {
-		labelLinkCadastro.addMouseListener(acao);
-	}
+        // 6. Colamos o painel inteiro exatamente no centro geométrico do ecrã
+        add(painelCentro, BorderLayout.CENTER);
+    }
+
+    // --- Getters e Listeners permanecem intactos! ---
+    public String getEmail() { return tfEmail.getText(); }
+    public String getSenha() { return new String(tfSenha.getPassword()); }
+
+    public void adicionarAcaoSalvar(ActionListener acao) { botaoLogin.addActionListener(acao); }
+    public void adicionarAcaoCancelar(ActionListener acao) { botaoCancelar.addActionListener(acao); }
+    public void adicionarAcaoLinkCadastro(MouseListener acao) { labelLinkCadastro.addMouseListener(acao); }
 }

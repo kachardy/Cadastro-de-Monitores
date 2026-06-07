@@ -5,15 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="Aplicado o padrão State">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/factories/FabricaDeComponentes.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/tema/Tema.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/controllers/AuthController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaBase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaCadastroAluno.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaCadastroAluno.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaCadastroCoordenador.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaCadastroCoordenador.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaLogin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaPadraoCadastro.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaPadraoCadastro.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/builders/BotaoBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/builders/BotaoBuilder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +44,7 @@
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/kachardy/Cadastro-de-Monitores.git",
-    "accountId": "a1f2976f-2f4d-469d-910d-eb8393906f58"
+    "accountId": "198b08fd-5d24-4159-9e57-7268c1dce974"
   }
 }]]></component>
   <component name="ProjectColorInfo">{
@@ -75,34 +72,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Application.Programa.executor": "Run",
-    "Application.TelaLogin.executor": "Run",
-    "Application.TelaPrincipalPadrao.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Romulo/Desktop/ROMULO/ADS/CADASTRO DE MONITORES/IMPLEMENTAÇÃO DE JPA/Cadastro-de-Monitores-master/Cadastro-de-Monitores-master",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Application.Programa.executor&quot;: &quot;Run&quot;,
+    &quot;Application.TelaLogin.executor&quot;: &quot;Run&quot;,
+    &quot;Application.TelaPrincipalPadrao.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Romulo/Desktop/ROMULO/ADS/CADASTRO DE MONITORES/IMPLEMENTAÇÃO DE JPA/Cadastro-de-Monitores-master/Cadastro-de-Monitores-master&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.32098.37" />
-      </set>
-    </attachedChunks>
-  </component>
+}</component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="" />
