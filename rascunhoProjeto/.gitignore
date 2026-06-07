@@ -1,3 +1,9 @@
 /bin/
-central.xml
 *.db
+# Arquivos compilados e de build
+target/
+*.class
+
+# Arquivos de configuração da IDE
+.idea/
+*.iml
