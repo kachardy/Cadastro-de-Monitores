@@ -114,9 +114,24 @@ public class AlunoController {
         TelaDetalheEditalAluno telaInscricao = new TelaDetalheEditalAluno(edital);
         telaInscricao.adicionarAcaoInscrever(e -> {
             Disciplina disc = telaInscricao.getDisciplinaSelecionada();
+
+            // Validação 1: O utilizador selecionou alguma disciplina na tabela?
+            if (disc == null) {
+                JOptionPane.showMessageDialog(telaInscricao, "Por favor, selecione uma disciplina na tabela antes de se inscrever.");
+                return;
+            }
+
             try {
-                double cre = Double.parseDouble(telaInscricao.getCRE());
-                double media = Double.parseDouble(telaInscricao.getMedia());
+                // CORREÇÃO: A nova tela responsiva já retorna o tipo 'double' tratado,
+                // não é mais necessário (nem permitido) usar Double.parseDouble()
+                double cre = telaInscricao.getCRE();
+                double media = telaInscricao.getMedia();
+
+                // Validação 2: Se os métodos retornaram -1, é porque o utilizador digitou texto ou letras
+                if (cre < 0 || media < 0) {
+                    JOptionPane.showMessageDialog(telaInscricao, "Dados inválidos. Insira notas numéricas válidas.");
+                    return;
+                }
 
                 // Se a inscrição passou pelas validações do edital...
                 if (edital.inscrever(aluno, disc, cre, media)) {
@@ -131,7 +146,7 @@ public class AlunoController {
                     JOptionPane.showMessageDialog(telaInscricao, "Inscrição negada.");
                 }
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(telaInscricao, "Dados inválidos.");
+                JOptionPane.showMessageDialog(telaInscricao, "Ocorreu um erro ao processar os dados.");
             }
         });
         telaInscricao.adicionarAcaoVoltar(e -> {

@@ -1,17 +1,25 @@
 package views;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import models.Disciplina;
 import models.EditalDeMonitoria;
+import views.builders.BotaoBuilder;
+import views.factories.FabricaDeComponentes;
+import views.tema.Tema;
 
-public class TelaDetalheEditalAluno extends JFrame {
+public class TelaDetalheEditalAluno extends TelaBase {
 
     private JTable tabelaDisciplinas;
     private DefaultTableModel modeloTabela;
@@ -20,8 +28,6 @@ public class TelaDetalheEditalAluno extends JFrame {
     private JButton btnInscrever;
     private JButton btnVoltar;
 
-
-    // MUDANÇA: Agora são atributos da classe para serem acessados pelo método configurarModoConsulta
     private JLabel labelDados;
     private JLabel labelCRE;
     private JLabel labelMedia;
@@ -29,101 +35,101 @@ public class TelaDetalheEditalAluno extends JFrame {
     private List<Disciplina> listaDisciplinas;
 
     public TelaDetalheEditalAluno(EditalDeMonitoria edital) {
-        setTitle("Inscrição - Edital " + edital.getNumeroEdital());
-        setSize(600, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
-        setLocationRelativeTo(null);
-        setLayout(null);
+        super("Inscrição - Edital " + (edital != null ? edital.getNumeroEdital() : ""), 600, 600);
 
-        // Cabeçalho
-        JLabel labelTitulo = new JLabel("Inscrição de Monitoria");
-        labelTitulo.setFont(new Font("Arial", Font.BOLD, 24));
-        labelTitulo.setOpaque(true);
-        labelTitulo.setBackground(new Color(0, 100, 200));
-        labelTitulo.setForeground(Color.WHITE);
-        labelTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-        labelTitulo.setBounds(0, 0, 600, 50);
-        add(labelTitulo);
+        if (edital != null) {
+            listaDisciplinas = edital.getTodasAsDisciplinas();
+            preencherTabela();
+        }
 
-        // Status e Data
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String dataFormatada = edital.getDataFim().format(df);
-        JLabel labelInfo = new JLabel("Inscrições encerram em: " + dataFormatada);
-        labelInfo.setBounds(30, 60, 500, 20);
-        labelInfo.setFont(new Font("Arial", Font.BOLD, 14));
-        add(labelInfo);
+        setVisible(true);
+    }
 
-        // Tabela
-        JLabel labelTab = new JLabel("Disciplinas Ofertadas:");
-        labelTab.setBounds(30, 90, 300, 20);
-        add(labelTab);
+    @Override
+    protected void inicializarComponentes() {
+        setLayout(new BorderLayout());
+        adicionarCabecalho("Inscrição de Monitoria", 600);
 
-        String[] colunas = {"Disciplina", "Vagas Rem.", "Vagas Vol."};
+        JPanel painelCentral = new JPanel(new BorderLayout(0, 10));
+        painelCentral.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
+
+        // 1. Tabela de Disciplinas (Centro)
+        String[] colunas = {"Disciplina", "Vagas Remuneradas", "Vagas Voluntárias"};
         modeloTabela = new DefaultTableModel(colunas, 0) {
             @Override
-            public boolean isCellEditable(int row, int col) { return false; }
+            public boolean isCellEditable(int row, int column) { return false; }
         };
 
         tabelaDisciplinas = new JTable(modeloTabela);
+        tabelaDisciplinas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tabelaDisciplinas.setFont(Tema.FONTE_PADRAO);
+        tabelaDisciplinas.setRowHeight(25);
+
         JScrollPane scroll = new JScrollPane(tabelaDisciplinas);
-        scroll.setBounds(30, 120, 520, 200);
-        add(scroll);
+        painelCentral.add(scroll, BorderLayout.CENTER);
 
-        this.listaDisciplinas = edital.getTodasAsDisciplinas();
-        if (listaDisciplinas != null) {
-            for (Disciplina d : listaDisciplinas) {
-                Object[] linha = {d.getNome(), d.getVagasRemuneradas(), d.getVagasVoluntarias()};
-                modeloTabela.addRow(linha);
-            }
-        }
+        // 2. Formulário de Inscrição (Sul do Painel Central)
+        JPanel painelFormulario = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // --- INICIALIZAÇÃO DOS ATRIBUTOS DE DADOS ---
-        labelDados = new JLabel("Dados para Candidatura:");
-        labelDados.setFont(new Font("Arial", Font.BOLD, 14));
-        labelDados.setBounds(30, 340, 200, 20);
-        add(labelDados);
+        labelDados = FabricaDeComponentes.criarLabel("Preencha suas notas para ranqueamento:");
+        labelDados.setFont(Tema.FONTE_DESTAQUE);
 
-        labelCRE = new JLabel("Seu CRE:");
-        labelCRE.setBounds(30, 370, 80, 30);
-        tfCRE = new JTextField();
-        tfCRE.setBounds(110, 370, 80, 30);
+        labelCRE = FabricaDeComponentes.criarLabel("Seu CRE:");
+        tfCRE = FabricaDeComponentes.criarTextField();
+        tfCRE.setPreferredSize(new Dimension(80, 30));
 
-        labelMedia = new JLabel("Média na Disciplina:");
-        labelMedia.setBounds(210, 370, 130, 30);
-        tfMedia = new JTextField();
-        tfMedia.setBounds(340, 370, 80, 30);
+        labelMedia = FabricaDeComponentes.criarLabel("Média na Disciplina:");
+        tfMedia = FabricaDeComponentes.criarTextField();
+        tfMedia.setPreferredSize(new Dimension(80, 30));
 
-        add(labelCRE); add(tfCRE);
-        add(labelMedia); add(tfMedia);
+        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 4;
+        painelFormulario.add(labelDados, gbc);
 
-        btnInscrever = new JButton("Confirmar Inscrição");
-        btnInscrever.setBounds(30, 430, 180, 40);
-        btnInscrever.setBackground(new Color(200, 255, 200));
+        gbc.gridwidth = 1;
+        gbc.gridx = 0; gbc.gridy = 1; painelFormulario.add(labelCRE, gbc);
+        gbc.gridx = 1; gbc.gridy = 1; painelFormulario.add(tfCRE, gbc);
+        gbc.gridx = 2; gbc.gridy = 1; painelFormulario.add(labelMedia, gbc);
+        gbc.gridx = 3; gbc.gridy = 1; painelFormulario.add(tfMedia, gbc);
 
-        btnVoltar = new JButton("Voltar");
-        btnVoltar.setBounds(410, 430, 140, 40);
+        painelCentral.add(painelFormulario, BorderLayout.SOUTH);
+        add(painelCentral, BorderLayout.CENTER);
 
-        add(btnInscrever);
-        add(btnVoltar);
+        // 3. Botões Inferiores (Rodapé da Janela)
+        btnInscrever = new BotaoBuilder()
+                .comTexto("Confirmar Inscrição")
+                .comCorFundo(new Color(200, 255, 200))
+                .build();
+        btnInscrever.setPreferredSize(new Dimension(180, 40));
+
+        btnVoltar = new BotaoBuilder().comTexto("Voltar").build();
+        btnVoltar.setPreferredSize(new Dimension(140, 40));
+
+        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        painelBotoes.add(btnInscrever);
+        painelBotoes.add(btnVoltar);
+        add(painelBotoes, BorderLayout.SOUTH);
     }
 
-    // MÉTODO DE CONFIGURAÇÃO DINÂMICA
+    private void preencherTabela() {
+        modeloTabela.setRowCount(0);
+        if (listaDisciplinas != null) {
+            for (Disciplina d : listaDisciplinas) {
+                modeloTabela.addRow(new Object[]{ d.getNome(), d.getVagasRemuneradas(), d.getVagasVoluntarias() });
+            }
+        }
+    }
+
     public void configurarModoConsulta() {
-        // Esconde os componentes de entrada
         btnInscrever.setVisible(false);
         tfCRE.setVisible(false);
         tfMedia.setVisible(false);
         labelCRE.setVisible(false);
         labelMedia.setVisible(false);
 
-        // Altera o título da seção para algo mais informativo
         labelDados.setText("Consulte as vagas disponíveis acima.");
-        labelDados.setBounds(30, 340, 400, 20);
-
-        // Ajusta o botão voltar para o centro, já que o outro sumiu
-        btnVoltar.setBounds(230, 430, 140, 40);
-
         setTitle("Detalhes do Edital");
     }
 
@@ -132,8 +138,13 @@ public class TelaDetalheEditalAluno extends JFrame {
         return (linha == -1) ? null : listaDisciplinas.get(linha);
     }
 
-    public String getCRE() { return tfCRE.getText(); }
-    public String getMedia() { return tfMedia.getText(); }
+    public double getCRE() {
+        try { return Double.parseDouble(tfCRE.getText().replace(",", ".")); } catch (Exception e) { return -1; }
+    }
+
+    public double getMedia() {
+        try { return Double.parseDouble(tfMedia.getText().replace(",", ".")); } catch (Exception e) { return -1; }
+    }
 
     public void adicionarAcaoInscrever(ActionListener acao) { btnInscrever.addActionListener(acao); }
     public void adicionarAcaoVoltar(ActionListener acao) { btnVoltar.addActionListener(acao); }

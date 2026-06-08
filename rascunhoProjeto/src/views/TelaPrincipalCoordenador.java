@@ -1,82 +1,99 @@
 package views;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
-import javax.swing.*;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import models.Coordenador;
+import views.builders.BotaoBuilder;
+import views.tema.Tema;
 
 public class TelaPrincipalCoordenador extends TelaPrincipalPadrao {
-    
+
+    private JLabel labelBemVindo;
     private JButton botaoCadastrarEdital;
     private JButton botaoListarEditais;
     private JButton botaoListarAlunos;
     private JButton botaoSair;
-    
-    // Construtor recebe o objeto Coordenador Logado
+
     public TelaPrincipalCoordenador(Coordenador coordenador) {
-        super();
-        adicionarCabecalho("Área do Coordenador");
-        setSize(500, 500);
-        
-        // Mensagem de bem-vindo
-        JLabel labelBemVindo = new JLabel("Bem-vindo(a), " + coordenador.getNome());
-        labelBemVindo.setFont(new Font("Arial", Font.PLAIN, 16));
-        labelBemVindo.setBounds(30, 70, 400, 30);
-        add(labelBemVindo);
-        
-        // Botões
-        
-        // Cadastrar Edital
-        botaoCadastrarEdital = new JButton("Cadastrar Edital");
-        botaoCadastrarEdital.setBounds(100, 120, 300, 50);
-        botaoCadastrarEdital.setFont(new Font("Arial", Font.BOLD, 14));
-        botaoCadastrarEdital.setBackground(new Color(220, 255, 220));
-        
-        // Listar Editais
-        botaoListarEditais = new JButton("Listar Editais");
-        botaoListarEditais.setBounds(100, 190, 300, 50);
-        botaoListarEditais.setFont(new Font("Arial", Font.BOLD, 14));
-        
-        // Listar Alunos
-        botaoListarAlunos = new JButton("Ver Alunos Cadastrados");
-        botaoListarAlunos.setBounds(100, 260, 300, 50);
-        botaoListarAlunos.setFont(new Font("Arial", Font.BOLD, 14));
-        
-        // Sair 
-        botaoSair = new JButton("Sair");
-        botaoSair.setBounds(180, 350, 140, 35);
-        botaoSair.setBackground(new Color(255, 200, 200));
-        
-        // Adicionando tudo
-        add(botaoCadastrarEdital);
-        add(botaoListarEditais);
-        add(botaoListarAlunos);
-        add(botaoSair);
-        
-        repaint();
-        validate();
-        
+        super("Área do Coordenador", 500, 500);
+
+        if (coordenador != null) {
+            labelBemVindo.setText("Bem-vindo(a), " + coordenador.getNome());
+        }
+
         setVisible(true);
     }
-    
-    // Métodos controlar os cliques
-    public void adicionarAcaoCadastrarEdital(ActionListener acao) {
-        botaoCadastrarEdital.addActionListener(acao);
+
+    @Override
+    protected void inicializarComponentes() {
+        setLayout(new BorderLayout());
+        adicionarCabecalho("Área do Coordenador", 500);
+
+        JPanel painelCentro = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 0;
+
+        // --- Instanciação ---
+        labelBemVindo = criarLabelBemVindo();
+
+        botaoCadastrarEdital = new BotaoBuilder()
+                .comTexto("Cadastrar Edital")
+                .comCorFundo(new Color(220, 255, 220))
+                .comFonte(Tema.FONTE_DESTAQUE)
+                .build();
+        botaoCadastrarEdital.setPreferredSize(new Dimension(300, 50));
+
+        botaoListarEditais = new BotaoBuilder()
+                .comTexto("Listar Editais")
+                .comFonte(Tema.FONTE_DESTAQUE)
+                .build();
+        botaoListarEditais.setPreferredSize(new Dimension(300, 50));
+
+        botaoListarAlunos = new BotaoBuilder()
+                .comTexto("Ver Alunos Cadastrados")
+                .comFonte(Tema.FONTE_DESTAQUE)
+                .build();
+        botaoListarAlunos.setPreferredSize(new Dimension(300, 50));
+
+        botaoSair = new BotaoBuilder()
+                .comTexto("Sair")
+                .comCorFundo(new Color(255, 200, 200))
+                .build();
+        botaoSair.setPreferredSize(new Dimension(140, 35));
+
+        // --- Adicionando à Grelha com Margens ---
+        gbc.gridy = 0; gbc.insets = new Insets(10, 10, 20, 10);
+        painelCentro.add(labelBemVindo, gbc);
+
+        gbc.gridy = 1; gbc.insets = new Insets(0, 10, 15, 10);
+        painelCentro.add(botaoCadastrarEdital, gbc);
+
+        gbc.gridy = 2; gbc.insets = new Insets(0, 10, 15, 10);
+        painelCentro.add(botaoListarEditais, gbc);
+
+        gbc.gridy = 3; gbc.insets = new Insets(0, 10, 30, 10);
+        painelCentro.add(botaoListarAlunos, gbc);
+
+        gbc.gridy = 4; gbc.insets = new Insets(0, 10, 10, 10);
+        painelCentro.add(botaoSair, gbc);
+
+        add(painelCentro, BorderLayout.CENTER);
     }
-    
-    public void adicionarAcaoListarEditais(ActionListener acao) {
-        botaoListarEditais.addActionListener(acao);
-    }
-    
-    public void adicionarAcaoListarAlunos(ActionListener acao) {
-        botaoListarAlunos.addActionListener(acao);
-    }
-    
-    public void adicionarAcaoSair(ActionListener acao) {
-        botaoSair.addActionListener(acao);
-    }
-	
-    
+
+    // --- Getters / Listeners ---
+    public void adicionarAcaoCadastrarEdital(ActionListener acao) { botaoCadastrarEdital.addActionListener(acao); }
+    public void adicionarAcaoListarEditais(ActionListener acao) { botaoListarEditais.addActionListener(acao); }
+    public void adicionarAcaoListarAlunos(ActionListener acao) { botaoListarAlunos.addActionListener(acao); }
+    public void adicionarAcaoSair(ActionListener acao) { botaoSair.addActionListener(acao); }
 }

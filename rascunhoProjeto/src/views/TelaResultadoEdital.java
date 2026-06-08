@@ -1,18 +1,29 @@
 package views;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
-import java.util.List; // CORREÇÃO: Importação atualizada para a interface List do Java
-import javax.swing.*;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import models.Aluno;
 import models.Disciplina;
 import models.EditalDeMonitoria;
-import models.Inscricao; // NOVA ALTERAÇÃO: Importação necessária para a nova estrutura de dados
+import models.Inscricao;
+import views.builders.BotaoBuilder;
+import views.tema.Tema;
 
-public class TelaResultadoEdital extends JFrame {
+public class TelaResultadoEdital extends TelaBase {
 
     private JButton btnGerarPdf;
     private JButton btnFechar;
@@ -20,61 +31,76 @@ public class TelaResultadoEdital extends JFrame {
     private DefaultTableModel modeloTabela;
 
     public TelaResultadoEdital(EditalDeMonitoria edital) {
-        setTitle("Resultado Final - Edital " + edital.getNumeroEdital());
-        setSize(750, 550);
+        super("Resultado Final - Edital " + (edital != null ? edital.getNumeroEdital() : ""), 750, 550);
+
+        // MAGIA: Como esta é uma tela secundária, sobrescrevemos o comportamento de fecho
+        // da TelaBase para que não encerre o programa todo ao clicar no "X"
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setResizable(false);
-        setLocationRelativeTo(null);
-        setLayout(null);
 
-        // Cabeçalho
-        JLabel labelTitulo = new JLabel("Resultado Final de Monitoria");
-        labelTitulo.setFont(new Font("Arial", Font.BOLD, 22));
-        labelTitulo.setOpaque(true);
-        labelTitulo.setBackground(new Color(70, 130, 180));
-        labelTitulo.setForeground(Color.WHITE);
-        labelTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-        labelTitulo.setBounds(0, 0, 750, 50);
-        add(labelTitulo);
+        if (edital != null) {
+            preencherTabela(edital);
+        }
 
-        JLabel labelEdital = new JLabel("Edital: " + edital.getNumeroEdital());
-        labelEdital.setFont(new Font("Arial", Font.ITALIC, 14));
-        labelEdital.setBounds(30, 60, 300, 20);
-        add(labelEdital);
+        setVisible(true);
+    }
 
-        // Tabela de Resultados
+    @Override
+    protected void inicializarComponentes() {
+        setLayout(new BorderLayout());
+
+        // 1. Cabeçalho Padronizado
+        adicionarCabecalho("Resultado Final de Monitoria", 750);
+
+        // 2. Painel Central (Tabela de Resultados)
+        JPanel painelCentral = new JPanel(new BorderLayout());
+        painelCentral.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20)); // Margens
+
         String[] colunas = {"Disciplina", "Aluno", "Matrícula", "Nota Final", "Status"};
         modeloTabela = new DefaultTableModel(colunas, 0) {
-            public boolean isCellEditable(int row, int col) { return false; }
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
 
         tabelaResultado = new JTable(modeloTabela);
+        tabelaResultado.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tabelaResultado.setFont(Tema.FONTE_PADRAO);
+        tabelaResultado.setRowHeight(25);
+
         JScrollPane scroll = new JScrollPane(tabelaResultado);
-        scroll.setBounds(30, 100, 680, 300);
-        add(scroll);
+        painelCentral.add(scroll, BorderLayout.CENTER);
 
-        // Preenchimento da tabela com a lógica de Inscrição
-        preencherTabela(edital);
+        add(painelCentral, BorderLayout.CENTER);
 
-        // Botões
-        btnGerarPdf = new JButton("Gerar Relatório PDF");
-        btnGerarPdf.setBounds(30, 430, 180, 40);
-        btnGerarPdf.setBackground(new Color(200, 230, 200));
+        // 3. Painel de Botões (Rodapé)
+        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 15));
 
-        btnFechar = new JButton("Fechar");
-        btnFechar.setBounds(590, 430, 120, 40);
+        // Mantemos o padrão do Builder com o prefixo "com" para as propriedades
+        btnGerarPdf = new BotaoBuilder()
+                .comTexto("Gerar PDF")
+                .comCorFundo(new Color(255, 200, 200)) // Cor de destaque suave
+                .build();
+        btnGerarPdf.setPreferredSize(new Dimension(150, 40));
 
-        add(btnGerarPdf);
-        add(btnFechar);
+        btnFechar = new BotaoBuilder()
+                .comTexto("Fechar")
+                .build();
+        btnFechar.setPreferredSize(new Dimension(150, 40));
+
+        painelBotoes.add(btnGerarPdf);
+        painelBotoes.add(btnFechar);
+
+        add(painelBotoes, BorderLayout.SOUTH);
     }
 
-    private void preencherTabela(EditalDeMonitoria edital) {
-        // Limpando a tabela para evitar duplicatas
+    // A lógica de negócio permaneceu 100% intacta para não afetar os cálculos e controllers
+    public void preencherTabela(EditalDeMonitoria edital) {
         modeloTabela.setRowCount(0);
+        if (edital == null) return;
 
         for (Disciplina d : edital.getTodasAsDisciplinas()) {
 
-            // CORREÇÃO: Usamos List e passamos a lista oficial de inscrições do Edital como primeiro parâmetro
             List<Inscricao> inscricoes = edital.getGerenciador().getInscricoesPorDisciplina(edital.getInscricoesRealizadas(), d);
 
             for (int i = 0; i < inscricoes.size(); i++) {
@@ -101,11 +127,6 @@ public class TelaResultadoEdital extends JFrame {
         }
     }
 
-    public void adicionarAcaoGerarPdf(ActionListener acao) {
-        btnGerarPdf.addActionListener(acao);
-    }
-
-    public void adicionarAcaoFechar(ActionListener acao) {
-        btnFechar.addActionListener(acao);
-    }
+    public void adicionarAcaoGerarPdf(ActionListener acao) { btnGerarPdf.addActionListener(acao); }
+    public void adicionarAcaoFechar(ActionListener acao) { btnFechar.addActionListener(acao); }
 }

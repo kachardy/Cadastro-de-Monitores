@@ -12,4 +12,5 @@ public class Tema {
     // Fontes
     public static final Font FONTE_CABECALHO = new Font("Arial", Font.BOLD, 26);
     public static final Font FONTE_PADRAO = new Font("Arial", Font.PLAIN, 14);
+    public static final Font FONTE_DESTAQUE = new Font("Arial", Font.BOLD, 14);
 }
