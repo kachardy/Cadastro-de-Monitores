@@ -47,7 +47,7 @@ public class TelaPerfilAluno extends TelaBase {
     }
 
     @Override
-    protected void inicializarComponentes() {
+    public void inicializarComponentes() {
         setLayout(new BorderLayout());
         adicionarCabecalho("Editar Perfil", 500);
 

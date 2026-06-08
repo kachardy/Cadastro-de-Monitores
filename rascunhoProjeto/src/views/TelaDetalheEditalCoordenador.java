@@ -67,7 +67,7 @@ public class TelaDetalheEditalCoordenador extends TelaBase {
     }
 
     @Override
-    protected void inicializarComponentes() {
+    public void inicializarComponentes() {
         setLayout(new BorderLayout());
         adicionarCabecalho("Gerenciamento de Edital", 700);
 

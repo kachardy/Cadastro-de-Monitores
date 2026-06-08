@@ -35,7 +35,7 @@ public class TelaPrincipalCoordenador extends TelaPrincipalPadrao {
     }
 
     @Override
-    protected void inicializarComponentes() {
+    public void inicializarComponentes() {
         setLayout(new BorderLayout());
         adicionarCabecalho("Área do Coordenador", 500);
 

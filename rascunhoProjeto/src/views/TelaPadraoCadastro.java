@@ -31,7 +31,7 @@ public class TelaPadraoCadastro extends TelaBase {
     }
 
     @Override
-    protected void inicializarComponentes() {
+    public void inicializarComponentes() {
         // 1. Layout principal em blocos (Norte, Sul, Centro...)
         setLayout(new BorderLayout());
 

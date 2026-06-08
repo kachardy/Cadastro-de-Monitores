@@ -36,7 +36,7 @@ public class TelaListaAlunos extends TelaBase {
     }
 
     @Override
-    protected void inicializarComponentes() {
+    public void inicializarComponentes() {
         setLayout(new BorderLayout());
         adicionarCabecalho("Alunos Cadastrados", 700);
 

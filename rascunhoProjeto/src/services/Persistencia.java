@@ -25,11 +25,4 @@ public class Persistencia {
         }
         return emf.createEntityManager();
     }
-
-    // Método para fechar a fábrica graciosamente no encerramento do programa
-    public static void fecharFabrica() {
-        if (emf != null && emf.isOpen()) {
-            emf.close();
-        }
-    }
 }

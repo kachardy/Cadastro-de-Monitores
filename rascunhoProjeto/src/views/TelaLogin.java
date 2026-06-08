@@ -33,7 +33,7 @@ public class TelaLogin extends TelaBase {
     }
 
     @Override
-    protected void inicializarComponentes() {
+    public void inicializarComponentes() {
         // 1. MUDANÇA DE PARADIGMA: Sobrescrevemos o layout nulo para um layout em blocos!
         setLayout(new BorderLayout());
 

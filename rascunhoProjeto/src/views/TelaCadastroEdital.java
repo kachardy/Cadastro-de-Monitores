@@ -58,14 +58,14 @@ public class TelaCadastroEdital extends TelaBase {
 	}
 
 	@Override
-	protected void inicializarComponentes() {
-		// 1. Layout Principal
+	public void inicializarComponentes() {
+		// Layout Principal
 		setLayout(new BorderLayout());
 
-		// 2. Cabeçalho Padronizado via Template Method
+		// Cabeçalho Padronizado via Template Method
 		adicionarCabecalho("Cadastro do Edital", 500);
 
-		// 3. Painel Central da Grelha Responsiva
+		// Painel Central da Grelha Responsiva
 		JPanel painelCentro = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(6, 12, 6, 12);
@@ -231,16 +231,41 @@ public class TelaCadastroEdital extends TelaBase {
 		add(painelBotoes, BorderLayout.SOUTH);
 	}
 
-	// --- Métodos de Interface permanecem 100% Intactos para os Controllers ---
-	public String getNumeroEdital() { return tfNumeroEdital.getText(); }
-	public String getDataInicio() { return tfDataInicio.getText(); }
-	public String getDataFim() { return tfDataFim.getText(); }
-	public int getMaxInscricoes() { return (int) spinnerMaxInsc.getValue(); }
-	public double getPesoCRE() { return (double) spinnerPesoCRE.getValue(); }
-	public double getPesoMedia() { return (double) spinnerPesoMedia.getValue(); }
-	public String getNomeDisciplina() { return tfNomeDisc.getText(); }
-	public int getVagasRem() { return (int) spinVagasRem.getValue(); }
-	public int getVagasVol() { return (int) spinVagasVol.getValue(); }
+	public String getNumeroEdital() {
+        return tfNumeroEdital.getText();
+    }
+
+	public String getDataInicio() {
+        return tfDataInicio.getText();
+    }
+
+	public String getDataFim() {
+        return tfDataFim.getText();
+    }
+
+	public int getMaxInscricoes() {
+        return (int) spinnerMaxInsc.getValue();
+    }
+
+	public double getPesoCRE() {
+        return (double) spinnerPesoCRE.getValue();
+    }
+
+	public double getPesoMedia() {
+        return (double) spinnerPesoMedia.getValue();
+    }
+
+	public String getNomeDisciplina() {
+        return tfNomeDisc.getText();
+    }
+
+	public int getVagasRem() {
+        return (int) spinVagasRem.getValue();
+    }
+
+	public int getVagasVol() {
+        return (int) spinVagasVol.getValue();
+    }
 
 	public void limparCamposDisciplina() {
 		tfNomeDisc.setText("");

@@ -17,15 +17,11 @@ public class Aluno extends Pessoa {
 	private List<String> historicoMonitorias = new ArrayList<>();
 	
 	public Aluno(String nome, String matricula, String email, String senha) {
-		super(nome, matricula, email, senha);
-	}
-
-	public void adicionarMonitoria(String descricao) {
-	    historicoMonitorias.add(descricao);
+        super(nome, matricula, email, senha);
 	}
 
 	public List<String> getHistoricoMonitorias() {
-	    return historicoMonitorias;
+        return historicoMonitorias;
 	}
 
 

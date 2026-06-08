@@ -57,20 +57,5 @@ public class Validador {
 		}
 		return false;
 	}
-	
-	public static boolean validarNumeroEdital(String matricula) {
-	    if (matricula == null || matricula.isBlank()) {
-	        return false;
-	    }
-
-	    matricula = matricula.trim();
-
-	    // Verifica se contém apenas números utilizando regex
-	    if (!matricula.matches("\\d+")) {
-	        return false;
-	    }
-
-	    return true;
-	}
 
 }

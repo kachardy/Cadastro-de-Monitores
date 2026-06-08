@@ -46,7 +46,7 @@ public class TelaDetalheEditalAluno extends TelaBase {
     }
 
     @Override
-    protected void inicializarComponentes() {
+    public void inicializarComponentes() {
         setLayout(new BorderLayout());
         adicionarCabecalho("Inscrição de Monitoria", 600);
 

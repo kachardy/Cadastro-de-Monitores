@@ -55,5 +55,5 @@ public abstract class TelaBase extends JFrame {
     }
 
     // Metodo abstrato que toda tela filha será obrigada a fornecer
-    protected abstract void inicializarComponentes();
+    public abstract void inicializarComponentes();
 }

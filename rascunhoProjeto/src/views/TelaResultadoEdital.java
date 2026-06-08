@@ -45,7 +45,7 @@ public class TelaResultadoEdital extends TelaBase {
     }
 
     @Override
-    protected void inicializarComponentes() {
+    public void inicializarComponentes() {
         setLayout(new BorderLayout());
 
         // 1. Cabeçalho Padronizado

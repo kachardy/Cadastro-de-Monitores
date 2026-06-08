@@ -22,11 +22,6 @@ import javax.swing.JButton;
             return this; // Retorna a própria classe para permitir encadeamento
         }
 
-        public BotaoBuilder comPosicao(int x, int y, int largura, int altura) {
-            this.botao.setBounds(x, y, largura, altura);
-            return this;
-        }
-
         public BotaoBuilder comCorFundo(Color cor) {
             this.botao.setBackground(cor);
             return this;
@@ -34,13 +29,6 @@ import javax.swing.JButton;
 
         public BotaoBuilder comFonte(Font fonte) {
             this.botao.setFont(fonte);
-            return this;
-        }
-
-        // Metodo extra para já atrelar uma ação de clique logo na criação, se quiser
-
-        public BotaoBuilder comAcao(ActionListener acao) {
-            this.botao.addActionListener(acao);
             return this;
         }
 
