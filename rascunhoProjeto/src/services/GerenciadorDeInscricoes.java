@@ -33,17 +33,6 @@ public class GerenciadorDeInscricoes {
         return filtradas;
     }
 
-    // Retorna as disciplinas nas quais um aluno específico se inscreveu
-    public List<Disciplina> getDisciplinasPorAluno(List<Inscricao> todasAsInscricoes, String matricula) {
-        List<Disciplina> resultado = new ArrayList<>();
-        for (Inscricao i : todasAsInscricoes) {
-            if (i.getCandidato().getMatricula().equals(matricula)) {
-                resultado.add(i.getDisciplina());
-            }
-        }
-        return resultado;
-    }
-
     // O ranking agora recebe a lista do edital, filtra pela disciplina e ordena
     public void ordenarRanking(List<Inscricao> todasAsInscricoes, Disciplina d, double pesoCRE, double pesoMedia) {
         List<Inscricao> inscricoesDaDisciplina = getInscricoesPorDisciplina(todasAsInscricoes, d);

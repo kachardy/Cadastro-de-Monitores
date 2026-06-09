@@ -6,20 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="03d1d001-0c23-43c9-ad43-4c2f78cdd71d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/Aluno.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/Aluno.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/models/Coordenador.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/models/Coordenador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaBase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaCadastroEdital.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaCadastroEdital.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaDetalheEditalAluno.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaDetalheEditalAluno.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaDetalheEditalCoordenador.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaDetalheEditalCoordenador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaListaAlunos.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaListaAlunos.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaListagem.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaListagem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaLogin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaPadraoCadastro.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaPadraoCadastro.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaPerfilAluno.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaPerfilAluno.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaPrincipalAluno.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaPrincipalAluno.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaPrincipalCoordenador.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaPrincipalCoordenador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaResultadoEdital.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/TelaResultadoEdital.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/services/GerenciadorDeInscricoes.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/services/GerenciadorDeInscricoes.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rascunhoProjeto/src/views/builders/BotaoBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/rascunhoProjeto/src/views/builders/BotaoBuilder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
